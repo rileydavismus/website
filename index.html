@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>riley guerin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #d5f2dd;
+            --text-dark: #1c1c1c;
+            --shadow: 4px 4px 0px var(--accent);
+            --bg-grey: #f3f3f3;
+            --border: #dddddd;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: #ffffff;
+            font-family: 'Source Code Pro', monospace;
+            color: var(--text-dark);
+            text-transform: lowercase;
+            line-height: 1.6;
+        }
+
+        header {
+            position: absolute;
+            top: 0; left: 0;
+            padding: 20px 30px; z-index: 100;
+        }
+
+        h1.site-title { font-size: 15pt; font-weight: 400; margin: 0; }
+
+        .top-hero-wrapper {
+            background-color: var(--bg-grey);
+            width: 100%;
+            padding-top: 100px;
+            padding-bottom: 30px;
+        }
+
+        .main-container { width: 70%; margin: 0 auto; }
+        .content-wrapper { background-color: #ffffff; padding-top: 60px; padding-bottom: 40px; }
+
+        h2 { font-size: 2.425rem; margin: 20px 0 15px; }
+
+        .hero-greeting {
+            font-size: 34pt; margin: 0 0 15px;
+            line-height: 1.1; font-weight: 600;
+        }
+
+        .services-main-title {
+            font-size: 34pt; text-align: center;
+            margin: 0 0 60px 0; font-weight: 600;
+        }
+
+        section { margin-bottom: 80px; }
+        #about { margin-bottom: 0; }
+
+        ul { list-style-type: square; padding-left: 20px; }
+        li { margin-bottom: 10px; max-width: 800px; }
+
+        ul ul { margin-top: 10px; }
+        ul ul li { margin-bottom: 10px; }
+
+        .about-container { display: flex; align-items: flex-start; gap: 40px; }
+        .about-text { flex: 1; padding-top: 30px; }
+        .about-image { flex: 0 0 450px; max-width: 450px; }
+        .about-image img { width: 100%; height: auto; display: block; background-color: white; }
+
+        /* --- PLAYER STYLING --- */
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .player-card {
+            background: #ffffff;
+            border: 1px solid var(--accent);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 80px;
+            overflow: hidden;
+        }
+
+        .art-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-right: 1px solid var(--accent);
+        }
+
+        .artwork {
+            width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            background-color: #fafafa;
+        }
+
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.03);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .play-icon-circle {
+            width: 32px; height: 32px;
+            background-color: rgba(255,255,255,0.5);
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .info-area {
+            padding: 0 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .track-meta {
+            font-size: 11px; font-weight: 600;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .progress-container { display: flex; align-items: center; gap: 8px; font-size: 10px; }
+
+        input[type=range] {
+            flex-grow: 1; accent-color: #8fb89a;
+            height: 4px; cursor: pointer;
+        }
+
+        .time-label { font-weight: 600; min-width: 32px; }
+
+        /* --- CONTACT FORM STYLING --- */
+        .contact-section {
+            margin-top: 100px;
+            border-top: 1px solid var(--bg-grey);
+            padding-top: 80px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .contact-input, .contact-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: #fff;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            text-transform: lowercase;
+        }
+
+        .contact-input:focus, .contact-textarea:focus {
+            border-color: var(--text-dark);
+        }
+
+        .contact-services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .contact-checkbox-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .contact-checkbox-item input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--text-dark);
+            flex-shrink: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--text-dark);
+            color: #fff;
+            border: none;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #form-result {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            border: 1px dashed var(--accent);
+            margin-top: 20px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1600px) { .main-container { width: 75%; } }
+        @media (max-width: 1400px) { .player-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 1200px) {
+            header { position: static; padding: 20px 5%; background-color: var(--bg-grey); }
+            .top-hero-wrapper { padding-top: 20px; }
+            .main-container { width: 90%; }
+            .about-container { flex-direction: column-reverse; }
+            .about-image { max-width: 100%; flex: 0 0 auto; }
+        }
+
+        @media (max-width: 768px) {
+            .player-grid { grid-template-columns: 1fr; }
+            .hero-greeting, .services-main-title { font-size: 28pt; }
+            .player-card { height: 80px; }
+            .art-wrapper { width: 80px; height: 80px; }
+            .contact-checkbox-item { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="site-title">riley guerin</h1>
+    </header>
+
+    <div class="top-hero-wrapper">
+        <div class="main-container">
+            <section id="about" class="about-container">
+                <div class="about-image">
+                    <img src="images/me.png" alt="riley guerin">
+                </div>
+                <div class="about-text">
+                    <h2 class="hero-greeting">hello,</h2>
+                    <p>i'm riley. i am a qualified audio engineer and producer with over a decade of experience in electronic music production, mixing, and mastering. i've produced for myself and a range of artists in genres including house, drum & bass, dubstep/140, indie-pop, bedroom pop, and hip-hop/rap. i'm looking to bring your projects to the next level through my available services.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="main-container">
+            <h1 class="services-main-title">services</h1>
+
+            <section>
+                <h2>mixing</h2>
+                <ul>
+                    <li>stereo/full stem mix of any genre</li>
+                    <li>unlimited revisions to ensure you are happy with the final product</li>
+                    <li>quick turnaround</li>
+                    <li>delivery of a high-quality, master-ready, lossless audio file</li>
+                    <li>mp3 version for easy listening</li>
+                </ul>
+                <div class="player-grid">
+                    <div class="player-card" data-audio-file="audio/redlinedashremix.mp3" data-image-file="images/redlinedash.jpg" data-genre="140" data-title="redline_dash_remix.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/sexybitchremix.mp3" data-image-file="images/sexybitch.jpg" data-genre="tech_house" data-title="sexy_bitch_remix.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/sailorsongremix.mp3" data-image-file="images/sailorsong.jpg" data-genre="future_bass" data-title="sailor_song_remix.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>mastering</h2>
+                <ul>
+                    <li>master to spotify loudness standards or lufs of your choice</li>
+                    <li>unlimited revisions to ensure you are happy with the final master</li>
+                    <li>very quick turnaround</li>
+                    <li>delivery of a high-quality, streaming-ready, lossless audio file</li>
+                    <li>mp3 version for easy listening</li>
+                </ul>
+                <div class="player-grid">
+                    <div class="player-card" data-audio-file="audio/simple_lovingyou.mp3" data-image-file="images/simple_lovingyou.jpg" data-genre="speed_house" data-title="simple_lovingyou.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/psychoremix.mp3" data-image-file="images/psychoremix.jpg" data-genre="tech_house" data-title="psycho_remix.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/newdanger.mp3" data-image-file="images/newdanger.jpg" data-genre="experimental_bass" data-title="new_danger.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>mixing + mastering</h2>
+                <ul>
+                    <li>stereo/full stem mix and master of any genre</li>
+                    <li>master to spotify loudness standards or lufs of your choice</li>
+                    <li>unlimited revisions to ensure you are happy with the final master</li>
+                    <li>delivery of a high-quality, streaming-ready lossless audio file</li>
+                    <li>mp3 version for easy listening</li>
+                </ul>
+                <div class="player-grid">
+                    <div class="player-card" data-audio-file="audio/feel_like.mp3" data-image-file="images/feel_like.jpg" data-genre="speed_house" data-title="feel_like.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/breakingnecks.mp3" data-image-file="images/newdanger.jpg" data-genre="experimental_bass" data-title="breaking_necks">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/andthen_die.mp3" data-image-file="images/andthen_die.jpg" data-genre="140" data-title="andthen_die.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>vocal production</h2>
+                <ul>
+                    <li>full vocal production including:
+                        <ul>
+                            <li>audio cleanup - remove any unwanted clicks, pops, hum and room reverb</li>
+                            <li>manual pitch correction to achieve a natural tuned vocal</li>
+                            <li>manual time correction</li>
+                            <li>vocal mixing - eq, compression, reverb + delay</li>
+                            <li>production for multiple vocal tracks available</li>
+                            <li>harmony creation</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="player-grid">
+                    <div class="player-card" data-audio-file="audio/electricfeel.mp3" data-image-file="images/electricfeel.jpg" data-genre="house" data-title="electric_feel.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/lockedaway.mp3" data-image-file="images/lockedaway.jpg" data-genre="melodic_dubstep" data-title="locked_away.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/toxic.mp3" data-image-file="images/toxic.jpg" data-genre="indie_pop" data-title="toxic.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>track production</h2>
+                <ul>
+                    <li>full track production from vocal idea, written song</li>
+                    <li>any genre, but most experienced with:
+                        <ul>
+                            <li>indie-pop/electronica</li>
+                            <li>bedroom pop</li>
+                            <li>house</li>
+                            <li>drum & bass</li>
+                            <li>dubstep/140</li>
+                            <li>future bass</li>
+                            <li>trap</li>
+                            <li>hip-hop/rap</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="player-grid">
+                    <div class="player-card" data-audio-file="audio/crawl.mp3" data-image-file="images/art.jpg" data-genre="electronic_pop" data-title="crawl.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="isthisit.mp3" data-image-file="images/isthisit.jpg" data-genre="electronic_pop" data-title="is_this_it.mp3">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                    <div class="player-card" data-audio-file="audio/overtheedge.mp3" data-image-file="images/overtheedge.jpg" data-genre="electronic_pop" data-title="over_the_edge">
+                        <div class="art-wrapper hitbox"><div class="artwork"></div><div class="overlay"><div class="play-icon-circle"><svg class="play-svg" width="14" height="14" viewBox="0 0 24 24" fill="#1a1a1a"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+                        <div class="info-area"><div class="track-meta"><span class="genre-label"></span> <span class="title-label"></span></div><div class="progress-container"><span class="curr-time time-label">0:00</span><input type="range" class="seek-bar" value="0"><span class="total-time time-label">0:00</span></div></div>
+                        <audio class="audio-element" preload="metadata"></audio>
+                    </div>
+                </div>
+            </section>
+
+            <section class="contact-section">
+                <h1 class="services-main-title">contact me!</h1>
+                <form id="contact-form">
+                    <input type="hidden" name="access_key" value="36114ebc-4d82-40bf-8fed-350f48dcc639">
+                    <input type="checkbox" name="botcheck" style="display:none">
+
+                    <label class="form-label">name</label>
+                    <input type="text" name="name" class="contact-input">
+
+                    <label class="form-label">email address</label>
+                    <input type="email" name="email" class="contact-input">
+
+                    <label class="form-label">subject</label>
+                    <input type="text" name="subject" class="contact-input">
+
+                    <label class="form-label">service required</label>
+                    <div class="contact-services-grid">
+                        <label class="contact-checkbox-item"><input type="checkbox" name="service" value="mixing"> mixing</label>
+                        <label class="contact-checkbox-item"><input type="checkbox" name="service" value="mastering"> mastering</label>
+                        <label class="contact-checkbox-item"><input type="checkbox" name="service" value="mix + master"> mix + master</label>
+                        <label class="contact-checkbox-item"><input type="checkbox" name="service" value="track production"> track production</label>
+                        <label class="contact-checkbox-item"><input type="checkbox" name="service" value="vocal production"> vocal production</label>
+                    </div>
+
+                    <label class="form-label">message</label>
+                    <textarea name="message" rows="6" class="contact-textarea"></textarea>
+
+                    <button type="submit" id="submit-btn" class="submit-btn">send message</button>
+                </form>
+                <div id="form-result">thanks for your enquiry! i'll get back to you shortly</div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // AUDIO PLAYER LOGIC
+        function formatTime(s) {
+            if (!isFinite(s) || isNaN(s)) return "0:00";
+            let m = Math.floor(s/60), sec = Math.floor(s%60);
+            return m + ":" + (sec < 10 ? '0' : '') + sec;
+        }
+
+        document.querySelectorAll('.player-card').forEach(card => {
+            const audio = card.querySelector('.audio-element');
+            const playSvg = card.querySelector('.play-svg');
+            const seek = card.querySelector('.seek-bar');
+            const hitbox = card.querySelector('.hitbox');
+
+            audio.src = card.getAttribute('data-audio-file');
+            const imageFile = card.getAttribute('data-image-file');
+            if(imageFile) card.querySelector('.artwork').style.backgroundImage = `url('${imageFile}')`;
+            card.querySelector('.genre-label').innerText = `[${card.getAttribute('data-genre')}]`;
+            card.querySelector('.title-label').innerText = card.getAttribute('data-title').toLowerCase().replace(/\s/g, '_');
+
+            hitbox.addEventListener('click', () => {
+                document.querySelectorAll('audio').forEach(other => {
+                    if(other !== audio) {
+                        other.pause();
+                        const otherCard = other.closest('.player-card');
+                        if (otherCard) otherCard.querySelector('.play-svg').innerHTML = '<path d="M8 5v14l11-7z"/>';
+                    }
+                });
+
+                if (audio.paused) {
+                    audio.play().catch(e => console.log("Playback failed:", e));
+                    playSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                } else {
+                    audio.pause();
+                    playSvg.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                }
+            });
+
+            audio.addEventListener('loadedmetadata', () => card.querySelector('.total-time').innerText = formatTime(audio.duration));
+            audio.addEventListener('timeupdate', () => {
+                if (!seek.matches(':active')) {
+                    seek.value = (audio.currentTime / audio.duration) * 100 || 0;
+                    card.querySelector('.curr-time').innerText = formatTime(audio.currentTime);
+                }
+            });
+            seek.addEventListener('input', () => audio.currentTime = (seek.value / 100) * audio.duration);
+            audio.addEventListener('ended', () => {
+                playSvg.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                seek.value = 0;
+            });
+        });
+
+        // CONTACT FORM LOGIC
+        const form = document.getElementById('contact-form');
+        const result = document.getElementById('form-result');
+        const btn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const services = formData.getAll('service');
+            formData.delete('service');
+            formData.append('services_requested', services.length > 0 ? services.join(', ') : 'none selected');
+
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            btn.innerHTML = "sending...";
+            btn.disabled = true;
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: json
+            })
+            .then(async (response) => {
+                if (response.status == 200) {
+                    form.style.display = "none";
+                    result.style.display = "block";
+                } else {
+                    alert("something went wrong. please try again.");
+                    btn.innerHTML = "send message";
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("submission failed.");
+                btn.innerHTML = "send message";
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
