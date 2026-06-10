@@ -33,7 +33,7 @@
             touch-action: none; /* Prevents accidental scrolling/zooming on the timer screen */
         }
 
-        /* Sidebar Styling */
+        /* Sidebar Styling (Desktop Default) */
         .sidebar {
             width: 250px;
             background-color: var(--sidebar-bg);
@@ -52,6 +52,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            flex-shrink: 0;
         }
 
         .session-select {
@@ -70,6 +71,7 @@
 
         .stats-section {
             margin-bottom: 1.5rem;
+            flex-shrink: 0;
         }
 
         .stat-row {
@@ -91,6 +93,7 @@
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 5px;
             margin-bottom: 1rem;
+            flex-shrink: 0;
         }
 
         .history-title {
@@ -157,6 +160,7 @@
             width: 100%;
             max-width: 700px;
             padding: 20px;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -210,6 +214,7 @@
             width: 180px;
             height: 135px;
             transition: opacity 0.1s ease;
+            flex-shrink: 0;
         }
 
         #scramble.hidden, .cube-visualization.hidden {
@@ -255,35 +260,71 @@
             cursor: pointer;
         }
 
-        /* Mobile Responsive adjustment */
+        /* Mobile Layout Configuration Fixes */
         @media (max-width: 600px) {
             body {
-                flex-direction: column-reverse; /* UI stack adjustments for thumb reachability */
+                flex-direction: column; /* Flips workspace to top, solves to bottom panel */
+            }
+            .main-content {
+                height: 60vh;
+                width: 100%;
+                flex-grow: 0;
             }
             .sidebar {
                 width: 100%;
-                height: 35vh;
+                height: 40vh; /* Sets a definitive height boundary to force child elements to scroll */
                 border-right: none;
                 border-top: 1px solid var(--border-color);
+                padding: 15px;
             }
-            .main-content {
-                height: 65vh;
-                width: 100%;
+            .session-container {
+                margin-bottom: 0.75rem;
+            }
+            .stats-section {
+                margin-bottom: 0.75rem;
+            }
+            .history-header {
+                margin-bottom: 0.5rem;
             }
             #timer {
                 font-size: 4.5rem;
+                margin-bottom: 0.5rem;
             }
             #scramble {
                 font-size: 1rem;
                 margin-bottom: 1rem;
+                min-height: 2rem;
             }
             .instructions {
                 margin-bottom: 1rem;
+            }
+            .cube-visualization {
+                width: 140px;
+                height: 105px;
+                gap: 4px;
             }
         }
     </style>
 </head>
 <body>
+
+    <div class="main-content">
+        <div class="touch-zone" id="touchZone"></div>
+        <div class="container">
+            <div id="scramble">generating scramble...</div>
+            <div id="timer">0.00</div>
+            <div class="instructions" id="instruction">hold space or touch to ready</div>
+            
+            <div class="cube-visualization" id="cubeDisplay">
+                <div class="face face-u" id="face-U"></div>
+                <div class="face face-l" id="face-L"></div>
+                <div class="face face-f" id="face-F"></div>
+                <div class="face face-r" id="face-R"></div>
+                <div class="face face-b" id="face-B"></div>
+                <div class="face face-d" id="face-D"></div>
+            </div>
+        </div>
+    </div>
 
     <div class="sidebar">
         <div class="session-container">
@@ -312,24 +353,6 @@
             <button class="clear-btn" id="clearBtn">clear</button>
         </div>
         <ul class="history-list" id="historyList"></ul>
-    </div>
-
-    <div class="main-content">
-        <div class="touch-zone" id="touchZone"></div>
-        <div class="container">
-            <div id="scramble">generating scramble...</div>
-            <div id="timer">0.00</div>
-            <div class="instructions" id="instruction">hold space or touch to ready</div>
-            
-            <div class="cube-visualization" id="cubeDisplay">
-                <div class="face face-u" id="face-U"></div>
-                <div class="face face-l" id="face-L"></div>
-                <div class="face face-f" id="face-F"></div>
-                <div class="face face-r" id="face-R"></div>
-                <div class="face face-b" id="face-B"></div>
-                <div class="face face-d" id="face-D"></div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -544,7 +567,6 @@
             ao12Display.textContent = calculateAverageOf(12);
         }
 
-        // Unified trigger logic for Keyboard & Touch states
         function triggerStartSequence() {
             if (state === 'running') {
                 stopTimer();
@@ -576,7 +598,6 @@
             }
         }
 
-        // Desktop Keyboard Event Triggers
         window.addEventListener('keydown', (e) => {
             if (e.key !== ' ' || e.repeat) return;
             triggerStartSequence();
@@ -587,9 +608,8 @@
             triggerReleaseSequence();
         });
 
-        // Touchscreen Input Event Triggers
         touchZone.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Inhibits native tap delays and zooming behaviors
+            e.preventDefault();
             triggerStartSequence();
         }, { passive: false });
 
