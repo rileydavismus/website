@@ -30,32 +30,55 @@
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none; /* Prevents accidental scrolling/zooming on the timer screen */
+            touch-action: none;
         }
 
-        /* Sidebar Styling (Desktop Default) */
+        /* Desktop Sidebar Orientations */
+        body.sidebar-left {
+            flex-direction: row;
+        }
+        body.sidebar-left .sidebar {
+            border-right: 1px solid var(--border-color);
+            border-left: none;
+            order: 1;
+        }
+        body.sidebar-left .main-content {
+            order: 2;
+        }
+
+        body.sidebar-right {
+            flex-direction: row;
+        }
+        body.sidebar-right .sidebar {
+            border-left: 1px solid var(--border-color);
+            border-right: none;
+            order: 2;
+        }
+        body.sidebar-right .main-content {
+            order: 1;
+        }
+
+        /* Sidebar Base Styling */
         .sidebar {
             width: 250px;
             background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             padding: 20px;
             box-sizing: border-box;
             z-index: 10;
-            touch-action: pan-y; /* Allows scrolling through history on mobile */
         }
 
-        /* Session Selector */
+        /* Session & Layout Layout Utility Layouts */
         .session-container {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
             flex-shrink: 0;
         }
 
-        .session-select {
+        .session-select, .layout-btn {
             background-color: var(--bg-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
@@ -66,7 +89,13 @@
             outline: none;
             cursor: pointer;
             width: 100%;
-            -webkit-appearance: none; /* Clean styling for iOS */
+            -webkit-appearance: none;
+            text-align: center;
+        }
+
+        .layout-btn {
+            text-transform: lowercase;
+            margin-bottom: 0.5rem;
         }
 
         .stats-section {
@@ -125,6 +154,7 @@
             padding: 0;
             margin: 0;
             font-size: 0.9rem;
+            touch-action: pan-y; /* Explicitly allow scrolling touches on history tracking element */
         }
 
         .history-list::-webkit-scrollbar {
@@ -165,7 +195,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            pointer-events: none; /* Pass touches through to the main touch zone */
+            pointer-events: none;
             z-index: 2;
         }
 
@@ -205,7 +235,6 @@
             margin-bottom: 2.5rem;
         }
 
-        /* 2D Flat Net Layout Layouts */
         .cube-visualization {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -249,7 +278,6 @@
         .c-l { background-color: #ff5800; }
         .c-r { background-color: #b71234; }
 
-        /* Full Screen Touch Zone on Main Panel */
         .touch-zone {
             position: absolute;
             top: 0;
@@ -260,31 +288,42 @@
             cursor: pointer;
         }
 
-        /* Mobile Layout Configuration Fixes */
+        /* Mobile Adjustments Overrides */
         @media (max-width: 600px) {
-            body {
-                flex-direction: column; /* Flips workspace to top, solves to bottom panel */
+            body, body.sidebar-left, body.sidebar-right {
+                flex-direction: column !important;
             }
             .main-content {
                 height: 60vh;
                 width: 100%;
                 flex-grow: 0;
+                order: 1 !important;
             }
             .sidebar {
                 width: 100%;
-                height: 40vh; /* Sets a definitive height boundary to force child elements to scroll */
-                border-right: none;
+                height: 40vh;
+                border-left: none !important;
+                border-right: none !important;
                 border-top: 1px solid var(--border-color);
                 padding: 15px;
+                order: 2 !important;
+            }
+            .layout-btn {
+                display: none; /* Hide toggle option on mobile since layout shifts to bottom panel stacked */
             }
             .session-container {
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.5rem;
             }
             .stats-section {
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.5rem;
             }
             .history-header {
                 margin-bottom: 0.5rem;
+            }
+            .history-list {
+                flex-grow: 1;
+                overflow-y: scroll; /* Forces local touch containers to dynamically scroll on touch screens */
+                -webkit-overflow-scrolling: touch;
             }
             #timer {
                 font-size: 4.5rem;
@@ -306,7 +345,7 @@
         }
     </style>
 </head>
-<body>
+<body class="sidebar-left">
 
     <div class="main-content">
         <div class="touch-zone" id="touchZone"></div>
@@ -328,6 +367,7 @@
 
     <div class="sidebar">
         <div class="session-container">
+            <button class="layout-btn" id="layoutToggleBtn">sidebar: left</button>
             <select class="session-select" id="sessionSelect">
                 <option value="session1">session 1</option>
                 <option value="session2">session 2</option>
@@ -365,6 +405,7 @@
         const ao12Display = document.getElementById('ao12');
         const sessionSelect = document.getElementById('sessionSelect');
         const clearBtn = document.getElementById('clearBtn');
+        const layoutToggleBtn = document.getElementById('layoutToggleBtn');
         const touchZone = document.getElementById('touchZone');
         
         let state = 'idle'; 
@@ -475,6 +516,7 @@
         function loadData() {
             const savedSessions = localStorage.getItem('cube_timer_sessions');
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
+            const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
             
             if (savedSessions) {
                 Object.assign(sessionsData, JSON.parse(savedSessions));
@@ -482,6 +524,10 @@
             if (savedCurrentSession && sessionsData[savedCurrentSession]) {
                 currentSession = savedCurrentSession;
                 sessionSelect.value = currentSession;
+            }
+            if (savedLayoutOrientation) {
+                document.body.className = savedLayoutOrientation;
+                layoutToggleBtn.textContent = `sidebar: ${savedLayoutOrientation === 'sidebar-left' ? 'left' : 'right'}`;
             }
             
             updateHistoryUI();
@@ -606,6 +652,19 @@
         window.addEventListener('keyup', (e) => {
             if (e.key !== ' ') return;
             triggerReleaseSequence();
+        });
+
+        // Desktop Layout Toggle Action
+        layoutToggleBtn.addEventListener('click', () => {
+            if (document.body.classList.contains('sidebar-left')) {
+                document.body.className = 'sidebar-right';
+                layoutToggleBtn.textContent = 'sidebar: right';
+                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-right');
+            } else {
+                document.body.className = 'sidebar-left';
+                layoutToggleBtn.textContent = 'sidebar: left';
+                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-left');
+            }
         });
 
         touchZone.addEventListener('touchstart', (e) => {
