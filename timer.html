@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0f0f11;
+            --text-color: #e2e8f0;
+            --ready-color: #22c55e;
+            --holding-color: #eab308;
+            --dim-color: #64748b;
+            --sidebar-bg: #141416;
+            --border-color: #1e1e24;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none; /* Prevents accidental scrolling/zooming on the timer screen */
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 10;
+            touch-action: pan-y; /* Allows scrolling through history on mobile */
+        }
+
+        /* Session Selector */
+        .session-container {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .session-select {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+            -webkit-appearance: none; /* Clean styling for iOS */
+        }
+
+        .stats-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--dim-color);
+        }
+
+        .stat-row span:last-child {
+            color: var(--text-color);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .history-title {
+            font-size: 0.85rem;
+            color: var(--dim-color);
+            text-transform: lowercase;
+            letter-spacing: 1px;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--dim-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            text-transform: lowercase;
+        }
+
+        .clear-btn:hover {
+            color: #ef4444;
+        }
+
+        .history-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .history-index {
+            color: var(--dim-color);
+        }
+
+        /* Main Display Area */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Pass touches through to the main touch zone */
+            z-index: 2;
+        }
+
+        #scramble {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            min-height: 2.5rem;
+            max-width: 600px;
+            word-spacing: 6px;
+            transition: opacity 0.1s ease;
+        }
+
+        #timer {
+            font-size: 6rem;
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            transition: color 0.1s ease;
+        }
+
+        #timer.holding {
+            color: var(--holding-color);
+        }
+
+        #timer.ready {
+            color: var(--ready-color);
+        }
+
+        .instructions {
+            font-size: 0.85rem;
+            color: var(--dim-color);
+            letter-spacing: 1px;
+            text-transform: lowercase;
+            margin-bottom: 2.5rem;
+        }
+
+        /* 2D Flat Net Layout Layouts */
+        .cube-visualization {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 6px;
+            width: 180px;
+            height: 135px;
+            transition: opacity 0.1s ease;
+        }
+
+        #scramble.hidden, .cube-visualization.hidden {
+            opacity: 0;
+        }
+
+        .face {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 1px;
+            background-color: #000000;
+            border: 1px solid #000000;
+        }
+
+        .face-u { grid-column: 2; grid-row: 1; }
+        .face-l { grid-column: 1; grid-row: 2; }
+        .face-f { grid-column: 2; grid-row: 2; }
+        .face-r { grid-column: 3; grid-row: 2; }
+        .face-b { grid-column: 4; grid-row: 2; }
+        .face-d { grid-column: 2; grid-row: 3; }
+
+        .sticker {
+            width: 100%;
+            height: 100%;
+        }
+
+        .c-u { background-color: #ffffff; }
+        .c-d { background-color: #ffd500; }
+        .c-f { background-color: #009b48; }
+        .c-b { background-color: #0045ad; }
+        .c-l { background-color: #ff5800; }
+        .c-r { background-color: #b71234; }
+
+        /* Full Screen Touch Zone on Main Panel */
+        .touch-zone {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive adjustment */
+        @media (max-width: 600px) {
+            body {
+                flex-direction: column-reverse; /* UI stack adjustments for thumb reachability */
+            }
+            .sidebar {
+                width: 100%;
+                height: 35vh;
+                border-right: none;
+                border-top: 1px solid var(--border-color);
+            }
+            .main-content {
+                height: 65vh;
+                width: 100%;
+            }
+            #timer {
+                font-size: 4.5rem;
+            }
+            #scramble {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            .instructions {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="session-container">
+            <select class="session-select" id="sessionSelect">
+                <option value="session1">session 1</option>
+                <option value="session2">session 2</option>
+                <option value="session3">session 3</option>
+                <option value="session4">session 4</option>
+                <option value="session5">session 5</option>
+            </select>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-row">
+                <span>ao5:</span>
+                <span id="ao5">-</span>
+            </div>
+            <div class="stat-row">
+                <span>ao12:</span>
+                <span id="ao12">-</span>
+            </div>
+        </div>
+        
+        <div class="history-header">
+            <div class="history-title">solves</div>
+            <button class="clear-btn" id="clearBtn">clear</button>
+        </div>
+        <ul class="history-list" id="historyList"></ul>
+    </div>
+
+    <div class="main-content">
+        <div class="touch-zone" id="touchZone"></div>
+        <div class="container">
+            <div id="scramble">generating scramble...</div>
+            <div id="timer">0.00</div>
+            <div class="instructions" id="instruction">hold space or touch to ready</div>
+            
+            <div class="cube-visualization" id="cubeDisplay">
+                <div class="face face-u" id="face-U"></div>
+                <div class="face face-l" id="face-L"></div>
+                <div class="face face-f" id="face-F"></div>
+                <div class="face face-r" id="face-R"></div>
+                <div class="face face-b" id="face-B"></div>
+                <div class="face face-d" id="face-D"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const timerDisplay = document.getElementById('timer');
+        const instructionDisplay = document.getElementById('instruction');
+        const scrambleDisplay = document.getElementById('scramble');
+        const cubeDisplay = document.getElementById('cubeDisplay');
+        const historyList = document.getElementById('historyList');
+        const ao5Display = document.getElementById('ao5');
+        const ao12Display = document.getElementById('ao12');
+        const sessionSelect = document.getElementById('sessionSelect');
+        const clearBtn = document.getElementById('clearBtn');
+        const touchZone = document.getElementById('touchZone');
+        
+        let state = 'idle'; 
+        let startTime = 0;
+        let elapsedTimerInterval = null;
+        let holdTimeout = null;
+        
+        let currentSession = 'session1';
+        const sessionsData = {
+            session1: [],
+            session2: [],
+            session3: [],
+            session4: [],
+            session5: []
+        };
+
+        const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
+        const modifiers = ['', "'", '2'];
+        let cubeState = {};
+
+        function initCubeState() {
+            faces.forEach(f => {
+                cubeState[f] = Array(9).fill(f.toLowerCase());
+            });
+        }
+
+        const adjacentFaces = {
+            'U': { faces: ['B', 'R', 'F', 'L'], cycles: [[0,1,2], [0,1,2], [0,1,2], [0,1,2]] },
+            'D': { faces: ['F', 'R', 'B', 'L'], cycles: [[6,7,8], [6,7,8], [6,7,8], [6,7,8]] },
+            'L': { faces: ['U', 'F', 'D', 'B'], cycles: [[0,3,6], [0,3,6], [0,3,6], [8,5,2]] },
+            'R': { faces: ['U', 'B', 'D', 'F'], cycles: [[8,5,2], [0,3,6], [8,5,2], [8,5,2]] },
+            'F': { faces: ['U', 'R', 'D', 'L'], cycles: [[6,7,8], [0,3,6], [2,1,0], [8,5,2]] },
+            'B': { faces: ['U', 'L', 'D', 'R'], cycles: [[2,1,0], [0,3,6], [6,7,8], [8,5,2]] }
+        };
+
+        function rotateFaceClockwise(face) {
+            const temp = [...cubeState[face]];
+            cubeState[face][0] = temp[6]; cubeState[face][1] = temp[3]; cubeState[face][2] = temp[0];
+            cubeState[face][3] = temp[7];                             cubeState[face][5] = temp[1];
+            cubeState[face][6] = temp[8]; cubeState[face][7] = temp[5]; cubeState[face][8] = temp[2];
+        }
+
+        function applyMove(move) {
+            const face = move[0];
+            const modifier = move.slice(1);
+            const turns = modifier === '' ? 1 : modifier === "'" ? 3 : 2;
+
+            for (let t = 0; t < turns; t++) {
+                rotateFaceClockwise(face);
+                const adj = adjacentFaces[face];
+                const tempStickers = adj.cycles[3].map(idx => cubeState[adj.faces[3]][idx]);
+                
+                for (let i = 3; i > 0; i--) {
+                    for (let j = 0; j < 3; j++) {
+                        cubeState[adj.faces[i]][adj.cycles[i][j]] = cubeState[adj.faces[i-1]][adj.cycles[i-1][j]];
+                    }
+                }
+                for (let j = 0; j < 3; j++) {
+                    cubeState[adj.faces[0]][adj.cycles[0][j]] = tempStickers[j];
+                }
+            }
+        }
+
+        function renderCubeUI() {
+            faces.forEach(f => {
+                const faceEl = document.getElementById(`face-${f}`);
+                faceEl.innerHTML = '';
+                cubeState[f].forEach(colorCode => {
+                    const sticker = document.createElement('div');
+                    sticker.className = `sticker c-${colorCode}`;
+                    faceEl.appendChild(sticker);
+                });
+            });
+        }
+
+        function generateScramble() {
+            const scramble = [];
+            let lastFace = '';
+            let secondLastFace = '';
+
+            while (scramble.length < 15) {
+                const randomFace = faces[Math.floor(Math.random() * faces.length)];
+                if (randomFace === lastFace) continue;
+                if (randomFace === secondLastFace && isOppositeFace(randomFace, lastFace)) continue;
+
+                const randomModifier = modifiers[Math.floor(Math.random() * modifiers.length)];
+                scramble.push(randomFace + randomModifier);
+                
+                secondLastFace = lastFace;
+                lastFace = randomFace;
+            }
+
+            scrambleDisplay.textContent = scramble.join(' ');
+            
+            initCubeState();
+            scramble.forEach(move => applyMove(move));
+            renderCubeUI();
+
+            scrambleDisplay.classList.remove('hidden');
+            cubeDisplay.classList.remove('hidden');
+        }
+
+        function isOppositeFace(f1, f2) {
+            const pairs = [['U', 'D'], ['R', 'L'], ['F', 'B']];
+            return pairs.some(pair => pair.includes(f1) && pair.includes(f2));
+        }
+
+        function loadData() {
+            const savedSessions = localStorage.getItem('cube_timer_sessions');
+            const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
+            
+            if (savedSessions) {
+                Object.assign(sessionsData, JSON.parse(savedSessions));
+            }
+            if (savedCurrentSession && sessionsData[savedCurrentSession]) {
+                currentSession = savedCurrentSession;
+                sessionSelect.value = currentSession;
+            }
+            
+            updateHistoryUI();
+            updateStatsUI();
+            generateScramble();
+        }
+
+        function saveData() {
+            localStorage.setItem('cube_timer_sessions', JSON.stringify(sessionsData));
+            localStorage.setItem('cube_timer_active_session', currentSession);
+        }
+
+        function startTimer() {
+            state = 'running';
+            scrambleDisplay.classList.add('hidden');
+            cubeDisplay.classList.add('hidden');
+            instructionDisplay.textContent = 'stop timer';
+            startTime = performance.now();
+            
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
+        }
+
+        function updateTimer() {
+            if (state !== 'running') return;
+            
+            const now = performance.now();
+            const difference = (now - startTime) / 1000;
+            timerDisplay.textContent = difference.toFixed(2);
+            
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
+        }
+
+        function stopTimer() {
+            state = 'idle';
+            cancelAnimationFrame(elapsedTimerInterval);
+            instructionDisplay.textContent = 'hold to ready';
+            
+            const finalTime = (performance.now() - startTime) / 1000;
+            timerDisplay.textContent = finalTime.toFixed(2);
+            
+            saveSolve(finalTime);
+            generateScramble();
+        }
+
+        function saveSolve(time) {
+            sessionsData[currentSession].push(time);
+            saveData();
+            updateHistoryUI();
+            updateStatsUI();
+        }
+
+        function updateHistoryUI() {
+            historyList.innerHTML = '';
+            const activeTimes = sessionsData[currentSession];
+            
+            for (let i = activeTimes.length - 1; i >= 0; i--) {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <span class="history-index">#${i + 1}</span>
+                    <span>${activeTimes[i].toFixed(2)}</span>
+                `;
+                historyList.appendChild(li);
+            }
+        }
+
+        function calculateAverageOf(n) {
+            const activeTimes = sessionsData[currentSession];
+            if (activeTimes.length < n) return '-';
+            
+            const recentSolves = activeTimes.slice(-n);
+            const sorted = [...recentSolves].sort((a, b) => a - b);
+            
+            sorted.pop();
+            sorted.shift();
+            
+            const sum = sorted.reduce((acc, curr) => acc + curr, 0);
+            return (sum / sorted.length).toFixed(2);
+        }
+
+        function updateStatsUI() {
+            ao5Display.textContent = calculateAverageOf(5);
+            ao12Display.textContent = calculateAverageOf(12);
+        }
+
+        // Unified trigger logic for Keyboard & Touch states
+        function triggerStartSequence() {
+            if (state === 'running') {
+                stopTimer();
+            } else if (state === 'idle') {
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+
+                state = 'holding';
+                timerDisplay.className = 'holding';
+                timerDisplay.textContent = '0.00';
+                
+                holdTimeout = setTimeout(() => {
+                    state = 'ready';
+                    timerDisplay.className = 'ready';
+                }, 500);
+            }
+        }
+
+        function triggerReleaseSequence() {
+            clearTimeout(holdTimeout);
+
+            if (state === 'ready') {
+                timerDisplay.className = '';
+                startTimer();
+            } else if (state === 'holding') {
+                state = 'idle';
+                timerDisplay.className = '';
+            }
+        }
+
+        // Desktop Keyboard Event Triggers
+        window.addEventListener('keydown', (e) => {
+            if (e.key !== ' ' || e.repeat) return;
+            triggerStartSequence();
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key !== ' ') return;
+            triggerReleaseSequence();
+        });
+
+        // Touchscreen Input Event Triggers
+        touchZone.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Inhibits native tap delays and zooming behaviors
+            triggerStartSequence();
+        }, { passive: false });
+
+        touchZone.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            triggerReleaseSequence();
+        }, { passive: false });
+
+        sessionSelect.addEventListener('change', (e) => {
+            currentSession = e.target.value;
+            saveData();
+            updateHistoryUI();
+            updateStatsUI();
+            generateScramble();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            if (confirm(`clear all solves for ${sessionSelect.options[sessionSelect.selectedIndex].text}?`)) {
+                sessionsData[currentSession] = [];
+                saveData();
+                updateHistoryUI();
+                updateStatsUI();
+                timerDisplay.textContent = '0.00';
+                generateScramble();
+            }
+        });
+
+        loadData();
+    </script>
+</body>
+</html>
