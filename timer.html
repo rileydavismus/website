@@ -126,7 +126,7 @@
         }
 
         body.sidebar-right .layout-btn svg {
-            transform: scaleX(-1); /* Flips the direction indicator icon when oriented right */
+            transform: scaleX(-1);
         }
 
         .stats-section {
@@ -340,7 +340,7 @@
                 order: 2 !important;
             }
             .layout-btn {
-                display: none; /* Icon hidden on mobile view layouts */
+                display: none;
             }
             .menu-header {
                 margin-bottom: 0.5rem;
@@ -355,7 +355,7 @@
                 flex-grow: 1;
                 overflow-y: scroll;
                 -webkit-overflow-scrolling: touch;
-                padding-bottom: 20px; /* Added padding inside container to fix tracking cutoff on viewport boundaries */
+                padding-bottom: 20px;
                 box-sizing: border-box;
             }
             #timer {
@@ -466,6 +466,24 @@
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
         const modifiers = ['', "'", '2'];
         let cubeState = {};
+
+        // Unified time formatting utility handles crossing the 60s threshold cleanly
+        function formatTime(totalSeconds) {
+            if (isNaN(totalSeconds) || totalSeconds === null) return '-';
+            if (totalSeconds < 60) {
+                return totalSeconds.toFixed(2);
+            }
+            
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = Math.floor(totalSeconds % 60);
+            const milliseconds = Math.floor((totalSeconds % 1) * 100);
+            
+            // Pad seconds and milliseconds with leading zeros if necessary
+            const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
+            const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
+            
+            return `${minutes}:${paddedSeconds}.${paddedMs}`;
+        }
 
         function initCubeState() {
             faces.forEach(f => {
@@ -595,7 +613,7 @@
             
             const now = performance.now();
             const difference = (now - startTime) / 1000;
-            timerDisplay.textContent = difference.toFixed(2);
+            timerDisplay.textContent = formatTime(difference); // Live update maps through formatting layer
             
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
@@ -606,7 +624,7 @@
             instructionDisplay.textContent = 'hold to ready';
             
             const finalTime = (performance.now() - startTime) / 1000;
-            timerDisplay.textContent = finalTime.toFixed(2);
+            timerDisplay.textContent = formatTime(finalTime);
             
             saveSolve(finalTime);
             generateScramble();
@@ -628,7 +646,7 @@
                 li.className = 'history-item';
                 li.innerHTML = `
                     <span class="history-index">#${i + 1}</span>
-                    <span>${activeTimes[i].toFixed(2)}</span>
+                    <span>${formatTime(activeTimes[i])}</span>
                 `;
                 historyList.appendChild(li);
             }
@@ -645,7 +663,7 @@
             sorted.shift();
             
             const sum = sorted.reduce((acc, curr) => acc + curr, 0);
-            return (sum / sorted.length).toFixed(2);
+            return formatTime(sum / sorted.length); // Formats average computations over 60s cleanly too
         }
 
         function updateStatsUI() {
@@ -694,7 +712,6 @@
             triggerReleaseSequence();
         });
 
-        // Toggle Layout using SVG transformation triggers
         layoutToggleBtn.addEventListener('click', () => {
             if (document.body.classList.contains('sidebar-left')) {
                 document.body.className = 'sidebar-right';
