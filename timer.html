@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
-    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -73,7 +72,7 @@
         }
 
         .sidebar-left-col, .sidebar-right-col {
-            display: contents; /* Seamless default fallback behavior on desktop windows */
+            display: contents;
         }
 
         /* Menu Header Area */
@@ -356,35 +355,35 @@
             cursor: pointer;
         }
 
-        /* Mobile Adjustments Overrides (Two Column Split Layout Trial) */
+        /* Mobile Adjustments Overrides */
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
                 flex-direction: column !important;
             }
             .main-content {
-                height: 55vh;
+                height: 77.5vh; /* Rebalanced content spatial layout to match shortened footer split */
                 width: 100%;
                 flex-grow: 0;
                 order: 1 !important;
             }
             .sidebar {
                 width: 100%;
-                height: 45vh;
+                height: 22.5vh; /* Cut section footprint exactly in half from 45vh */
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
-                padding: 15px;
+                padding: 12px;
                 order: 2 !important;
                 display: grid;
-                grid-template-columns: 1fr 1fr; /* Two columns, equal sized width splitting */
+                grid-template-columns: 1fr 1fr;
                 gap: 15px;
             }
             
-            /* Structural wrappers for the split panels */
             .sidebar-left-col {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                min-height: 0;
             }
             
             .sidebar-right-col {
@@ -393,68 +392,88 @@
                 justify-content: flex-start;
                 border-left: 1px solid rgba(255, 255, 255, 0.05);
                 padding-left: 15px;
-                min-height: 0; /* Important for containing overflow inside CSS grids */
+                min-height: 0; /* Keeps grid column constrained securely */
             }
 
             .layout-btn {
                 display: none;
             }
             .menu-header {
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.4rem;
+            }
+            .session-select {
+                padding: 5px;
+                font-size: 0.8rem;
             }
             .stats-section {
                 margin-bottom: 0;
                 flex-grow: 1;
+                overflow-y: auto;
             }
             .stat-row {
-                margin-bottom: 0.6rem;
+                margin-bottom: 0.3rem;
+                font-size: 0.8rem;
             }
             .history-header {
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.3rem;
+                padding-bottom: 3px;
+            }
+            .history-title {
+                font-size: 0.8rem;
+            }
+            .clear-btn {
+                font-size: 0.7rem;
+                padding: 0px 4px;
             }
             .history-list {
+                display: block; /* Overrides conflicting layout defaults causing scrolling lockup */
                 flex-grow: 1;
-                overflow-y: scroll;
+                height: 100%;
+                overflow-y: auto; /* Restores clean scrolling boundary limits */
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 5px;
                 box-sizing: border-box;
             }
+            .history-item {
+                padding: 4px 0;
+                font-size: 0.8rem;
+            }
             .container {
                 max-width: 700px;
+                padding: 10px;
             }
             .timer-wrapper {
-                margin-bottom: 0.5rem;
-                min-height: 6rem;
+                margin-bottom: 0.25rem;
+                min-height: 5rem;
             }
             #timer {
-                font-size: 4rem;
+                font-size: 3.5rem;
             }
             #variance {
-                font-size: 1.1rem;
-                margin-top: 0.25rem;
-                min-height: 1.3rem;
+                font-size: 1rem;
+                margin-top: 0.15rem;
+                min-height: 1.1rem;
             }
             #scramble {
-                font-size: 1rem;
-                margin-bottom: 1rem;
-                min-height: 2rem;
-                max-width: 600px;
+                font-size: 0.95rem;
+                margin-bottom: 0.75rem;
+                min-height: 1.8rem;
+                max-width: 550px;
             }
             .instructions {
-                font-size: 0.85rem;
-                margin-bottom: 1rem;
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
             }
             .cube-visualization {
-                width: 120px;
-                height: 90px;
-                gap: 4px;
+                width: 104px;
+                height: 78px;
+                gap: 3px;
             }
         }
     </style>
 </head>
 <body class="sidebar-left">
 
-    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
         <div class="touch-zone" id="touchZone"></div>
         <div class="container">
@@ -476,9 +495,7 @@
         </div>
     </div>
 
-    <!-- Sidebar Area -->
     <div class="sidebar">
-        <!-- Session Info Block (Left Column on Mobile) -->
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
@@ -515,7 +532,6 @@
             </div>
         </div>
         
-        <!-- Solve History Block (Right Column on Mobile) -->
         <div class="sidebar-right-col">
             <div class="history-header">
                 <div class="history-title">solves</div>
