@@ -361,18 +361,19 @@
                 flex-direction: column !important;
             }
             .main-content {
-                height: 77.5vh; /* Rebalanced content spatial layout to match shortened footer split */
+                height: 72vh; /* Adjusted to balance screen partition gracefully */
                 width: 100%;
                 flex-grow: 0;
                 order: 1 !important;
             }
             .sidebar {
                 width: 100%;
-                height: 22.5vh; /* Cut section footprint exactly in half from 45vh */
+                height: 28vh; /* Increased from 22.5vh by exactly 25% */
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
-                padding: 12px;
+                padding: 14px;
+                box-sizing: border-box;
                 order: 2 !important;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -392,18 +393,18 @@
                 justify-content: flex-start;
                 border-left: 1px solid rgba(255, 255, 255, 0.05);
                 padding-left: 15px;
-                min-height: 0; /* Keeps grid column constrained securely */
+                min-height: 0; /* Constraints flex item heights securely inside layout grids */
             }
 
             .layout-btn {
                 display: none;
             }
             .menu-header {
-                margin-bottom: 0.4rem;
+                margin-bottom: 0.5rem;
             }
             .session-select {
-                padding: 5px;
-                font-size: 0.8rem;
+                padding: 6px;
+                font-size: 0.85rem;
             }
             .stats-section {
                 margin-bottom: 0;
@@ -411,32 +412,33 @@
                 overflow-y: auto;
             }
             .stat-row {
-                margin-bottom: 0.3rem;
-                font-size: 0.8rem;
+                margin-bottom: 0.4rem;
+                font-size: 0.85rem;
             }
             .history-header {
-                margin-bottom: 0.3rem;
-                padding-bottom: 3px;
+                margin-bottom: 0.4rem;
+                padding-bottom: 4px;
             }
             .history-title {
-                font-size: 0.8rem;
+                font-size: 0.85rem;
             }
             .clear-btn {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
                 padding: 0px 4px;
             }
             .history-list {
-                display: block; /* Overrides conflicting layout defaults causing scrolling lockup */
+                display: flex; /* Switched block layout to self-contained flex setup */
+                flex-direction: column;
                 flex-grow: 1;
-                height: 100%;
-                overflow-y: auto; /* Restores clean scrolling boundary limits */
+                min-height: 0; /* Critical CSS fix to allow scrolling box container to shrink properly */
+                overflow-y: auto; /* Activates genuine scrollbars when contents exceed height allocation bounds */
                 -webkit-overflow-scrolling: touch;
-                padding-bottom: 5px;
+                padding-bottom: 4px;
                 box-sizing: border-box;
             }
             .history-item {
-                padding: 4px 0;
-                font-size: 0.8rem;
+                padding: 5px 0;
+                font-size: 0.85rem;
             }
             .container {
                 max-width: 700px;
