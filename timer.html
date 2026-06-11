@@ -17,8 +17,8 @@
             --dim-color: #64748b;
             --sidebar-bg: #141416;
             --border-color: #1e1e24;
-            --variance-plus: #ef4444;  /* Red for slower solves */
-            --variance-minus: #22c55e; /* Green for faster solves */
+            --variance-plus: #ef4444;
+            --variance-minus: #22c55e;
         }
 
         body {
@@ -250,7 +250,7 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 1.65rem;
-            min-height: 9.5rem; /* Prevents visual layout shifting when variance text mounts */
+            min-height: 9.5rem;
         }
 
         #timer {
@@ -262,7 +262,7 @@
         }
 
         #variance {
-            font-size: 1.5rem; /* Noticeably smaller text below the core metrics display */
+            font-size: 1.5rem;
             font-weight: 400;
             margin-top: 0.5rem;
             min-height: 1.8rem;
@@ -468,6 +468,10 @@
 
         <div class="stats-section">
             <div class="stat-row">
+                <span>best:</span>
+                <span id="bestTime">-</span>
+            </div>
+            <div class="stat-row">
                 <span>ao5:</span>
                 <span id="ao5">-</span>
             </div>
@@ -491,6 +495,7 @@
         const scrambleDisplay = document.getElementById('scramble');
         const cubeDisplay = document.getElementById('cubeDisplay');
         const historyList = document.getElementById('historyList');
+        const bestTimeDisplay = document.getElementById('bestTime');
         const ao5Display = document.getElementById('ao5');
         const ao12Display = document.getElementById('ao12');
         const sessionSelect = document.getElementById('sessionSelect');
@@ -659,7 +664,7 @@
             state = 'running';
             scrambleDisplay.classList.add('hidden');
             cubeDisplay.classList.add('hidden');
-            varianceDisplay.classList.add('hidden-run'); // Soft hide variance during active track run
+            varianceDisplay.classList.add('hidden-run');
             instructionDisplay.textContent = 'stop timer';
             startTime = performance.now();
             
@@ -701,7 +706,6 @@
             varianceDisplay.className = 'hidden';
             varianceDisplay.textContent = '';
 
-            // Variance logic only triggers if there are at least two solves in the active session
             if (activeTimes.length < 2) return;
 
             const currentSolve = activeTimes[activeTimes.length - 1];
@@ -715,7 +719,7 @@
             } else if (diff < 0) {
                 varianceDisplay.className = 'minus';
             } else {
-                varianceDisplay.className = ''; // Neutral variant tie fallback layout metrics
+                varianceDisplay.className = '';
             }
         }
 
@@ -734,6 +738,13 @@
             }
         }
 
+        function calculateBestTime() {
+            const activeTimes = sessionsData[currentSession];
+            if (activeTimes.length === 0) return '-';
+            const best = Math.min(...activeTimes);
+            return formatTime(best);
+        }
+
         function calculateAverageOf(n) {
             const activeTimes = sessionsData[currentSession];
             if (activeTimes.length < n) return '-';
@@ -749,6 +760,7 @@
         }
 
         function updateStatsUI() {
+            bestTimeDisplay.textContent = calculateBestTime();
             ao5Display.textContent = calculateAverageOf(5);
             ao12Display.textContent = calculateAverageOf(12);
         }
@@ -764,7 +776,7 @@
                 state = 'holding';
                 timerDisplay.className = 'holding';
                 timerDisplay.textContent = '0.00';
-                varianceDisplay.className = 'hidden'; // clear static overlay metrics frame on reset loop
+                varianceDisplay.className = 'hidden';
                 
                 holdTimeout = setTimeout(() => {
                     state = 'ready';
@@ -782,7 +794,7 @@
             } else if (state === 'holding') {
                 state = 'idle';
                 timerDisplay.className = '';
-                updateVarianceUI(); // Restore structural metrics variance text visibility 
+                updateVarianceUI();
             }
         }
 
