@@ -551,7 +551,7 @@
                     <span>ao5:</span>
                     <span id="ao5">-</span>
                 </div>
-                <div class="stat-row">
+                <div class="stat-row =">
                     <span>ao12:</span>
                     <span id="ao12">-</span>
                 </div>
@@ -796,16 +796,7 @@
             historyList.innerHTML = '';
             const activeTimes = sessionsData[currentSession];
             
-            // Add two blank list items at the bottom of the column structure (rendered first in reverse layout)
-            const spacer1 = document.createElement('li');
-            spacer1.className = 'history-item blank-spacer';
-            historyList.appendChild(spacer1);
-
-            const spacer2 = document.createElement('li');
-            spacer2.className = 'history-item blank-spacer';
-            historyList.appendChild(spacer2);
-
-            // Populates solves normally chronologically backwards (#3, #2, #1) so oldest sits right above layout buffers
+            // Render actual times first (sitting chronologically descending: newest #3, #2, #1 at the bottom)
             for (let i = activeTimes.length - 1; i >= 0; i--) {
                 const li = document.createElement('li');
                 li.className = 'history-item';
@@ -815,6 +806,15 @@
                 `;
                 historyList.appendChild(li);
             }
+
+            // Append blank items below the oldest solve, padding out the bottom scroll room
+            const spacer1 = document.createElement('li');
+            spacer1.className = 'history-item blank-spacer';
+            historyList.appendChild(spacer1);
+
+            const spacer2 = document.createElement('li');
+            spacer2.className = 'history-item blank-spacer';
+            historyList.appendChild(spacer2);
         }
 
         function calculateBestTime() {
