@@ -212,6 +212,7 @@
         .history-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 6px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
@@ -221,8 +222,161 @@
             min-height: 1.5rem;
         }
 
+        .history-data {
+            display: flex;
+            justify-content: space-between;
+            flex-grow: 1;
+            padding-right: 8px;
+        }
+
         .history-index {
             color: var(--dim-color);
+        }
+
+        .time-tag {
+            font-size: 0.7rem;
+            color: #eab308;
+            margin-left: 4px;
+        }
+
+        /* Action Edit Trigger Button */
+        .edit-time-btn {
+            background: none;
+            border: none;
+            color: var(--dim-color);
+            cursor: pointer;
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            pointer-events: auto;
+        }
+
+        .edit-time-btn:hover {
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .edit-time-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Dialog / Modal Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            width: 280px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.15s ease;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 0.95rem;
+            color: var(--dim-color);
+            margin-top: 0;
+            margin-bottom: 12px;
+            text-transform: lowercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-time-display {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 10px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: lowercase;
+            transition: all 0.1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .option-btn:hover {
+            border-color: var(--dim-color);
+        }
+
+        .option-btn.active-modifier {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-color: #eab308;
+            color: #eab308;
+        }
+
+        .option-btn.delete-btn {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+            margin-top: 4px;
+        }
+
+        .option-btn.delete-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: var(--dim-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-transform: lowercase;
         }
 
         /* Main Display Area */
@@ -551,7 +705,7 @@
                     <span>ao5:</span>
                     <span id="ao5">-</span>
                 </div>
-                <div class="stat-row =">
+                <div class="stat-row">
                     <span>ao12:</span>
                     <span id="ao12">-</span>
                 </div>
@@ -564,6 +718,22 @@
                 <button class="clear-btn" id="clearBtn">clear</button>
             </div>
             <ul class="history-list" id="historyList"></ul>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-card">
+            <div class="modal-title" id="modalTitle">edit solve #0</div>
+            <div class="modal-time-display" id="modalTimeDisplay">0.00</div>
+            <div class="modal-options">
+                <button class="option-btn" id="modPlusTwoBtn">+2 seconds</button>
+                <button class="option-btn" id="modDnfBtn">did not finish (dnf)</button>
+                <button class="option-btn delete-btn" id="modDeleteBtn">
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    delete solve
+                </button>
+            </div>
+            <button class="modal-close-btn" id="modalCloseBtn">close</button>
         </div>
     </div>
 
@@ -583,13 +753,26 @@
         const clearBtn = document.getElementById('clearBtn');
         const layoutToggleBtn = document.getElementById('layoutToggleBtn');
         const touchZone = document.getElementById('touchZone');
+
+        // Modal Elements
+        const editModal = document.getElementById('editModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalTimeDisplay = document.getElementById('modalTimeDisplay');
+        const modPlusTwoBtn = document.getElementById('modPlusTwoBtn');
+        const modDnfBtn = document.getElementById('modDnfBtn');
+        const modDeleteBtn = document.getElementById('modDeleteBtn');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
         
         let state = 'idle'; 
         let startTime = 0;
         let elapsedTimerInterval = null;
         let holdTimeout = null;
+        let editingIndex = null; // Keeps track of the index currently being tweaked
         
         let currentSession = 'session1';
+        
+        // Updated historical schemas: items can be explicit structured objects or fallback numbers
+        // Shape: { rawTime: number, plusTwo: boolean, dnf: boolean }
         const sessionsData = {
             session1: [],
             session2: [],
@@ -600,6 +783,17 @@
 
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
         let cubeState = {};
+
+        // Helper string decorator checking data maps
+        function displaySolveString(solveObj) {
+            if (!solveObj) return '-';
+            if (solveObj.dnf) return 'DNF';
+            
+            let displayVal = solveObj.rawTime;
+            if (solveObj.plusTwo) displayVal += 2;
+            
+            return formatTime(displayVal) + (solveObj.plusTwo ? ' (+2)' : '');
+        }
 
         function formatTime(totalSeconds, includeSign = false) {
             if (isNaN(totalSeconds) || totalSeconds === null) return '-';
@@ -702,13 +896,26 @@
             }
         }
 
+        // Sanitizes legacy array numbers over into structural variants explicitly safely
+        function normalizeSessionArray(arr) {
+            return arr.map(item => {
+                if (typeof item === 'number') {
+                    return { rawTime: item, plusTwo: false, dnf: false };
+                }
+                return item;
+            });
+        }
+
         function loadData() {
             const savedSessions = localStorage.getItem('cube_timer_sessions');
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
             const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
             
             if (savedSessions) {
-                Object.assign(sessionsData, JSON.parse(savedSessions));
+                const parsed = JSON.parse(savedSessions);
+                Object.keys(parsed).forEach(k => {
+                    sessionsData[k] = normalizeSessionArray(parsed[k]);
+                });
             }
             if (savedCurrentSession && sessionsData[savedCurrentSession]) {
                 currentSession = savedCurrentSession;
@@ -763,11 +970,21 @@
         }
 
         function saveSolve(time) {
-            sessionsData[currentSession].push(time);
+            sessionsData[currentSession].push({
+                rawTime: time,
+                plusTwo: false,
+                dnf: false
+            });
             saveData();
             updateHistoryUI();
             updateStatsUI();
             updateVarianceUI();
+        }
+
+        // Resolves numeric mathematical values accounting for DNFs or modifications
+        function getEffectiveTime(solveObj) {
+            if (!solveObj || solveObj.dnf) return null;
+            return solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
         }
 
         function updateVarianceUI() {
@@ -777,10 +994,13 @@
 
             if (activeTimes.length < 2) return;
 
-            const currentSolve = activeTimes[activeTimes.length - 1];
-            const previousSolve = activeTimes[activeTimes.length - 2];
-            const diff = currentSolve - previousSolve;
+            const currentEff = getEffectiveTime(activeTimes[activeTimes.length - 1]);
+            const previousEff = getEffectiveTime(activeTimes[activeTimes.length - 2]);
 
+            // If either is DNF, variance comparisons can't evaluate accurately
+            if (currentEff === null || previousEff === null) return;
+
+            const diff = currentEff - previousEff;
             varianceDisplay.textContent = `(${formatTime(diff, true)})`;
 
             if (diff > 0) {
@@ -796,14 +1016,41 @@
             historyList.innerHTML = '';
             const activeTimes = sessionsData[currentSession];
             
-            // Render actual times first (sitting chronologically descending: newest #3, #2, #1 at the bottom)
+            // Render actual times first (sitting chronologically descending: newest top, oldest bottom)
             for (let i = activeTimes.length - 1; i >= 0; i--) {
+                const solve = activeTimes[i];
                 const li = document.createElement('li');
                 li.className = 'history-item';
-                li.innerHTML = `
+                
+                // Data Container wrapping index tracking and times cleanly stringified
+                const dataDiv = document.createElement('div');
+                dataDiv.className = 'history-data';
+                dataDiv.innerHTML = `
                     <span class="history-index">#${i + 1}</span>
-                    <span>${formatTime(activeTimes[i])}</span>
+                    <span>${displaySolveString(solve)}</span>
                 `;
+                
+                // Action Edit Activation Button
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-time-btn';
+                editBtn.title = 'edit solve states';
+                editBtn.setAttribute('data-index', i);
+                editBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                `;
+                
+                // Clicking specific item lists handles contextual popup target binding
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEditModal(i);
+                });
+
+                li.appendChild(dataDiv);
+                li.appendChild(editBtn);
                 historyList.appendChild(li);
             }
 
@@ -817,10 +1064,86 @@
             historyList.appendChild(spacer2);
         }
 
+        function openEditModal(index) {
+            editingIndex = index;
+            const solve = sessionsData[currentSession][index];
+            if (!solve) return;
+
+            modalTitle.textContent = `edit solve #${index + 1}`;
+            modalTimeDisplay.textContent = displaySolveString(solve);
+
+            // Toggle highlight UI styles cleanly based on states
+            modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
+            modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
+
+            editModal.classList.add('open');
+        }
+
+        function closeEditModal() {
+            editModal.classList.remove('open');
+            editingIndex = null;
+        }
+
+        // Context Setup Button Modifiers
+        modPlusTwoBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            const solve = sessionsData[currentSession][editingIndex];
+            solve.plusTwo = !solve.plusTwo;
+            
+            // If +2 is applied, normally it doesn't automatically mean DNF is dropped, but mutually exclusive makes session workflows cleaner if users wish
+            if (solve.plusTwo) solve.dnf = false; 
+
+            saveData();
+            modalTimeDisplay.textContent = displaySolveString(solve);
+            modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
+            modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
+            
+            updateHistoryUI();
+            updateStatsUI();
+            updateVarianceUI();
+        });
+
+        modDnfBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            const solve = sessionsData[currentSession][editingIndex];
+            solve.dnf = !solve.dnf;
+            
+            if (solve.dnf) solve.plusTwo = false;
+
+            saveData();
+            modalTimeDisplay.textContent = displaySolveString(solve);
+            modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
+            modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
+            
+            updateHistoryUI();
+            updateStatsUI();
+            updateVarianceUI();
+        });
+
+        modDeleteBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            if (confirm(`delete solve #${editingIndex + 1} permanently?`)) {
+                sessionsData[currentSession].splice(editingIndex, 1);
+                saveData();
+                closeEditModal();
+                
+                updateHistoryUI();
+                updateStatsUI();
+                updateVarianceUI();
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', closeEditModal);
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) closeEditModal();
+        });
+
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession];
-            if (activeTimes.length === 0) return '-';
-            const best = Math.min(...activeTimes);
+            const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
+            
+            if (validTimes.length === 0) return '-';
+            const best = Math.min(...validTimes);
             return formatTime(best);
         }
 
@@ -829,10 +1152,30 @@
             if (activeTimes.length < n) return '-';
             
             const recentSolves = activeTimes.slice(-n);
-            const sorted = [...recentSolves].sort((a, b) => a - b);
             
+            // Check DNFs count. In standard WCA tracking rules:
+            // For ao5, max 1 DNF allowed (it counts as the worst solve).
+            // For ao12, max 1 DNF allowed. If more, the whole average returns DNF.
+            const dnfCount = recentSolves.filter(s => s.dnf).length;
+            if (dnfCount > 1) return 'DNF';
+
+            const sorted = [];
+            recentSolves.forEach(s => {
+                if (s.dnf) {
+                    sorted.push(Infinity); // Shove it to the end as absolute worst
+                } else {
+                    sorted.push(s.rawTime + (s.plusTwo ? 2 : 0));
+                }
+            });
+
+            sorted.sort((a, b) => a - b);
+            
+            // Slice away absolute best and worst edges safely
             sorted.pop();
             sorted.shift();
+            
+            // If Infinity leaked inside remaining bounds somehow, evaluation fails
+            if (sorted.includes(Infinity)) return 'DNF';
             
             const sum = sorted.reduce((acc, curr) => acc + curr, 0);
             return formatTime(sum / sorted.length);
@@ -845,6 +1188,9 @@
         }
 
         function triggerStartSequence() {
+            // Guard system loops safely if dialogue overlays are currently active
+            if (editModal.classList.contains('open')) return;
+
             if (state === 'running') {
                 stopTimer();
             } else if (state === 'idle') {
