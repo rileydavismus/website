@@ -237,14 +237,14 @@
         }
 
         #scramble {
-            font-size: 1.375rem;
+            font-size: 1.25rem;
             font-weight: 400;
             color: var(--text-color);
-            line-height: 1.6;
+            line-height: 1.5;
             margin-bottom: 2.2rem;
             min-height: 2.75rem;
             max-width: 660px;
-            word-spacing: 6px;
+            word-spacing: 5px;
             transition: opacity 0.1s ease;
         }
 
@@ -361,14 +361,14 @@
                 flex-direction: column !important;
             }
             .main-content {
-                height: 72vh; /* Adjusted to balance screen partition gracefully */
+                height: 72vh;
                 width: 100%;
                 flex-grow: 0;
                 order: 1 !important;
             }
             .sidebar {
                 width: 100%;
-                height: 28vh; /* Increased from 22.5vh by exactly 25% */
+                height: 28vh;
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
@@ -393,7 +393,7 @@
                 justify-content: flex-start;
                 border-left: 1px solid rgba(255, 255, 255, 0.05);
                 padding-left: 15px;
-                min-height: 0; /* Constraints flex item heights securely inside layout grids */
+                min-height: 0;
             }
 
             .layout-btn {
@@ -427,11 +427,11 @@
                 padding: 0px 4px;
             }
             .history-list {
-                display: flex; /* Switched block layout to self-contained flex setup */
+                display: flex;
                 flex-direction: column;
                 flex-grow: 1;
-                min-height: 0; /* Critical CSS fix to allow scrolling box container to shrink properly */
-                overflow-y: auto; /* Activates genuine scrollbars when contents exceed height allocation bounds */
+                min-height: 0;
+                overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 4px;
                 box-sizing: border-box;
@@ -457,7 +457,7 @@
                 min-height: 1.1rem;
             }
             #scramble {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
                 margin-bottom: 0.75rem;
                 min-height: 1.8rem;
                 max-width: 550px;
@@ -479,7 +479,7 @@
     <div class="main-content">
         <div class="touch-zone" id="touchZone"></div>
         <div class="container">
-            <div id="scramble">generating scramble...</div>
+            <div id="scramble">generating official scramble...</div>
             <div class="timer-wrapper">
                 <div id="timer">0.00</div>
                 <div id="variance" class="hidden"></div>
@@ -543,7 +543,9 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
+
         const timerDisplay = document.getElementById('timer');
         const varianceDisplay = document.getElementById('variance');
         const instructionDisplay = document.getElementById('instruction');
@@ -573,7 +575,6 @@
         };
 
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
-        const modifiers = ['', "'", '2'];
         let cubeState = {};
 
         function formatTime(totalSeconds, includeSign = false) {
@@ -656,36 +657,26 @@
             });
         }
 
-        function generateScramble() {
-            const scramble = [];
-            let lastFace = '';
-            let secondLastFace = '';
-
-            while (scramble.length < 15) {
-                const randomFace = faces[Math.floor(Math.random() * faces.length)];
-                if (randomFace === lastFace) continue;
-                if (randomFace === secondLastFace && isOppositeFace(randomFace, lastFace)) continue;
-
-                const randomModifier = modifiers[Math.floor(Math.random() * modifiers.length)];
-                scramble.push(randomFace + randomModifier);
+        // Pulling official, randomized-state scrambles via background web workers
+        async function generateScramble() {
+            try {
+                const scrambleObj = await randomScrambleForEvent("333");
+                const scrambleString = scrambleObj.toString();
                 
-                secondLastFace = lastFace;
-                lastFace = randomFace;
+                scrambleDisplay.textContent = scrambleString;
+                
+                initCubeState();
+                const moves = scrambleString.split(' ');
+                moves.forEach(move => {
+                    if(move.trim() !== "") applyMove(move);
+                });
+                renderCubeUI();
+
+                scrambleDisplay.classList.remove('hidden');
+                cubeDisplay.classList.remove('hidden');
+            } catch (err) {
+                scrambleDisplay.textContent = "error generating random-state scramble";
             }
-
-            scrambleDisplay.textContent = scramble.join(' ');
-            
-            initCubeState();
-            scramble.forEach(move => applyMove(move));
-            renderCubeUI();
-
-            scrambleDisplay.classList.remove('hidden');
-            cubeDisplay.classList.remove('hidden');
-        }
-
-        function isOppositeFace(f1, f2) {
-            const pairs = [['U', 'D'], ['R', 'L'], ['F', 'B']];
-            return pairs.some(pair => pair.includes(f1) && pair.includes(f2));
         }
 
         function loadData() {
