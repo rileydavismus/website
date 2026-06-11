@@ -233,12 +233,6 @@
             color: var(--dim-color);
         }
 
-        .time-tag {
-            font-size: 0.7rem;
-            color: #eab308;
-            margin-left: 4px;
-        }
-
         /* Action Edit Trigger Button */
         .edit-time-btn {
             background: none;
@@ -295,7 +289,8 @@
             background-color: var(--sidebar-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            width: 280px;
+            width: 340px;
+            max-width: 90vw;
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
@@ -311,16 +306,30 @@
             font-size: 0.95rem;
             color: var(--dim-color);
             margin-top: 0;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             text-transform: lowercase;
             letter-spacing: 0.5px;
         }
 
+        .modal-scramble-display {
+            font-size: 0.8rem;
+            color: var(--dim-color);
+            line-height: 1.4;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            word-break: break-word;
+            text-align: center;
+        }
+
         .modal-time-display {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 400;
             margin-bottom: 20px;
             color: var(--text-color);
+            line-height: 1;
         }
 
         .modal-options {
@@ -724,6 +733,7 @@
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <div class="modal-title" id="modalTitle">edit solve #0</div>
+            <div class="modal-scramble-display" id="modalScrambleDisplay">no scramble data</div>
             <div class="modal-time-display" id="modalTimeDisplay">0.00</div>
             <div class="modal-options">
                 <button class="option-btn" id="modPlusTwoBtn">+2 seconds</button>
@@ -757,6 +767,7 @@
         // Modal Elements
         const editModal = document.getElementById('editModal');
         const modalTitle = document.getElementById('modalTitle');
+        const modalScrambleDisplay = document.getElementById('modalScrambleDisplay');
         const modalTimeDisplay = document.getElementById('modalTimeDisplay');
         const modPlusTwoBtn = document.getElementById('modPlusTwoBtn');
         const modDnfBtn = document.getElementById('modDnfBtn');
@@ -767,12 +778,12 @@
         let startTime = 0;
         let elapsedTimerInterval = null;
         let holdTimeout = null;
-        let editingIndex = null; // Keeps track of the index currently being tweaked
+        let editingIndex = null;
+        let lastGeneratedScramble = ''; 
         
         let currentSession = 'session1';
         
-        // Updated historical schemas: items can be explicit structured objects or fallback numbers
-        // Shape: { rawTime: number, plusTwo: boolean, dnf: boolean }
+        // Shape: { rawTime: number, plusTwo: boolean, dnf: boolean, scramble: string }
         const sessionsData = {
             session1: [],
             session2: [],
@@ -784,7 +795,6 @@
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
         let cubeState = {};
 
-        // Helper string decorator checking data maps
         function displaySolveString(solveObj) {
             if (!solveObj) return '-';
             if (solveObj.dnf) return 'DNF';
@@ -878,12 +888,12 @@
         async function generateScramble() {
             try {
                 const scrambleObj = await randomScrambleForEvent("333");
-                const scrambleString = scrambleObj.toString();
+                lastGeneratedScramble = scrambleObj.toString();
                 
-                scrambleDisplay.textContent = scrambleString;
+                scrambleDisplay.textContent = lastGeneratedScramble;
                 
                 initCubeState();
-                const moves = scrambleString.split(' ');
+                const moves = lastGeneratedScramble.split(' ');
                 moves.forEach(move => {
                     if(move.trim() !== "") applyMove(move);
                 });
@@ -896,11 +906,13 @@
             }
         }
 
-        // Sanitizes legacy array numbers over into structural variants explicitly safely
         function normalizeSessionArray(arr) {
             return arr.map(item => {
                 if (typeof item === 'number') {
-                    return { rawTime: item, plusTwo: false, dnf: false };
+                    return { rawTime: item, plusTwo: false, dnf: false, scramble: 'historical solve' };
+                }
+                if (!item.scramble) {
+                    item.scramble = 'historical solve';
                 }
                 return item;
             });
@@ -973,7 +985,8 @@
             sessionsData[currentSession].push({
                 rawTime: time,
                 plusTwo: false,
-                dnf: false
+                dnf: false,
+                scramble: lastGeneratedScramble || 'unknown scramble'
             });
             saveData();
             updateHistoryUI();
@@ -981,7 +994,6 @@
             updateVarianceUI();
         }
 
-        // Resolves numeric mathematical values accounting for DNFs or modifications
         function getEffectiveTime(solveObj) {
             if (!solveObj || solveObj.dnf) return null;
             return solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
@@ -997,7 +1009,6 @@
             const currentEff = getEffectiveTime(activeTimes[activeTimes.length - 1]);
             const previousEff = getEffectiveTime(activeTimes[activeTimes.length - 2]);
 
-            // If either is DNF, variance comparisons can't evaluate accurately
             if (currentEff === null || previousEff === null) return;
 
             const diff = currentEff - previousEff;
@@ -1016,13 +1027,11 @@
             historyList.innerHTML = '';
             const activeTimes = sessionsData[currentSession];
             
-            // Render actual times first (sitting chronologically descending: newest top, oldest bottom)
             for (let i = activeTimes.length - 1; i >= 0; i--) {
                 const solve = activeTimes[i];
                 const li = document.createElement('li');
                 li.className = 'history-item';
                 
-                // Data Container wrapping index tracking and times cleanly stringified
                 const dataDiv = document.createElement('div');
                 dataDiv.className = 'history-data';
                 dataDiv.innerHTML = `
@@ -1030,7 +1039,6 @@
                     <span>${displaySolveString(solve)}</span>
                 `;
                 
-                // Action Edit Activation Button
                 const editBtn = document.createElement('button');
                 editBtn.className = 'edit-time-btn';
                 editBtn.title = 'edit solve states';
@@ -1043,7 +1051,6 @@
                     </svg>
                 `;
                 
-                // Clicking specific item lists handles contextual popup target binding
                 editBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openEditModal(i);
@@ -1054,7 +1061,6 @@
                 historyList.appendChild(li);
             }
 
-            // Append blank items below the oldest solve, padding out the bottom scroll room
             const spacer1 = document.createElement('li');
             spacer1.className = 'history-item blank-spacer';
             historyList.appendChild(spacer1);
@@ -1070,9 +1076,9 @@
             if (!solve) return;
 
             modalTitle.textContent = `edit solve #${index + 1}`;
+            modalScrambleDisplay.textContent = solve.scramble || 'no scramble data available';
             modalTimeDisplay.textContent = displaySolveString(solve);
 
-            // Toggle highlight UI styles cleanly based on states
             modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
             modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
 
@@ -1084,13 +1090,11 @@
             editingIndex = null;
         }
 
-        // Context Setup Button Modifiers
         modPlusTwoBtn.addEventListener('click', () => {
             if (editingIndex === null) return;
             const solve = sessionsData[currentSession][editingIndex];
             solve.plusTwo = !solve.plusTwo;
             
-            // If +2 is applied, normally it doesn't automatically mean DNF is dropped, but mutually exclusive makes session workflows cleaner if users wish
             if (solve.plusTwo) solve.dnf = false; 
 
             saveData();
@@ -1152,29 +1156,22 @@
             if (activeTimes.length < n) return '-';
             
             const recentSolves = activeTimes.slice(-n);
-            
-            // Check DNFs count. In standard WCA tracking rules:
-            // For ao5, max 1 DNF allowed (it counts as the worst solve).
-            // For ao12, max 1 DNF allowed. If more, the whole average returns DNF.
             const dnfCount = recentSolves.filter(s => s.dnf).length;
             if (dnfCount > 1) return 'DNF';
 
             const sorted = [];
             recentSolves.forEach(s => {
                 if (s.dnf) {
-                    sorted.push(Infinity); // Shove it to the end as absolute worst
+                    sorted.push(Infinity);
                 } else {
                     sorted.push(s.rawTime + (s.plusTwo ? 2 : 0));
                 }
             });
 
             sorted.sort((a, b) => a - b);
-            
-            // Slice away absolute best and worst edges safely
             sorted.pop();
             sorted.shift();
             
-            // If Infinity leaked inside remaining bounds somehow, evaluation fails
             if (sorted.includes(Infinity)) return 'DNF';
             
             const sum = sorted.reduce((acc, curr) => acc + curr, 0);
@@ -1188,7 +1185,6 @@
         }
 
         function triggerStartSequence() {
-            // Guard system loops safely if dialogue overlays are currently active
             if (editModal.classList.contains('open')) return;
 
             if (state === 'running') {
