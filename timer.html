@@ -206,7 +206,7 @@
             color: var(--dim-color);
         }
 
-        /* Main Display Area */
+        /* Main Display Area (Scaled up 10% on desktop) */
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -219,7 +219,7 @@
         .container {
             text-align: center;
             width: 100%;
-            max-width: 700px;
+            max-width: 800px; /* Increased from 700px */
             padding: 20px;
             box-sizing: border-box;
             display: flex;
@@ -231,22 +231,22 @@
         }
 
         #scramble {
-            font-size: 1.25rem;
+            font-size: 1.375rem; /* Increased 10% from 1.25rem */
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.6;
-            margin-bottom: 2rem;
-            min-height: 2.5rem;
-            max-width: 600px;
+            margin-bottom: 2.2rem; /* Increased from 2rem */
+            min-height: 2.75rem; /* Increased from 2.5rem */
+            max-width: 660px; /* Increased from 600px */
             word-spacing: 6px;
             transition: opacity 0.1s ease;
         }
 
         #timer {
-            font-size: 6rem;
+            font-size: 6.6rem; /* Increased 10% from 6rem */
             font-weight: 300;
             letter-spacing: -2px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.65rem; /* Increased from 1.5rem */
             transition: color 0.1s ease;
         }
 
@@ -259,20 +259,20 @@
         }
 
         .instructions {
-            font-size: 0.85rem;
+            font-size: 0.935rem; /* Increased 10% from 0.85rem */
             color: var(--dim-color);
             letter-spacing: 1px;
             text-transform: lowercase;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2.75rem; /* Increased from 2.5rem */
         }
 
         .cube-visualization {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 6px;
-            width: 180px;
-            height: 135px;
+            gap: 7px; /* Increased from 6px */
+            width: 198px; /* Increased 10% from 180px */
+            height: 148.5px; /* Increased 10% from 135px */
             transition: opacity 0.1s ease;
             flex-shrink: 0;
         }
@@ -319,7 +319,7 @@
             cursor: pointer;
         }
 
-        /* Mobile Adjustments Overrides */
+        /* Mobile Adjustments Overrides (Keeps compact layout intact) */
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
                 flex-direction: column !important;
@@ -358,6 +358,9 @@
                 padding-bottom: 20px;
                 box-sizing: border-box;
             }
+            .container {
+                max-width: 700px;
+            }
             #timer {
                 font-size: 4rem;
                 margin-bottom: 0.5rem;
@@ -366,8 +369,10 @@
                 font-size: 1rem;
                 margin-bottom: 1rem;
                 min-height: 2rem;
+                max-width: 600px;
             }
             .instructions {
+                font-size: 0.85rem;
                 margin-bottom: 1rem;
             }
             .cube-visualization {
@@ -467,7 +472,6 @@
         const modifiers = ['', "'", '2'];
         let cubeState = {};
 
-        // Unified time formatting utility handles crossing the 60s threshold cleanly
         function formatTime(totalSeconds) {
             if (isNaN(totalSeconds) || totalSeconds === null) return '-';
             if (totalSeconds < 60) {
@@ -478,7 +482,6 @@
             const seconds = Math.floor(totalSeconds % 60);
             const milliseconds = Math.floor((totalSeconds % 1) * 100);
             
-            // Pad seconds and milliseconds with leading zeros if necessary
             const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
             const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
             
@@ -613,7 +616,7 @@
             
             const now = performance.now();
             const difference = (now - startTime) / 1000;
-            timerDisplay.textContent = formatTime(difference); // Live update maps through formatting layer
+            timerDisplay.textContent = formatTime(difference);
             
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
@@ -663,7 +666,7 @@
             sorted.shift();
             
             const sum = sorted.reduce((acc, curr) => acc + curr, 0);
-            return formatTime(sum / sorted.length); // Formats average computations over 60s cleanly too
+            return formatTime(sum / sorted.length);
         }
 
         function updateStatsUI() {
