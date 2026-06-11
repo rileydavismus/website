@@ -17,6 +17,8 @@
             --dim-color: #64748b;
             --sidebar-bg: #141416;
             --border-color: #1e1e24;
+            --variance-plus: #ef4444;  /* Red for slower solves */
+            --variance-minus: #22c55e; /* Green for faster solves */
         }
 
         body {
@@ -206,7 +208,7 @@
             color: var(--dim-color);
         }
 
-        /* Main Display Area (Scaled up 10% on desktop) */
+        /* Main Display Area */
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -219,7 +221,7 @@
         .container {
             text-align: center;
             width: 100%;
-            max-width: 800px; /* Increased from 700px */
+            max-width: 800px;
             padding: 20px;
             box-sizing: border-box;
             display: flex;
@@ -231,23 +233,53 @@
         }
 
         #scramble {
-            font-size: 1.375rem; /* Increased 10% from 1.25rem */
+            font-size: 1.375rem;
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.6;
-            margin-bottom: 2.2rem; /* Increased from 2rem */
-            min-height: 2.75rem; /* Increased from 2.5rem */
-            max-width: 660px; /* Increased from 600px */
+            margin-bottom: 2.2rem;
+            min-height: 2.75rem;
+            max-width: 660px;
             word-spacing: 6px;
             transition: opacity 0.1s ease;
         }
 
+        .timer-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.65rem;
+            min-height: 9.5rem; /* Prevents visual layout shifting when variance text mounts */
+        }
+
         #timer {
-            font-size: 6.6rem; /* Increased 10% from 6rem */
+            font-size: 6.6rem;
             font-weight: 300;
             letter-spacing: -2px;
-            margin-bottom: 1.65rem; /* Increased from 1.5rem */
+            line-height: 1;
             transition: color 0.1s ease;
+        }
+
+        #variance {
+            font-size: 1.5rem; /* Noticeably smaller text below the core metrics display */
+            font-weight: 400;
+            margin-top: 0.5rem;
+            min-height: 1.8rem;
+            line-height: 1;
+            transition: opacity 0.1s ease;
+        }
+
+        #variance.plus {
+            color: var(--variance-plus);
+        }
+
+        #variance.minus {
+            color: var(--variance-minus);
+        }
+
+        #variance.hidden {
+            opacity: 0;
         }
 
         #timer.holding {
@@ -259,25 +291,25 @@
         }
 
         .instructions {
-            font-size: 0.935rem; /* Increased 10% from 0.85rem */
+            font-size: 0.935rem;
             color: var(--dim-color);
             letter-spacing: 1px;
             text-transform: lowercase;
-            margin-bottom: 2.75rem; /* Increased from 2.5rem */
+            margin-bottom: 2.75rem;
         }
 
         .cube-visualization {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 7px; /* Increased from 6px */
-            width: 198px; /* Increased 10% from 180px */
-            height: 148.5px; /* Increased 10% from 135px */
+            gap: 7px;
+            width: 198px;
+            height: 148.5px;
             transition: opacity 0.1s ease;
             flex-shrink: 0;
         }
 
-        #scramble.hidden, .cube-visualization.hidden {
+        #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden {
             opacity: 0;
         }
 
@@ -319,7 +351,7 @@
             cursor: pointer;
         }
 
-        /* Mobile Adjustments Overrides (Keeps compact layout intact) */
+        /* Mobile Adjustments Overrides */
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
                 flex-direction: column !important;
@@ -361,9 +393,17 @@
             .container {
                 max-width: 700px;
             }
+            .timer-wrapper {
+                margin-bottom: 0.5rem;
+                min-height: 6rem;
+            }
             #timer {
                 font-size: 4rem;
-                margin-bottom: 0.5rem;
+            }
+            #variance {
+                font-size: 1.1rem;
+                margin-top: 0.25rem;
+                min-height: 1.3rem;
             }
             #scramble {
                 font-size: 1rem;
@@ -389,7 +429,10 @@
         <div class="touch-zone" id="touchZone"></div>
         <div class="container">
             <div id="scramble">generating scramble...</div>
-            <div id="timer">0.00</div>
+            <div class="timer-wrapper">
+                <div id="timer">0.00</div>
+                <div id="variance" class="hidden"></div>
+            </div>
             <div class="instructions" id="instruction">hold space or touch to ready</div>
             
             <div class="cube-visualization" id="cubeDisplay">
@@ -443,6 +486,7 @@
 
     <script>
         const timerDisplay = document.getElementById('timer');
+        const varianceDisplay = document.getElementById('variance');
         const instructionDisplay = document.getElementById('instruction');
         const scrambleDisplay = document.getElementById('scramble');
         const cubeDisplay = document.getElementById('cubeDisplay');
@@ -472,20 +516,29 @@
         const modifiers = ['', "'", '2'];
         let cubeState = {};
 
-        function formatTime(totalSeconds) {
+        function formatTime(totalSeconds, includeSign = false) {
             if (isNaN(totalSeconds) || totalSeconds === null) return '-';
-            if (totalSeconds < 60) {
-                return totalSeconds.toFixed(2);
+            
+            const absoluteSeconds = Math.abs(totalSeconds);
+            let formattedStr = '';
+
+            if (absoluteSeconds < 60) {
+                formattedStr = absoluteSeconds.toFixed(2);
+            } else {
+                const minutes = Math.floor(absoluteSeconds / 60);
+                const seconds = Math.floor(absoluteSeconds % 60);
+                const milliseconds = Math.floor((absoluteSeconds % 1) * 100);
+                
+                const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
+                const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
+                
+                formattedStr = `${minutes}:${paddedSeconds}.${paddedMs}`;
             }
-            
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = Math.floor(totalSeconds % 60);
-            const milliseconds = Math.floor((totalSeconds % 1) * 100);
-            
-            const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
-            const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
-            
-            return `${minutes}:${paddedSeconds}.${paddedMs}`;
+
+            if (includeSign) {
+                return (totalSeconds >= 0 ? '+' : '-') + formattedStr;
+            }
+            return formattedStr;
         }
 
         function initCubeState() {
@@ -593,6 +646,7 @@
             
             updateHistoryUI();
             updateStatsUI();
+            updateVarianceUI();
             generateScramble();
         }
 
@@ -605,6 +659,7 @@
             state = 'running';
             scrambleDisplay.classList.add('hidden');
             cubeDisplay.classList.add('hidden');
+            varianceDisplay.classList.add('hidden-run'); // Soft hide variance during active track run
             instructionDisplay.textContent = 'stop timer';
             startTime = performance.now();
             
@@ -638,6 +693,30 @@
             saveData();
             updateHistoryUI();
             updateStatsUI();
+            updateVarianceUI();
+        }
+
+        function updateVarianceUI() {
+            const activeTimes = sessionsData[currentSession];
+            varianceDisplay.className = 'hidden';
+            varianceDisplay.textContent = '';
+
+            // Variance logic only triggers if there are at least two solves in the active session
+            if (activeTimes.length < 2) return;
+
+            const currentSolve = activeTimes[activeTimes.length - 1];
+            const previousSolve = activeTimes[activeTimes.length - 2];
+            const diff = currentSolve - previousSolve;
+
+            varianceDisplay.textContent = `(${formatTime(diff, true)})`;
+
+            if (diff > 0) {
+                varianceDisplay.className = 'plus';
+            } else if (diff < 0) {
+                varianceDisplay.className = 'minus';
+            } else {
+                varianceDisplay.className = ''; // Neutral variant tie fallback layout metrics
+            }
         }
 
         function updateHistoryUI() {
@@ -685,6 +764,7 @@
                 state = 'holding';
                 timerDisplay.className = 'holding';
                 timerDisplay.textContent = '0.00';
+                varianceDisplay.className = 'hidden'; // clear static overlay metrics frame on reset loop
                 
                 holdTimeout = setTimeout(() => {
                     state = 'ready';
@@ -702,6 +782,7 @@
             } else if (state === 'holding') {
                 state = 'idle';
                 timerDisplay.className = '';
+                updateVarianceUI(); // Restore structural metrics variance text visibility 
             }
         }
 
@@ -740,6 +821,8 @@
             saveData();
             updateHistoryUI();
             updateStatsUI();
+            updateVarianceUI();
+            timerDisplay.textContent = '0.00';
             generateScramble();
         });
 
@@ -749,6 +832,7 @@
                 saveData();
                 updateHistoryUI();
                 updateStatsUI();
+                updateVarianceUI();
                 timerDisplay.textContent = '0.00';
                 generateScramble();
             }
