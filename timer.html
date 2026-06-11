@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
-    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -331,7 +330,7 @@
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 1.5px;
-            background-color: #18181b; /* Subtle internal gaps simulating puzzle seams */
+            background-color: #18181b;
             border: 1.5px solid #18181b;
             border-radius: 4px;
         }
@@ -346,10 +345,9 @@
         .sticker {
             width: 100%;
             height: 100%;
-            border-radius: 2px; /* Slightly rounded corners matching modern speedcubes */
+            border-radius: 2px;
         }
 
-        /* Modern Half-Bright / Stickerless High-Contrast Face Configurations */
         .c-u { background-color: var(--cube-white); }
         .c-d { background-color: var(--cube-yellow); }
         .c-f { background-color: var(--cube-green); }
@@ -469,34 +467,34 @@
                 min-height: 1.1rem;
             }
             #scramble {
-                font-size: 0.9rem;
-                margin-bottom: 0.75rem;
-                min-height: 1.8rem;
+                font-size: 1.125rem; /* Increased by 25% from 0.9rem */
+                margin-bottom: 0.85rem;
+                min-height: 2.25rem;
                 max-width: 550px;
+                line-height: 1.35;
             }
             .instructions {
                 font-size: 0.8rem;
                 margin-bottom: 0.75rem;
             }
             .cube-visualization {
-                width: 104px;
-                height: 78px;
-                gap: 3px;
+                width: 156px; /* Increased by 50% from 104px */
+                height: 117px; /* Increased by 50% from 78px */
+                gap: 4px;
             }
             .face {
-                gap: 0.8px;
-                border: 0.8px solid #18181b;
-                border-radius: 2px;
+                gap: 1px;
+                border: 1px solid #18181b;
+                border-radius: 3px;
             }
             .sticker {
-                border-radius: 1px;
+                border-radius: 1.5px;
             }
         }
     </style>
 </head>
 <body class="sidebar-left">
 
-    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
         <div class="touch-zone" id="touchZone"></div>
         <div class="container">
@@ -518,9 +516,7 @@
         </div>
     </div>
 
-    <!-- Sidebar Area -->
     <div class="sidebar">
-        <!-- Session Info Block (Left Column on Mobile) -->
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
@@ -557,7 +553,6 @@
             </div>
         </div>
         
-        <!-- Solve History Block (Right Column on Mobile) -->
         <div class="sidebar-right-col">
             <div class="history-header">
                 <div class="history-title">solves</div>
@@ -567,7 +562,6 @@
         </div>
     </div>
 
-    <!-- Injecting modern, community-standard TNoodle-compatible Random State engine -->
     <script type="module">
         import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
 
