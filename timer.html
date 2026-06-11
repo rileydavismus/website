@@ -216,6 +216,11 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
 
+        .history-item.blank-spacer {
+            border-bottom: none;
+            min-height: 1.5rem;
+        }
+
         .history-index {
             color: var(--dim-color);
         }
@@ -456,13 +461,13 @@
             }
             .timer-wrapper {
                 margin-bottom: 0.25rem;
-                min-height: 7.5rem; /* Increased to cleanly account for larger counter layout */
+                min-height: 7.5rem;
             }
             #timer {
-                font-size: 5.25rem; /* Increased by 50% from 3.5rem */
+                font-size: 5.25rem;
             }
             #variance {
-                font-size: 1.25rem; /* Scaled slightly to harmonize with larger main timer */
+                font-size: 1.25rem;
                 margin-top: 0.25rem;
                 min-height: 1.35rem;
             }
@@ -791,6 +796,16 @@
             historyList.innerHTML = '';
             const activeTimes = sessionsData[currentSession];
             
+            // Add two blank list items at the bottom of the column structure (rendered first in reverse layout)
+            const spacer1 = document.createElement('li');
+            spacer1.className = 'history-item blank-spacer';
+            historyList.appendChild(spacer1);
+
+            const spacer2 = document.createElement('li');
+            spacer2.className = 'history-item blank-spacer';
+            historyList.appendChild(spacer2);
+
+            // Populates solves normally chronologically backwards (#3, #2, #1) so oldest sits right above layout buffers
             for (let i = activeTimes.length - 1; i >= 0; i--) {
                 const li = document.createElement('li');
                 li.className = 'history-item';
