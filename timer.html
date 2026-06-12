@@ -651,15 +651,16 @@
             }
             
             .main-content {
-                height: auto;
-                width: 100%;
+                height: 0;
                 flex-grow: 1;
+                width: 100%;
                 order: 1 !important;
-                padding: 45px 12px 15px 12px;
+                padding: 45px 12px 10px 12px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                box-sizing: border-box;
             }
             
             /* Positioning mobile theme selector absolute inside main workspace container */
@@ -673,15 +674,15 @@
             
             .sidebar {
                 width: 100%;
-                height: 150px;
+                height: 175px; /* Slightly heightened boundary to securely encompass statistics data */
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
                 padding: 12px;
                 box-sizing: border-box;
                 order: 2 !important;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
+                display: flex;
+                flex-direction: row !important; /* Forces side-by-side splits layout alignment on mobile */
                 gap: 15px;
                 flex-shrink: 0;
             }
@@ -690,16 +691,20 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                width: 50%;
                 min-height: 0;
+                flex-shrink: 0;
             }
             
             .sidebar-right-col {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                width: 50%;
                 border-left: 1px solid rgba(255, 255, 255, 0.05);
                 padding-left: 15px;
                 min-height: 0;
+                box-sizing: border-box;
             }
             body[data-theme="light"] .sidebar-right-col {
                 border-left: 1px solid rgba(0, 0, 0, 0.05);
@@ -714,7 +719,7 @@
             }
             
             .menu-header {
-                margin-bottom: 0.4rem;
+                margin-bottom: 0.5rem;
             }
             .session-select {
                 padding: 6px;
@@ -722,16 +727,18 @@
             }
             .stats-section {
                 margin-bottom: 0;
-                flex-grow: 1;
-                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
             }
             .stat-row {
-                margin-bottom: 0.3rem;
+                margin-bottom: 0;
                 font-size: 0.85rem;
             }
             .history-header {
                 margin-bottom: 0.4rem;
                 padding-bottom: 4px;
+                width: 100%;
             }
             .history-title {
                 font-size: 0.85rem;
@@ -743,6 +750,7 @@
             .history-list {
                 display: flex;
                 flex-direction: column;
+                width: 100%;
                 flex-grow: 1;
                 min-height: 0;
                 overflow-y: auto;
@@ -759,32 +767,32 @@
                 max-width: 100%;
                 justify-content: center;
                 height: auto;
-                gap: 12px;
+                gap: 8px;
             }
             
             .timer-wrapper {
                 margin-bottom: 0;
                 min-height: auto;
                 flex-grow: 0;
-                padding: 8px 0;
+                padding: 4px 0;
             }
             
             #timer {
-                font-size: 5rem;
+                font-size: 4.5rem;
             }
             
             #variance {
-                font-size: 1.25rem;
-                margin-top: 0.15rem;
-                min-height: 1.35rem;
+                font-size: 1.15rem;
+                margin-top: 0.1rem;
+                min-height: 1.25rem;
             }
             
             #scramble {
-                font-size: 1.15rem;
+                font-size: 1.1rem;
                 margin: 0;
                 min-height: auto;
                 max-width: 100%;
-                line-height: 1.35;
+                line-height: 1.3;
                 padding: 0 10px;
             }
             
@@ -794,11 +802,11 @@
             }
             
             .cube-visualization {
-                width: 140px;
-                height: 105px;
-                gap: 4px;
+                width: 130px;
+                height: 98px;
+                gap: 3px;
                 margin-bottom: 0;
-                margin-top: 4px;
+                margin-top: 2px;
             }
             
             .face {
@@ -807,7 +815,7 @@
                 border-radius: 3px;
             }
             .sticker {
-                border-radius: 1.5px;
+                border-radius: 1px;
             }
         }
     </style>
@@ -1147,7 +1155,7 @@
             state = 'running';
             scrambleDisplay.classList.add('hidden');
             cubeDisplay.classList.add('hidden');
-            varianceDisplay.classList.add('hidden-run');
+            varianceDisplay.className = 'hidden';
             instructionDisplay.textContent = 'stop timer';
             startTime = performance.now();
             
