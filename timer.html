@@ -685,6 +685,43 @@
             cursor: pointer;
         }
 
+        /* --- SAKURA PETAL ENGINE STYLING --- */
+        .petal-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1; /* Sits behind the container items, above background */
+        }
+
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffccd5, #fca3b7);
+            border-radius: 90% 10% 90% 10% / 90% 10% 90% 10%; /* organic petal drop geometry */
+            opacity: 0.85;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) translateX(0) rotate(0deg) rotateY(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.85;
+            }
+            90% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translateY(105vh) translateX(120px) rotate(450deg) rotateY(180deg);
+                opacity: 0;
+            }
+        }
+
         /* Mobile Adjustments Overrides */
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
@@ -865,6 +902,9 @@
 
     <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
+        <!-- Structural container element for background animations -->
+        <div class="petal-canvas" id="petalCanvas"></div>
+
         <!-- Floating Corner Action Trigger Container on Mobile Views -->
         <div class="mobile-theme-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
@@ -1003,6 +1043,7 @@
         const clearBtn = document.getElementById('clearBtn');
         const layoutToggleBtn = document.getElementById('layoutToggleBtn');
         const touchZone = document.getElementById('touchZone');
+        const petalCanvas = document.getElementById('petalCanvas');
 
         const editModal = document.getElementById('editModal');
         const modalTitle = document.getElementById('modalTitle');
@@ -1028,6 +1069,7 @@
         
         let currentSession = 'session1';
         let activeTheme = 'dark';
+        let petalSpawnInterval = null;
         
         const sessionsData = {
             session1: [],
@@ -1408,10 +1450,62 @@
             themeModal.classList.remove('open');
         }
 
+        /* --- SAKURA BACKGROUND RUNTIME ENGINE CONTROL LOGIC --- */
+        function managePetalEngine(themeValue) {
+            // Clear existing logic loops and remove remnant nodes immediately
+            if (petalSpawnInterval) {
+                clearInterval(petalSpawnInterval);
+                petalSpawnInterval = null;
+            }
+            petalCanvas.innerHTML = '';
+
+            // Break off execution if the selected profile isn't sakura
+            if (themeValue !== 'sakura') return;
+
+            // Internal generation tool
+            function spawnSinglePetal() {
+                // Ensure we don't overcrowd the view (Max 12 petals loose at once)
+                if (petalCanvas.children.length >= 12) return;
+
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+
+                // Randomize geometric parameters across narrow limits to feel hand-drawn
+                const dimension = Math.random() * 7 + 6; // 6px to 13px sizing scale
+                const startingX = Math.random() * 100;    // horizontal screen layout pct
+                const duration = Math.random() * 5 + 7;   // slow draft speed (7s to 12s)
+                const relativeDelay = Math.random() * 2;  
+
+                petal.style.width = `${dimension}px`;
+                petal.style.height = `${dimension * 1.3}px`; // slightly elongated profile
+                petal.style.left = `${startingX}%`;
+                petal.style.animationDuration = `${duration}s`;
+                petal.style.animationDelay = `${relativeDelay}s`;
+
+                // Garbage collection hook to clean memory footprint when fall cycle expires
+                petal.addEventListener('animationend', () => {
+                    petal.remove();
+                });
+
+                petalCanvas.appendChild(petal);
+            }
+
+            // Immediately baseline stack the visual plane on startup so it doesn't look empty
+            for(let initial = 0; initial < 4; initial++) {
+                spawnSinglePetal();
+            }
+
+            // Set background trickling rate
+            petalSpawnInterval = setInterval(spawnSinglePetal, 1400);
+        }
+
         function applyThemeSelection(themeValue) {
             activeTheme = themeValue;
             document.body.setAttribute('data-theme', themeValue);
             localStorage.setItem('cube_timer_theme', themeValue);
+            
+            // Re-evaluate petal background cycle state hooks
+            managePetalEngine(themeValue);
         }
 
         desktopThemeBtn.addEventListener('click', (e) => {
