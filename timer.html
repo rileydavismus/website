@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        :root {
+        /* Theme Definitions Mapping Theme Variables into Global UI Selectors */
+        :root, body[data-theme="dark"] {
             --bg-color: #0f0f11;
             --text-color: #e2e8f0;
             --ready-color: #22c55e;
@@ -19,8 +20,50 @@
             --border-color: #1e1e24;
             --variance-plus: #ef4444;
             --variance-minus: #22c55e;
+            --modal-overlay-bg: rgba(0, 0, 0, 0.75);
+        }
 
-            /* Modern Vibrant Stickerless Speedcube Palette */
+        body[data-theme="light"] {
+            --bg-color: #f8fafc;
+            --text-color: #0f172a;
+            --ready-color: #16a34a;
+            --holding-color: #d97706;
+            --dim-color: #64748b;
+            --sidebar-bg: #f1f5f9;
+            --border-color: #e2e8f0;
+            --variance-plus: #dc2626;
+            --variance-minus: #16a34a;
+            --modal-overlay-bg: rgba(15, 23, 42, 0.4);
+        }
+
+        body[data-theme="green"] {
+            --bg-color: #06100a;
+            --text-color: #a7f3d0;
+            --ready-color: #34d399;
+            --holding-color: #fbbf24;
+            --dim-color: #047857;
+            --sidebar-bg: #0b1a11;
+            --border-color: #112e1e;
+            --variance-plus: #f87171;
+            --variance-minus: #34d399;
+            --modal-overlay-bg: rgba(4, 16, 10, 0.8);
+        }
+
+        body[data-theme="blue"] {
+            --bg-color: #070f1e;
+            --text-color: #bfdbfe;
+            --ready-color: #60a5fa;
+            --holding-color: #fbbf24;
+            --dim-color: #1d4ed8;
+            --sidebar-bg: #0c172e;
+            --border-color: #162a54;
+            --variance-plus: #f87171;
+            --variance-minus: #60a5fa;
+            --modal-overlay-bg: rgba(7, 15, 30, 0.8);
+        }
+
+        /* Fixed Functional Sticker Color Matrix Specs */
+        :root {
             --cube-white: #f3f4f6;
             --cube-yellow: #facc15;
             --cube-green: #22c55e;
@@ -41,6 +84,7 @@
             user-select: none;
             -webkit-user-select: none;
             touch-action: none;
+            transition: background-color 0.15s ease, color 0.15s ease;
         }
 
         /* Desktop Sidebar Orientations */
@@ -77,6 +121,7 @@
             padding: 20px;
             box-sizing: border-box;
             z-index: 10;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
         }
 
         .sidebar-left-col, .sidebar-right-col {
@@ -87,7 +132,7 @@
         .menu-header {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             flex-shrink: 0;
             width: 100%;
         }
@@ -110,10 +155,11 @@
             -webkit-appearance: none;
             text-align: left;
             text-indent: 4px;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        /* Layout Icon Toggle Button */
-        .layout-btn {
+        /* Utility Control Buttons */
+        .layout-btn, .theme-trigger-btn {
             background-color: var(--bg-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
@@ -126,9 +172,10 @@
             align-items: center;
             justify-content: center;
             padding: 0;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        .layout-btn svg {
+        .layout-btn svg, .theme-trigger-btn svg {
             width: 18px;
             height: 18px;
             fill: none;
@@ -136,11 +183,16 @@
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, stroke 0.15s ease;
         }
 
         body.sidebar-right .layout-btn svg {
             transform: scaleX(-1);
+        }
+
+        /* Fixed Mobile Theme Target Container - Hidden on Desktop */
+        .mobile-theme-wrapper {
+            display: none;
         }
 
         .stats-section {
@@ -154,10 +206,12 @@
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             color: var(--dim-color);
+            transition: color 0.15s ease;
         }
 
         .stat-row span:last-child {
             color: var(--text-color);
+            transition: color 0.15s ease;
         }
 
         .history-header {
@@ -168,6 +222,7 @@
             padding-bottom: 5px;
             margin-bottom: 1rem;
             flex-shrink: 0;
+            transition: border-color 0.15s ease;
         }
 
         .history-title {
@@ -175,6 +230,7 @@
             color: var(--dim-color);
             text-transform: lowercase;
             letter-spacing: 1px;
+            transition: color 0.15s ease;
         }
 
         .clear-btn {
@@ -186,6 +242,7 @@
             cursor: pointer;
             padding: 2px 6px;
             text-transform: lowercase;
+            transition: color 0.15s ease;
         }
 
         .clear-btn:hover {
@@ -217,6 +274,10 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
 
+        body[data-theme="light"] .history-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
         .history-item.blank-spacer {
             border-bottom: none;
             min-height: 1.5rem;
@@ -231,6 +292,7 @@
 
         .history-index {
             color: var(--dim-color);
+            transition: color 0.15s ease;
         }
 
         /* Action Edit Trigger Button */
@@ -245,11 +307,15 @@
             justify-content: center;
             border-radius: 3px;
             pointer-events: auto;
+            transition: color 0.15s ease, background-color 0.15s ease;
         }
 
         .edit-time-btn:hover {
             color: var(--text-color);
             background-color: rgba(255, 255, 255, 0.05);
+        }
+        body[data-theme="light"] .edit-time-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
         .edit-time-btn svg {
@@ -262,14 +328,14 @@
             stroke-linejoin: round;
         }
 
-        /* Dialog / Modal Styling */
+        /* Dialog / Modal Styling Framework */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
+            background-color: var(--modal-overlay-bg);
             backdrop-filter: blur(2px);
             display: flex;
             align-items: center;
@@ -295,7 +361,7 @@
             box-sizing: border-box;
             text-align: center;
             transform: scale(0.95);
-            transition: transform 0.15s ease;
+            transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
         }
 
         .modal-overlay.open .modal-card {
@@ -309,6 +375,7 @@
             margin-bottom: 14px;
             text-transform: lowercase;
             letter-spacing: 0.5px;
+            transition: color 0.15s ease;
         }
 
         .modal-scramble-display {
@@ -322,6 +389,7 @@
             margin-bottom: 16px;
             word-break: break-word;
             text-align: center;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
         .modal-time-display {
@@ -330,6 +398,7 @@
             margin-bottom: 20px;
             color: var(--text-color);
             line-height: 1;
+            transition: color 0.15s ease;
         }
 
         .modal-options {
@@ -386,6 +455,37 @@
             cursor: pointer;
             text-decoration: underline;
             text-transform: lowercase;
+            transition: color 0.15s ease;
+        }
+
+        /* Theme Option Grid Layout */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .theme-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-transform: lowercase;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--text-color);
+        }
+
+        .theme-btn.active {
+            border-color: var(--ready-color);
+            background-color: rgba(34, 197, 94, 0.05);
         }
 
         /* Main Display Area */
@@ -421,7 +521,7 @@
             min-height: 5.25rem;
             max-width: 1050px;
             word-spacing: 8px;
-            transition: opacity 0.1s ease;
+            transition: opacity 0.1s ease, color 0.15s ease;
         }
 
         .timer-wrapper {
@@ -476,6 +576,7 @@
             letter-spacing: 1px;
             text-transform: lowercase;
             margin-bottom: 3.5rem;
+            transition: color 0.15s ease;
         }
 
         .cube-visualization {
@@ -542,8 +643,18 @@
                 height: 72vh;
                 width: 100%;
                 flex-grow: 0;
-                order: 1 !important;
+                order: 2 !important; /* Move after layout calculations if needed, keep clear */
             }
+            
+            /* Positioning mobile theme selector absolute inside main workspace container */
+            .mobile-theme-wrapper {
+                display: block;
+                position: absolute;
+                top: 14px;
+                right: 14px;
+                z-index: 5;
+            }
+            
             .sidebar {
                 width: 100%;
                 height: 28vh;
@@ -552,7 +663,7 @@
                 border-top: 1px solid var(--border-color);
                 padding: 14px;
                 box-sizing: border-box;
-                order: 2 !important;
+                order: 3 !important;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 15px;
@@ -573,10 +684,18 @@
                 padding-left: 15px;
                 min-height: 0;
             }
+            body[data-theme="light"] .sidebar-right-col {
+                border-left: 1px solid rgba(0, 0, 0, 0.05);
+            }
 
             .layout-btn {
                 display: none;
             }
+            /* Hide desktop placement within sidebar for mobile layouts */
+            .sidebar .theme-trigger-btn {
+                display: none;
+            }
+            
             .menu-header {
                 margin-bottom: 0.5rem;
             }
@@ -661,9 +780,21 @@
         }
     </style>
 </head>
-<body class="sidebar-left">
+<body class="sidebar-left" data-theme="dark">
 
     <div class="main-content">
+        <div class="mobile-theme-wrapper">
+            <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select styling palette">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19H5C6.65685 19 8 17.6569 8 16C8 15.45 7.78 14.95 7.42 14.58C7.05 14.21 6.83 13.71 6.83 13.17C6.83 12.08 7.71 11.2 8.8 11.2H10.2V9.8C10.2 8.71 11.08 7.83 12.17 7.83C12.71 7.83 13.21 8.05 13.58 8.42C13.95 8.78 14.45 9 15 9C16.6569 9 18 7.65685 18 6V5.85857C19.8038 7.62681 21 10.0973 21 12.83C21 17.2483 17.4183 20.83 13 20.83C12.65 20.83 12.32 20.5 12 20.17V22Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="7.5" cy="10.5" r="1" fill="currentColor"/>
+                    <circle cx="11.5" cy="7.5" r="1" fill="currentColor"/>
+                    <circle cx="16.5" cy="9.5" r="1" fill="currentColor"/>
+                    <circle cx="15.5" cy="14.5" r="1" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+
         <div class="touch-zone" id="touchZone"></div>
         <div class="container">
             <div id="scramble">generating official scramble...</div>
@@ -696,6 +827,17 @@
                         <option value="session5">session 5</option>
                     </select>
                 </div>
+                
+                <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select styling palette">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19H5C6.65685 19 8 17.6569 8 16C8 15.45 7.78 14.95 7.42 14.58C7.05 14.21 6.83 13.71 6.83 13.17C6.83 12.08 7.71 11.2 8.8 11.2H10.2V9.8C10.2 8.71 11.08 7.83 12.17 7.83C12.71 7.83 13.21 8.05 13.58 8.42C13.95 8.78 14.45 9 15 9C16.6569 9 18 7.65685 18 6V5.85857C19.8038 7.62681 21 10.0973 21 12.83C21 17.2483 17.4183 20.83 13 20.83C12.65 20.83 12.32 20.5 12 20.17V22Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="7.5" cy="10.5" r="1" fill="currentColor"/>
+                        <circle cx="11.5" cy="7.5" r="1" fill="currentColor"/>
+                        <circle cx="16.5" cy="9.5" r="1" fill="currentColor"/>
+                        <circle cx="15.5" cy="14.5" r="1" fill="currentColor"/>
+                    </svg>
+                </button>
+
                 <button class="layout-btn" id="layoutToggleBtn" title="toggle sidebar position">
                     <svg viewBox="0 0 24 24">
                         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -747,6 +889,19 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="themeModal">
+        <div class="modal-card">
+            <div class="modal-title">select theme</div>
+            <div class="theme-grid">
+                <button class="theme-btn" data-theme-val="dark">dark</button>
+                <button class="theme-btn" data-theme-val="light">light</button>
+                <button class="theme-btn" data-theme-val="green">green</button>
+                <button class="theme-btn" data-theme-val="blue">blue</button>
+            </div>
+            <button class="modal-close-btn" id="themeModalCloseBtn">close</button>
+        </div>
+    </div>
+
     <script type="module">
         import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
 
@@ -774,6 +929,13 @@
         const modDeleteBtn = document.getElementById('modDeleteBtn');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
         
+        // Theme Selection Elements
+        const themeModal = document.getElementById('themeModal');
+        const themeModalCloseBtn = document.getElementById('themeModalCloseBtn');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const desktopThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
+        const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
+
         let state = 'idle'; 
         let startTime = 0;
         let elapsedTimerInterval = null;
@@ -782,6 +944,7 @@
         let lastGeneratedScramble = ''; 
         
         let currentSession = 'session1';
+        let activeTheme = 'dark';
         
         // Shape: { rawTime: number, plusTwo: boolean, dnf: boolean, scramble: string }
         const sessionsData = {
@@ -922,6 +1085,7 @@
             const savedSessions = localStorage.getItem('cube_timer_sessions');
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
             const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
+            const savedTheme = localStorage.getItem('cube_timer_theme');
             
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
@@ -936,6 +1100,10 @@
             if (savedLayoutOrientation) {
                 document.body.className = savedLayoutOrientation;
             }
+            if (savedTheme) {
+                activeTheme = savedTheme;
+            }
+            applyThemeSelection(activeTheme);
             
             updateHistoryUI();
             updateStatsUI();
@@ -1142,6 +1310,51 @@
             if (e.target === editModal) closeEditModal();
         });
 
+        // Theme Custom Modal System Actions
+        function openThemeModal() {
+            themeButtons.forEach(btn => {
+                if (btn.getAttribute('data-theme-val') === activeTheme) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            themeModal.classList.add('open');
+        }
+
+        function closeThemeModal() {
+            themeModal.classList.remove('open');
+        }
+
+        function applyThemeSelection(themeValue) {
+            activeTheme = themeValue;
+            document.body.setAttribute('data-theme', themeValue);
+            localStorage.setItem('cube_timer_theme', themeValue);
+        }
+
+        desktopThemeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openThemeModal();
+        });
+
+        mobileThemeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openThemeModal();
+        });
+
+        themeModalCloseBtn.addEventListener('click', closeThemeModal);
+        themeModal.addEventListener('click', (e) => {
+            if (e.target === themeModal) closeThemeModal();
+        });
+
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTheme = button.getAttribute('data-theme-val');
+                applyThemeSelection(targetTheme);
+                closeThemeModal();
+            });
+        });
+
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
@@ -1185,7 +1398,7 @@
         }
 
         function triggerStartSequence() {
-            if (editModal.classList.contains('open')) return;
+            if (editModal.classList.contains('open') || themeModal.classList.contains('open')) return;
 
             if (state === 'running') {
                 stopTimer();
