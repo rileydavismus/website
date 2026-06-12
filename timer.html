@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
+    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -655,7 +656,7 @@
                 flex-grow: 1;
                 width: 100%;
                 order: 1 !important;
-                padding: 45px 12px 10px 12px;
+                padding: 20px 12px 0px 12px; /* Pulled the entire main content workspace further up the page */
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -674,7 +675,7 @@
             
             .sidebar {
                 width: 100%;
-                height: 175px; /* Slightly heightened boundary to securely encompass statistics data */
+                height: 195px; /* Boosted available height room slightly to secure session viewport spacing */
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
@@ -683,7 +684,7 @@
                 order: 2 !important;
                 display: flex;
                 flex-direction: row !important; /* Forces side-by-side splits layout alignment on mobile */
-                gap: 15px;
+                gap: 12px;
                 flex-shrink: 0;
             }
             
@@ -702,7 +703,7 @@
                 justify-content: flex-start;
                 width: 50%;
                 border-left: 1px solid rgba(255, 255, 255, 0.05);
-                padding-left: 15px;
+                padding-left: 12px;
                 min-height: 0;
                 box-sizing: border-box;
             }
@@ -719,10 +720,10 @@
             }
             
             .menu-header {
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.4rem;
             }
             .session-select {
-                padding: 6px;
+                padding: 5px;
                 font-size: 0.85rem;
             }
             .stats-section {
@@ -736,8 +737,8 @@
                 font-size: 0.85rem;
             }
             .history-header {
-                margin-bottom: 0.4rem;
-                padding-bottom: 4px;
+                margin-bottom: 0.3rem;
+                padding-bottom: 3px;
                 width: 100%;
             }
             .history-title {
@@ -759,7 +760,7 @@
                 box-sizing: border-box;
             }
             .history-item {
-                padding: 5px 0;
+                padding: 4px 0; /* Compact row padding to let more data show simultaneously */
                 font-size: 0.85rem;
             }
             
@@ -767,14 +768,14 @@
                 max-width: 100%;
                 justify-content: center;
                 height: auto;
-                gap: 8px;
+                gap: 6px;
             }
             
             .timer-wrapper {
                 margin-bottom: 0;
                 min-height: auto;
                 flex-grow: 0;
-                padding: 4px 0;
+                padding: 2px 0;
             }
             
             #timer {
@@ -822,9 +823,12 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
+    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
+        <!-- Floating Corner Action Trigger Container on Mobile Views -->
         <div class="mobile-theme-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
+                <!-- Theme/Contrast Icon Balance Display -->
                 <svg viewBox="0 0 24 24">
                     <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                     <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -852,7 +856,9 @@
         </div>
     </div>
 
+    <!-- Sidebar Area -->
     <div class="sidebar">
+        <!-- Session Info Block (Left Column on Mobile) -->
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
@@ -865,7 +871,9 @@
                     </select>
                 </div>
                 
+                <!-- Desktop Sidebar Placement: Theme Toggle & Layout Side-by-Side -->
                 <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
+                    <!-- Theme/Contrast Icon Balance Display -->
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                         <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -897,6 +905,7 @@
             </div>
         </div>
         
+        <!-- Solve History Block (Right Column on Mobile) -->
         <div class="sidebar-right-col">
             <div class="history-header">
                 <div class="history-title">solves</div>
@@ -906,6 +915,7 @@
         </div>
     </div>
 
+    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <div class="modal-title" id="modalTitle">edit solve #0</div>
@@ -923,6 +933,7 @@
         </div>
     </div>
 
+    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <div class="modal-title">select theme</div>
@@ -936,6 +947,7 @@
         </div>
     </div>
 
+    <!-- Injecting modern, community-standard TNoodle-compatible Random State engine -->
     <script type="module">
         import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
 
@@ -1282,8 +1294,8 @@
             modalScrambleDisplay.textContent = solve.scramble || 'no scramble data available';
             modalTimeDisplay.textContent = displaySolveString(solve);
 
-            modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
-            modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
+            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
+            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
 
             editModal.classList.add('open');
         }
@@ -1302,8 +1314,8 @@
 
             saveData();
             modalTimeDisplay.textContent = displaySolveString(solve);
-            modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
-            modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
+            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
+            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
             
             updateHistoryUI();
             updateStatsUI();
@@ -1319,8 +1331,8 @@
 
             saveData();
             modalTimeDisplay.textContent = displaySolveString(solve);
-            modPlusTwoBtn.className = solve.plusTwo ? 'option-btn active-modifier' : 'option-btn';
-            modDnfBtn.className = solve.dnf ? 'option-btn active-modifier' : 'option-btn';
+            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
+            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
             
             updateHistoryUI();
             updateStatsUI();
