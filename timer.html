@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
-    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -61,6 +60,48 @@
             --variance-plus: #f87171;
             --variance-minus: #60a5fa;
             --modal-overlay-bg: rgba(7, 15, 30, 0.8);
+        }
+
+        /* Pink Sakura Style Theme */
+        body[data-theme="sakura"] {
+            --bg-color: #23161c;
+            --text-color: #ffdae2;
+            --ready-color: #ff9ebb;
+            --holding-color: #fcd34d;
+            --dim-color: #b37d8e;
+            --sidebar-bg: #2d1d25;
+            --border-color: #442a36;
+            --variance-plus: #f43f5e;
+            --variance-minus: #ff9ebb;
+            --modal-overlay-bg: rgba(35, 22, 28, 0.8);
+        }
+
+        /* Cyberpunk Style Red Theme */
+        body[data-theme="cyberpunk-red"] {
+            --bg-color: #120204;
+            --text-color: #ff4151;
+            --ready-color: #ff0055;
+            --holding-color: #eab308;
+            --dim-color: #8c1c27;
+            --sidebar-bg: #1e0509;
+            --border-color: #3b0a11;
+            --variance-plus: #ffffff;
+            --variance-minus: #ff0055;
+            --modal-overlay-bg: rgba(18, 2, 4, 0.85);
+        }
+
+        /* Forest Style Green Theme */
+        body[data-theme="forest"] {
+            --bg-color: #0d1310;
+            --text-color: #c2d6be;
+            --ready-color: #4eed88;
+            --holding-color: #fbbf24;
+            --dim-color: #58735b;
+            --sidebar-bg: #131b17;
+            --border-color: #223028;
+            --variance-plus: #f87171;
+            --variance-minus: #4eed88;
+            --modal-overlay-bg: rgba(13, 19, 16, 0.85);
         }
 
         /* Fixed Functional Sticker Color Matrix Specs */
@@ -821,9 +862,7 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
-    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
-        <!-- Floating Corner Action Trigger Container on Mobile Views -->
         <div class="mobile-theme-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
                 <svg viewBox="0 0 24 24">
@@ -853,9 +892,7 @@
         </div>
     </div>
 
-    <!-- Sidebar Area -->
     <div class="sidebar">
-        <!-- Session Info Block (Left Column on Mobile) -->
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
@@ -900,7 +937,6 @@
             </div>
         </div>
         
-        <!-- Solve History Block (Right Column on Mobile) -->
         <div class="sidebar-right-col">
             <div class="history-header">
                 <div class="history-title">solves</div>
@@ -910,7 +946,6 @@
         </div>
     </div>
 
-    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <div class="modal-title" id="modalTitle">edit solve #0</div>
@@ -928,7 +963,6 @@
         </div>
     </div>
 
-    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <div class="modal-title">select theme</div>
@@ -937,6 +971,9 @@
                 <button class="theme-btn" data-theme-val="light">light</button>
                 <button class="theme-btn" data-theme-val="green">green</button>
                 <button class="theme-btn" data-theme-val="blue">blue</button>
+                <button class="theme-btn" data-theme-val="sakura">sakura</button>
+                <button class="theme-btn" data-theme-val="cyberpunk-red">cyber_red</button>
+                <button class="theme-btn" data-theme-val="forest">forest</button>
             </div>
             <button class="modal-close-btn" id="themeModalCloseBtn">close</button>
         </div>
