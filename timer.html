@@ -132,13 +132,15 @@
         .menu-header {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             flex-shrink: 0;
             width: 100%;
         }
 
         .session-container {
             flex-grow: 1;
+            display: flex;
+            gap: 4px;
         }
 
         .session-select {
@@ -159,7 +161,7 @@
         }
 
         /* Utility Control Buttons */
-        .layout-btn, .theme-trigger-btn {
+        .layout-btn, .theme-trigger-btn, .rename-session-btn {
             background-color: var(--bg-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
@@ -175,7 +177,7 @@
             transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        .layout-btn svg, .theme-trigger-btn svg {
+        .layout-btn svg, .theme-trigger-btn svg, .rename-session-btn svg {
             width: 18px;
             height: 18px;
             fill: none;
@@ -458,6 +460,27 @@
             transition: color 0.15s ease;
         }
 
+        /* Rename Input Styling */
+        .modal-input {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            text-transform: lowercase;
+            text-align: center;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+        .modal-input:focus {
+            border-color: var(--dim-color);
+        }
+
         /* Theme Option Grid Layout */
         .theme-grid {
             display: grid;
@@ -643,7 +666,7 @@
                 height: 72vh;
                 width: 100%;
                 flex-grow: 0;
-                order: 2 !important; /* Move after layout calculations if needed, keep clear */
+                order: 2 !important;
             }
             
             /* Positioning mobile theme selector absolute inside main workspace container */
@@ -688,7 +711,7 @@
                 border-left: 1px solid rgba(0, 0, 0, 0.05);
             }
 
-            .layout-btn {
+            .layout-btn, .rename-session-btn {
                 display: none;
             }
             /* Hide desktop placement within sidebar for mobile layouts */
@@ -784,13 +807,10 @@
 
     <div class="main-content">
         <div class="mobile-theme-wrapper">
-            <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select styling palette">
+            <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
                 <svg viewBox="0 0 24 24">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19H5C6.65685 19 8 17.6569 8 16C8 15.45 7.78 14.95 7.42 14.58C7.05 14.21 6.83 13.71 6.83 13.17C6.83 12.08 7.71 11.2 8.8 11.2H10.2V9.8C10.2 8.71 11.08 7.83 12.17 7.83C12.71 7.83 13.21 8.05 13.58 8.42C13.95 8.78 14.45 9 15 9C16.6569 9 18 7.65685 18 6V5.85857C19.8038 7.62681 21 10.0973 21 12.83C21 17.2483 17.4183 20.83 13 20.83C12.65 20.83 12.32 20.5 12 20.17V22Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="7.5" cy="10.5" r="1" fill="currentColor"/>
-                    <circle cx="11.5" cy="7.5" r="1" fill="currentColor"/>
-                    <circle cx="16.5" cy="9.5" r="1" fill="currentColor"/>
-                    <circle cx="15.5" cy="14.5" r="1" fill="currentColor"/>
+                    <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
+                    <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
                 </svg>
             </button>
         </div>
@@ -826,15 +846,18 @@
                         <option value="session4">session 4</option>
                         <option value="session5">session 5</option>
                     </select>
+                    <button class="rename-session-btn" id="renameSessionBtn" title="rename current session space">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                    </button>
                 </div>
                 
-                <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select styling palette">
+                <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
                     <svg viewBox="0 0 24 24">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19H5C6.65685 19 8 17.6569 8 16C8 15.45 7.78 14.95 7.42 14.58C7.05 14.21 6.83 13.71 6.83 13.17C6.83 12.08 7.71 11.2 8.8 11.2H10.2V9.8C10.2 8.71 11.08 7.83 12.17 7.83C12.71 7.83 13.21 8.05 13.58 8.42C13.95 8.78 14.45 9 15 9C16.6569 9 18 7.65685 18 6V5.85857C19.8038 7.62681 21 10.0973 21 12.83C21 17.2483 17.4183 20.83 13 20.83C12.65 20.83 12.32 20.5 12 20.17V22Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="7.5" cy="10.5" r="1" fill="currentColor"/>
-                        <circle cx="11.5" cy="7.5" r="1" fill="currentColor"/>
-                        <circle cx="16.5" cy="9.5" r="1" fill="currentColor"/>
-                        <circle cx="15.5" cy="14.5" r="1" fill="currentColor"/>
+                        <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
+                        <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
                     </svg>
                 </button>
 
@@ -902,6 +925,17 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="renameModal">
+        <div class="modal-card">
+            <div class="modal-title">rename session</div>
+            <input type="text" class="modal-input" id="sessionRenameInput" maxlength="20" placeholder="enter context label...">
+            <div class="modal-options">
+                <button class="option-btn active-modifier" id="saveRenameBtn" style="background-color: rgba(34, 197, 94, 0.1); border-color: var(--ready-color); color: var(--ready-color);">save custom label</button>
+            </div>
+            <button class="modal-close-btn" id="renameModalCloseBtn">cancel</button>
+        </div>
+    </div>
+
     <script type="module">
         import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
 
@@ -936,6 +970,13 @@
         const desktopThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
         const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
 
+        // Rename Session Elements
+        const renameModal = document.getElementById('renameModal');
+        const renameSessionBtn = document.getElementById('renameSessionBtn');
+        const sessionRenameInput = document.getElementById('sessionRenameInput');
+        const saveRenameBtn = document.getElementById('saveRenameBtn');
+        const renameModalCloseBtn = document.getElementById('renameModalCloseBtn');
+
         let state = 'idle'; 
         let startTime = 0;
         let elapsedTimerInterval = null;
@@ -953,6 +994,15 @@
             session3: [],
             session4: [],
             session5: []
+        };
+
+        // Track custom session text labels
+        const sessionLabels = {
+            session1: 'session 1',
+            session2: 'session 2',
+            session3: 'session 3',
+            session4: 'session 4',
+            session5: 'session 5'
         };
 
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
@@ -1086,6 +1136,7 @@
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
             const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
             const savedTheme = localStorage.getItem('cube_timer_theme');
+            const savedLabels = localStorage.getItem('cube_timer_session_labels');
             
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
@@ -1093,6 +1144,15 @@
                     sessionsData[k] = normalizeSessionArray(parsed[k]);
                 });
             }
+            if (savedLabels) {
+                const parsedLabels = JSON.parse(savedLabels);
+                Object.keys(parsedLabels).forEach(k => {
+                    sessionLabels[k] = parsedLabels[k];
+                });
+            }
+            
+            updateSessionSelectorOptions();
+
             if (savedCurrentSession && sessionsData[savedCurrentSession]) {
                 currentSession = savedCurrentSession;
                 sessionSelect.value = currentSession;
@@ -1114,6 +1174,15 @@
         function saveData() {
             localStorage.setItem('cube_timer_sessions', JSON.stringify(sessionsData));
             localStorage.setItem('cube_timer_active_session', currentSession);
+            localStorage.setItem('cube_timer_session_labels', JSON.stringify(sessionLabels));
+        }
+
+        function updateSessionSelectorOptions() {
+            Array.from(sessionSelect.options).forEach(opt => {
+                if (sessionLabels[opt.value]) {
+                    opt.textContent = sessionLabels[opt.value];
+                }
+            });
         }
 
         function startTimer() {
@@ -1355,6 +1424,51 @@
             });
         });
 
+        // Rename Session Modal System Actions
+        function openRenameModal() {
+            sessionRenameInput.value = sessionLabels[currentSession] || '';
+            renameModal.classList.add('open');
+            setTimeout(() => sessionRenameInput.focus(), 50);
+        }
+
+        function closeRenameModal() {
+            renameModal.classList.remove('open');
+            sessionRenameInput.blur();
+        }
+
+        function handleSaveRename() {
+            const trimmed = sessionRenameInput.value.trim().toLowerCase();
+            if (trimmed.length > 0) {
+                sessionLabels[currentSession] = trimmed;
+            } else {
+                // Fallback to default index layout context if wiped clear
+                sessionLabels[currentSession] = 'session ' + currentSession.replace('session', '');
+            }
+            saveData();
+            updateSessionSelectorOptions();
+            closeRenameModal();
+        }
+
+        renameSessionBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openRenameModal();
+        });
+
+        saveRenameBtn.addEventListener('click', handleSaveRename);
+        renameModalCloseBtn.addEventListener('click', closeRenameModal);
+        renameModal.addEventListener('click', (e) => {
+            if (e.target === renameModal) closeRenameModal();
+        });
+        sessionRenameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSaveRename();
+            }
+            if (e.key === 'Escape') {
+                closeRenameModal();
+            }
+        });
+
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
@@ -1398,7 +1512,7 @@
         }
 
         function triggerStartSequence() {
-            if (editModal.classList.contains('open') || themeModal.classList.contains('open')) return;
+            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || renameModal.classList.contains('open')) return;
 
             if (state === 'running') {
                 stopTimer();
@@ -1473,7 +1587,8 @@
         });
 
         clearBtn.addEventListener('click', () => {
-            if (confirm(`clear all solves for ${sessionSelect.options[sessionSelect.selectedIndex].text}?`)) {
+            const labelText = sessionLabels[currentSession] || sessionSelect.options[sessionSelect.selectedIndex].text;
+            if (confirm(`clear all solves for ${labelText}?`)) {
                 sessionsData[currentSession] = [];
                 saveData();
                 updateHistoryUI();
