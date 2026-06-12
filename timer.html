@@ -656,7 +656,7 @@
                 flex-grow: 1;
                 width: 100%;
                 order: 1 !important;
-                padding: 20px 12px 0px 12px; /* Pulled the entire main content workspace further up the page */
+                padding: 20px 12px 0px 12px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -664,7 +664,6 @@
                 box-sizing: border-box;
             }
             
-            /* Positioning mobile theme selector absolute inside main workspace container */
             .mobile-theme-wrapper {
                 display: block;
                 position: absolute;
@@ -675,16 +674,16 @@
             
             .sidebar {
                 width: 100%;
-                height: 195px; /* Boosted available height room slightly to secure session viewport spacing */
+                height: 220px; /* Slight scale up to cleanly room larger typography specs */
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
-                padding: 12px;
+                padding: 14px 12px;
                 box-sizing: border-box;
                 order: 2 !important;
                 display: flex;
-                flex-direction: row !important; /* Forces side-by-side splits layout alignment on mobile */
-                gap: 12px;
+                flex-direction: row !important;
+                gap: 16px;
                 flex-shrink: 0;
             }
             
@@ -692,7 +691,7 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                width: 50%;
+                width: 52%;
                 min-height: 0;
                 flex-shrink: 0;
             }
@@ -701,9 +700,9 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                width: 50%;
+                width: 48%;
                 border-left: 1px solid rgba(255, 255, 255, 0.05);
-                padding-left: 12px;
+                padding-left: 14px;
                 min-height: 0;
                 box-sizing: border-box;
             }
@@ -714,38 +713,37 @@
             .layout-btn {
                 display: none;
             }
-            /* Hide desktop placement within sidebar for mobile layouts */
             .sidebar .theme-trigger-btn {
                 display: none;
             }
             
             .menu-header {
-                margin-bottom: 0.4rem;
+                margin-bottom: 0.75rem;
             }
             .session-select {
-                padding: 5px;
-                font-size: 0.85rem;
+                padding: 8px 6px;
+                font-size: 1.1rem; /* 25% bigger touch baseline target */
             }
             .stats-section {
                 margin-bottom: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 4px;
+                gap: 10px; /* Spaced out the individual session statistics data rows */
             }
             .stat-row {
                 margin-bottom: 0;
-                font-size: 0.85rem;
+                font-size: 1.15rem; /* 25% bigger typography presence */
             }
             .history-header {
-                margin-bottom: 0.3rem;
-                padding-bottom: 3px;
+                margin-bottom: 0.4rem;
+                padding-bottom: 4px;
                 width: 100%;
             }
             .history-title {
-                font-size: 0.85rem;
+                font-size: 0.9rem;
             }
             .clear-btn {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
                 padding: 0px 4px;
             }
             .history-list {
@@ -760,8 +758,8 @@
                 box-sizing: border-box;
             }
             .history-item {
-                padding: 4px 0; /* Compact row padding to let more data show simultaneously */
-                font-size: 0.85rem;
+                padding: 5px 0;
+                font-size: 0.95rem;
             }
             
             .container {
@@ -828,7 +826,6 @@
         <!-- Floating Corner Action Trigger Container on Mobile Views -->
         <div class="mobile-theme-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
-                <!-- Theme/Contrast Icon Balance Display -->
                 <svg viewBox="0 0 24 24">
                     <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                     <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -871,9 +868,7 @@
                     </select>
                 </div>
                 
-                <!-- Desktop Sidebar Placement: Theme Toggle & Layout Side-by-Side -->
                 <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
-                    <!-- Theme/Contrast Icon Balance Display -->
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                         <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -947,7 +942,6 @@
         </div>
     </div>
 
-    <!-- Injecting modern, community-standard TNoodle-compatible Random State engine -->
     <script type="module">
         import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
 
@@ -965,7 +959,6 @@
         const layoutToggleBtn = document.getElementById('layoutToggleBtn');
         const touchZone = document.getElementById('touchZone');
 
-        // Modal Elements
         const editModal = document.getElementById('editModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalScrambleDisplay = document.getElementById('modalScrambleDisplay');
@@ -975,7 +968,6 @@
         const modDeleteBtn = document.getElementById('modDeleteBtn');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
         
-        // Theme Selection Elements
         const themeModal = document.getElementById('themeModal');
         const themeModalCloseBtn = document.getElementById('themeModalCloseBtn');
         const themeButtons = document.querySelectorAll('.theme-btn');
@@ -992,7 +984,6 @@
         let currentSession = 'session1';
         let activeTheme = 'dark';
         
-        // Shape: { rawTime: number, plusTwo: boolean, dnf: boolean, scramble: string }
         const sessionsData = {
             session1: [],
             session2: [],
@@ -1357,7 +1348,6 @@
             if (e.target === editModal) closeEditModal();
         });
 
-        // Theme Custom Modal System Actions
         function openThemeModal() {
             themeButtons.forEach(btn => {
                 if (btn.getAttribute('data-theme-val') === activeTheme) {
