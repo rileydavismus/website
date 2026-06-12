@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
+    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -62,18 +63,18 @@
             --modal-overlay-bg: rgba(7, 15, 30, 0.8);
         }
 
-        /* Pink Sakura Style Theme */
+        /* Light Pink Sakura Style Theme */
         body[data-theme="sakura"] {
-            --bg-color: #23161c;
-            --text-color: #ffdae2;
-            --ready-color: #ff9ebb;
-            --holding-color: #fcd34d;
-            --dim-color: #b37d8e;
-            --sidebar-bg: #2d1d25;
-            --border-color: #442a36;
-            --variance-plus: #f43f5e;
-            --variance-minus: #ff9ebb;
-            --modal-overlay-bg: rgba(35, 22, 28, 0.8);
+            --bg-color: #fff0f3;
+            --text-color: #5c2d37;
+            --ready-color: #d04b68;
+            --holding-color: #b27b00;
+            --dim-color: #a67c84;
+            --sidebar-bg: #ffe4e9;
+            --border-color: #f7cad3;
+            --variance-plus: #df2a4b;
+            --variance-minus: #d04b68;
+            --modal-overlay-bg: rgba(92, 45, 55, 0.3);
         }
 
         /* Cyberpunk Style Red Theme */
@@ -90,18 +91,18 @@
             --modal-overlay-bg: rgba(18, 2, 4, 0.85);
         }
 
-        /* Forest Style Green Theme */
+        /* Light Forest Style Green Theme */
         body[data-theme="forest"] {
-            --bg-color: #0d1310;
-            --text-color: #c2d6be;
-            --ready-color: #4eed88;
-            --holding-color: #fbbf24;
-            --dim-color: #58735b;
-            --sidebar-bg: #131b17;
-            --border-color: #223028;
-            --variance-plus: #f87171;
-            --variance-minus: #4eed88;
-            --modal-overlay-bg: rgba(13, 19, 16, 0.85);
+            --bg-color: #f1f7f3;
+            --text-color: #274030;
+            --ready-color: #1b8a4b;
+            --holding-color: #a16207;
+            --dim-color: #6b8273;
+            --sidebar-bg: #e1ede4;
+            --border-color: #cbdcd0;
+            --variance-plus: #c2410c;
+            --variance-minus: #1b8a4b;
+            --modal-overlay-bg: rgba(39, 64, 48, 0.3);
         }
 
         /* Fixed Functional Sticker Color Matrix Specs */
@@ -318,7 +319,9 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
 
-        body[data-theme="light"] .history-item {
+        body[data-theme="light"] .history-item,
+        body[data-theme="sakura"] .history-item,
+        body[data-theme="forest"] .history-item {
             border-bottom: 1px solid rgba(0, 0, 0, 0.03);
         }
 
@@ -358,7 +361,9 @@
             color: var(--text-color);
             background-color: rgba(255, 255, 255, 0.05);
         }
-        body[data-theme="light"] .edit-time-btn:hover {
+        body[data-theme="light"] .edit-time-btn:hover,
+        body[data-theme="sakura"] .edit-time-btn:hover,
+        body[data-theme="forest"] .edit-time-btn:hover {
             background-color: rgba(0, 0, 0, 0.05);
         }
 
@@ -747,7 +752,9 @@
                 min-height: 0;
                 box-sizing: border-box;
             }
-            body[data-theme="light"] .sidebar-right-col {
+            body[data-theme="light"] .sidebar-right-col,
+            body[data-theme="sakura"] .sidebar-right-col,
+            body[data-theme="forest"] .sidebar-right-col {
                 border-left: 1px solid rgba(0, 0, 0, 0.05);
             }
 
@@ -763,17 +770,17 @@
             }
             .session-select {
                 padding: 8px 6px;
-                font-size: 0.95rem; /* Matches solve history font size */
+                font-size: 0.95rem;
             }
             .stats-section {
                 margin-bottom: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 10px; /* Kept spaced-out row buffer */
+                gap: 10px;
             }
             .stat-row {
                 margin-bottom: 0;
-                font-size: 0.95rem; /* Unifies session info text hierarchy with history list */
+                font-size: 0.95rem;
             }
             .history-header {
                 margin-bottom: 0.4rem;
@@ -862,7 +869,9 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
+    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
+        <!-- Floating Corner Action Trigger Container on Mobile Views -->
         <div class="mobile-theme-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
                 <svg viewBox="0 0 24 24">
@@ -892,7 +901,9 @@
         </div>
     </div>
 
+    <!-- Sidebar Area -->
     <div class="sidebar">
+        <!-- Session Info Block (Left Column on Mobile) -->
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
@@ -937,6 +948,7 @@
             </div>
         </div>
         
+        <!-- Solve History Block (Right Column on Mobile) -->
         <div class="sidebar-right-col">
             <div class="history-header">
                 <div class="history-title">solves</div>
@@ -946,6 +958,7 @@
         </div>
     </div>
 
+    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <div class="modal-title" id="modalTitle">edit solve #0</div>
@@ -963,6 +976,7 @@
         </div>
     </div>
 
+    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <div class="modal-title">select theme</div>
