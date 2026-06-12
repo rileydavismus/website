@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
+    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -62,7 +63,7 @@
             --modal-overlay-bg: rgba(7, 15, 30, 0.8);
         }
 
-        /* Sakura Theme: Airy Japanese Cherry Blossom Profile (Enhanced Contrast) */
+        /* Sakura Theme */
         body[data-theme="sakura"] {
             --bg-color: #ffdce1;
             --text-color: #3d1b20;
@@ -90,7 +91,7 @@
             --modal-overlay-bg: rgba(15, 15, 19, 0.85);
         }
 
-        /* Forest Theme: Deep, Atmospheric Pine Canopy Dark Profile */
+        /* Forest Theme */
         body[data-theme="forest"] {
             --bg-color: #1c261e;
             --text-color: #e3ede4;
@@ -797,7 +798,10 @@
                 border-left: 1px solid rgba(0, 0, 0, 0.05);
             }
 
-            .sidebar .theme-trigger-btn, .sidebar .settings-trigger-btn {
+            /* Explicitly scrub layout toggle and redundant controls out of mobile frames */
+            .sidebar .theme-trigger-btn, 
+            .sidebar .settings-trigger-btn,
+            .sidebar .layout-btn {
                 display: none !important;
             }
             
@@ -905,6 +909,7 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
+    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
         <div class="mobile-controls-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
@@ -941,6 +946,7 @@
         </div>
     </div>
 
+    <!-- Sidebar Area -->
     <div class="sidebar">
         <div class="sidebar-left-col">
             <div class="menu-header">
@@ -1002,6 +1008,7 @@
         </div>
     </div>
 
+    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <div class="modal-title" id="modalTitle">edit solve #0</div>
@@ -1019,6 +1026,7 @@
         </div>
     </div>
 
+    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <div class="modal-title">select theme</div>
@@ -1035,16 +1043,19 @@
         </div>
     </div>
 
+    <!-- Global Settings Dashboard Modal Overlay Layout Panel -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card settings-card">
             <div class="modal-title">settings</div>
             
+            <!-- Data Section Area -->
             <div class="settings-section-block">
                 <div class="settings-section-title">data management</div>
                 <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
                 <button class="option-btn" id="exportBtn" style="width: auto; padding: 8px 14px;">export active session (.txt)</button>
             </div>
 
+            <!-- Configuration Placeholder Slots Area -->
             <div class="settings-section-block">
                 <div class="settings-section-title">timer preferences</div>
                 <p class="settings-section-desc" style="opacity: 0.4; font-style: italic;">additional timer preferences and inspection behaviors will appear here.</p>
