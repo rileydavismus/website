@@ -399,7 +399,7 @@
             max-width: 90vw;
             padding: 20px;
             box-sizing: border-box;
-            text-align: center;
+            position: relative;
             transform: scale(0.95);
             transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
         }
@@ -409,8 +409,38 @@
         }
 
         .modal-card.settings-card {
-            width: 440px;
-            text-align: left;
+            width: 460px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-card.settings-card::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-card.settings-card::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+
+        /* Top-Right Modern Low-Fi [x] Close Box Design */
+        .modal-x-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: 1px solid transparent;
+            color: var(--dim-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            outline: none;
+            transition: color 0.1s ease, border-color 0.1s ease, background-color 0.1s ease;
+        }
+
+        .modal-x-close-btn:hover {
+            color: var(--text-color);
+            border-color: var(--border-color);
+            background-color: var(--bg-color);
         }
 
         .modal-title {
@@ -421,12 +451,13 @@
             text-transform: lowercase;
             letter-spacing: 0.5px;
             transition: color 0.15s ease;
+            padding-right: 30px;
         }
 
-        .settings-card .modal-title {
+        .settings-card .modal-title, #themeModal .modal-title {
             margin-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
         }
 
         .modal-scramble-display {
@@ -449,6 +480,7 @@
             margin-bottom: 20px;
             color: var(--text-color);
             line-height: 1;
+            text-align: center;
             transition: color 0.15s ease;
         }
 
@@ -456,7 +488,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .option-btn {
@@ -497,26 +529,8 @@
             border-color: #ef4444;
         }
 
-        .modal-close-btn {
-            background: none;
-            border: none;
-            color: var(--dim-color);
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-decoration: underline;
-            text-transform: lowercase;
-            transition: color 0.15s ease;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .settings-card .modal-close-btn {
-            margin: 20px 0 0 0;
-        }
-
         .settings-section-block {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .settings-section-title {
@@ -524,17 +538,17 @@
             color: var(--text-color);
             text-transform: lowercase;
             margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .settings-section-desc {
             font-size: 0.78rem;
             color: var(--dim-color);
-            margin: 0 0 10px 0;
+            margin: 0 0 12px 0;
             line-height: 1.4;
             text-transform: lowercase;
         }
 
-        /* Settings Option Row (Switch Framework) */
         .settings-row {
             display: flex;
             align-items: center;
@@ -567,7 +581,100 @@
             text-transform: lowercase;
         }
 
-        /* High-Contrast Plain Low-Fi Text Switch Trigger Control */
+        /* Session Setup Manager Layout Controls */
+        .session-count-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .session-count-label {
+            font-size: 0.85rem;
+            flex-grow: 1;
+            text-transform: lowercase;
+        }
+
+        .session-count-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .session-step-btn {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            padding: 0;
+            transition: border-color 0.1s ease, color 0.1s ease;
+        }
+
+        .session-step-btn:hover {
+            border-color: var(--text-color);
+        }
+
+        .session-rename-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 4px;
+            background-color: var(--bg-color);
+        }
+        .session-rename-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .session-rename-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+
+        .session-rename-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-rename-item span {
+            font-size: 0.75rem;
+            color: var(--dim-color);
+            min-width: 24px;
+        }
+
+        .session-name-input {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.8rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            flex-grow: 1;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease;
+        }
+
+        .session-name-input:focus {
+            border-color: var(--ready-color);
+        }
+
         .toggle-switch {
             background: none;
             border: 1px solid var(--border-color);
@@ -605,7 +712,6 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            margin-bottom: 14px;
         }
 
         .theme-btn {
@@ -1005,13 +1111,7 @@
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
-                    <select class="session-select" id="sessionSelect">
-                        <option value="session1">session 1</option>
-                        <option value="session2">session 2</option>
-                        <option value="session3">session 3</option>
-                        <option value="session4">session 4</option>
-                        <option value="session5">session 5</option>
-                    </select>
+                    <select class="session-select" id="sessionSelect"></select>
                 </div>
                 
                 <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
@@ -1064,6 +1164,7 @@
 
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
+            <button class="modal-x-close-btn" id="modalCloseBtn">[x]</button>
             <div class="modal-title" id="modalTitle">edit solve #0</div>
             <div class="modal-scramble-display" id="modalScrambleDisplay">no scramble data</div>
             <div class="modal-time-display" id="modalTimeDisplay">0.00</div>
@@ -1075,12 +1176,12 @@
                     delete solve
                 </button>
             </div>
-            <button class="modal-close-btn" id="modalCloseBtn">close</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
+            <button class="modal-x-close-btn" id="themeModalCloseBtn">[x]</button>
             <div class="modal-title">select theme</div>
             <div class="theme-grid">
                 <button class="theme-btn" data-theme-val="dark">dark</button>
@@ -1091,14 +1192,29 @@
                 <button class="theme-btn" data-theme-val="cyberpunk">cyberpunk</button>
                 <button class="theme-btn" data-theme-val="forest">forest</button>
             </div>
-            <button class="modal-close-btn" id="themeModalCloseBtn">close</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card settings-card">
+            <button class="modal-x-close-btn" id="settingsModalCloseBtn">[x]</button>
             <div class="modal-title">settings</div>
             
+            <div class="settings-section-block">
+                <div class="settings-section-title">session manager</div>
+                <p class="settings-section-desc">add, remove, or customize profile labels for your workspace tracking sets.</p>
+                
+                <div class="session-count-row">
+                    <span class="session-count-label">total sessions</span>
+                    <button type="button" class="session-step-btn" id="sessionDecBtn">-</button>
+                    <span class="session-count-value" id="sessionCountDisplay">5</span>
+                    <button type="button" class="session-step-btn" id="sessionIncBtn">+</button>
+                </div>
+
+                <div class="session-rename-list" id="sessionRenameContainer">
+                    </div>
+            </div>
+
             <div class="settings-section-block">
                 <div class="settings-section-title">timer preferences</div>
                 <p class="settings-section-desc">customize display parameters and interface layout behaviors during active tracks.</p>
@@ -1131,8 +1247,6 @@
                 <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
                 <button class="option-btn" id="exportBtn" style="width: auto; padding: 8px 14px;">export active session (.txt)</button>
             </div>
-
-            <button class="modal-close-btn" id="settingsModalCloseBtn">close</button>
         </div>
     </div>
 
@@ -1177,6 +1291,12 @@
         const scrambleToggleBtn = document.getElementById('scrambleToggleBtn');
         const cubeToggleBtn = document.getElementById('cubeToggleBtn');
 
+        // Session Manager Bindings
+        const sessionCountDisplay = document.getElementById('sessionCountDisplay');
+        const sessionDecBtn = document.getElementById('sessionDecBtn');
+        const sessionIncBtn = document.getElementById('sessionIncBtn');
+        const sessionRenameContainer = document.getElementById('sessionRenameContainer');
+
         let state = 'idle'; 
         let startTime = 0;
         let elapsedTimerInterval = null;
@@ -1185,17 +1305,20 @@
         let lastGeneratedScramble = ''; 
         
         let currentSession = 'session1';
+        let totalSessionsCount = 5;
         let activeTheme = 'dark';
         let showScramble = true;
         let showCube = true;
         
-        const sessionsData = {
-            session1: [],
-            session2: [],
-            session3: [],
-            session4: [],
-            session5: []
-        };
+        // Comprehensive matrix backing up to 10 possible active tracked data contexts
+        const sessionsData = {};
+        const sessionNamesMap = {};
+
+        // Prefill default structures dynamically
+        for (let i = 1; i <= 10; i++) {
+            sessionsData[`session${i}`] = [];
+            sessionNamesMap[`session${i}`] = `session ${i}`;
+        }
 
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
         let cubeState = {};
@@ -1336,8 +1459,63 @@
             }
         }
 
+        function syncDropdownMenuOptions() {
+            const currentSelectedValue = sessionSelect.value || currentSession;
+            sessionSelect.innerHTML = '';
+            
+            for (let i = 1; i <= totalSessionsCount; i++) {
+                const opt = document.createElement('option');
+                opt.value = `session${i}`;
+                opt.textContent = sessionNamesMap[`session${i}`] || `session ${i}`;
+                sessionSelect.appendChild(opt);
+            }
+
+            // Fallback safety filter validation if active target gets cut off out of boundary range list bounds
+            const sessionNum = parseInt(currentSelectedValue.replace('session', ''), 10);
+            if (sessionNum <= totalSessionsCount) {
+                sessionSelect.value = currentSelectedValue;
+                currentSession = currentSelectedValue;
+            } else {
+                sessionSelect.value = 'session1';
+                currentSession = 'session1';
+            }
+        }
+
+        function buildSessionManagerControls() {
+            sessionCountDisplay.textContent = totalSessionsCount;
+            sessionRenameContainer.innerHTML = '';
+
+            for (let i = 1; i <= totalSessionsCount; i++) {
+                const row = document.createElement('div');
+                row.className = 'session-rename-item';
+
+                const marker = document.createElement('span');
+                marker.textContent = `s${i}:`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'session-name-input';
+                input.value = sessionNamesMap[`session${i}`] || `session ${i}`;
+                input.placeholder = `session ${i}`;
+                input.maxLength = 24;
+
+                input.addEventListener('input', (e) => {
+                    const cleanedText = e.target.value.trim().toLowerCase() || `session ${i}`;
+                    sessionNamesMap[`session${i}`] = cleanedText;
+                    saveData();
+                    syncDropdownMenuOptions();
+                });
+
+                row.appendChild(marker);
+                row.appendChild(input);
+                sessionRenameContainer.appendChild(row);
+            }
+        }
+
         function loadData() {
             const savedSessions = localStorage.getItem('cube_timer_sessions');
+            const savedNames = localStorage.getItem('cube_timer_session_names');
+            const savedCount = localStorage.getItem('cube_timer_total_sessions');
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
             const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
             const savedTheme = localStorage.getItem('cube_timer_theme');
@@ -1347,14 +1525,31 @@
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
                 Object.keys(parsed).forEach(k => {
-                    sessionsData[k] = normalizeSessionArray(parsed[k]);
+                    if (sessionsData[k]) sessionsData[k] = normalizeSessionArray(parsed[k]);
                 });
             }
 
-            if (savedCurrentSession && sessionsData[savedCurrentSession]) {
-                currentSession = savedCurrentSession;
-                sessionSelect.value = currentSession;
+            if (savedCount) {
+                totalSessionsCount = Math.max(1, Math.min(10, parseInt(savedCount, 10)));
             }
+
+            if (savedNames) {
+                const parsedNames = JSON.parse(savedNames);
+                Object.keys(parsedNames).forEach(k => {
+                    if (k in sessionNamesMap) sessionNamesMap[k] = parsedNames[k];
+                });
+            }
+
+            syncDropdownMenuOptions();
+
+            if (savedCurrentSession && sessionsData[savedCurrentSession]) {
+                const targetNum = parseInt(savedCurrentSession.replace('session', ''), 10);
+                if (targetNum <= totalSessionsCount) {
+                    currentSession = savedCurrentSession;
+                    sessionSelect.value = currentSession;
+                }
+            }
+            
             if (savedLayoutOrientation) {
                 document.body.className = savedLayoutOrientation;
             }
@@ -1373,6 +1568,7 @@
             }
             setToggleSwitchState(cubeToggleBtn, showCube);
             
+            buildSessionManagerControls();
             updateHistoryUI();
             updateStatsUI();
             updateVarianceUI();
@@ -1381,6 +1577,8 @@
 
         function saveData() {
             localStorage.setItem('cube_timer_sessions', JSON.stringify(sessionsData));
+            localStorage.setItem('cube_timer_session_names', JSON.stringify(sessionNamesMap));
+            localStorage.setItem('cube_timer_total_sessions', totalSessionsCount);
             localStorage.setItem('cube_timer_active_session', currentSession);
             localStorage.setItem('cube_timer_show_scramble', showScramble);
             localStorage.setItem('cube_timer_show_cube', showCube);
@@ -1430,6 +1628,9 @@
         }
 
         function saveSolve(time) {
+            if(!sessionsData[currentSession]) {
+                sessionsData[currentSession] = [];
+            }
             sessionsData[currentSession].push({
                 rawTime: time,
                 plusTwo: false,
@@ -1448,7 +1649,7 @@
         }
 
         function updateVarianceUI() {
-            const activeTimes = sessionsData[currentSession];
+            const activeTimes = sessionsData[currentSession] || [];
             varianceDisplay.className = 'hidden';
             varianceDisplay.textContent = '';
 
@@ -1473,7 +1674,7 @@
 
         function updateHistoryUI() {
             historyList.innerHTML = '';
-            const activeTimes = sessionsData[currentSession];
+            const activeTimes = sessionsData[currentSession] || [];
             
             for (let i = activeTimes.length - 1; i >= 0; i--) {
                 const solve = activeTimes[i];
@@ -1635,6 +1836,7 @@
         });
 
         function openSettingsModal() {
+            buildSessionManagerControls();
             settingsModal.classList.add('open');
         }
 
@@ -1657,6 +1859,26 @@
             if (e.target === settingsModal) closeSettingsModal();
         });
 
+        // Dynamic Incremental Session Alteration Steps
+        sessionDecBtn.addEventListener('click', () => {
+            if (totalSessionsCount <= 1) return;
+            totalSessionsCount--;
+            saveData();
+            syncDropdownMenuOptions();
+            buildSessionManagerControls();
+            updateHistoryUI();
+            updateStatsUI();
+            updateVarianceUI();
+        });
+
+        sessionIncBtn.addEventListener('click', () => {
+            if (totalSessionsCount >= 10) return;
+            totalSessionsCount++;
+            saveData();
+            syncDropdownMenuOptions();
+            buildSessionManagerControls();
+        });
+
         // Custom [on / off] Action Switch Handlers
         scrambleToggleBtn.addEventListener('click', () => {
             showScramble = !showScramble;
@@ -1673,7 +1895,7 @@
         });
 
         function calculateBestTime() {
-            const activeTimes = sessionsData[currentSession];
+            const activeTimes = sessionsData[currentSession] || [];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
             
             if (validTimes.length === 0) return '-';
@@ -1682,7 +1904,7 @@
         }
 
         function calculateAverageOf(n) {
-            const activeTimes = sessionsData[currentSession];
+            const activeTimes = sessionsData[currentSession] || [];
             if (activeTimes.length < n) return '-';
             
             const recentSolves = activeTimes.slice(-n);
