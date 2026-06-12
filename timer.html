@@ -1226,7 +1226,7 @@
                     </div>
                     <button type="button" class="toggle-switch is-active" id="scrambleToggleBtn" role="switch" aria-checked="true">
                         <span class="sw-on">on</span>
-                        <span class="sw-off">off</span>
+                        <span class="sw-off text-muted">off</span>
                     </button>
                 </div>
 
@@ -1237,7 +1237,7 @@
                     </div>
                     <button type="button" class="toggle-switch is-active" id="cubeToggleBtn" role="switch" aria-checked="true">
                         <span class="sw-on">on</span>
-                        <span class="sw-off">off</span>
+                        <span class="sw-off text-muted">off</span>
                     </button>
                 </div>
             </div>
@@ -1250,8 +1250,43 @@
         </div>
     </div>
 
-    <script type="module">
-        import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
+    <script>
+        // --- Native, Zero-Dependency 3x3 Scrambler Configuration ---
+        const MOVES = ['U', 'D', 'R', 'L', 'F', 'B'];
+        const MODIFIERS = ['', "'", '2'];
+
+        function generateNativeScramble(length = 20) {
+            let scramble = [];
+            let lastFace = '';
+            let secondLastFace = '';
+
+            for (let i = 0; i < length; i++) {
+                let face;
+                // Avoid redundant consecutive moves on the same face, or back-and-forth pairs split by an opposing layout
+                do {
+                    face = MOVES[Math.floor(Math.random() * MOVES.length)];
+                } while (
+                    face === lastFace || 
+                    (face === secondLastFace && areOppositeFaces(face, lastFace))
+                );
+
+                const mod = MODIFIERS[Math.floor(Math.random() * MODIFIERS.length)];
+                scramble.push(face + mod);
+                
+                secondLastFace = lastFace;
+                lastFace = face;
+            }
+            return scramble.join(' ');
+        }
+
+        function areOppositeFaces(f1, f2) {
+            return (
+                (f1 === 'U' && f2 === 'D') || (f1 === 'D' && f2 === 'U') ||
+                (f1 === 'R' && f2 === 'L') || (f1 === 'L' && f2 === 'R') ||
+                (f1 === 'F' && f2 === 'B') || (f1 === 'B' && f2 === 'F')
+            );
+        }
+        // -----------------------------------------------------------
 
         const timerDisplay = document.getElementById('timer');
         const varianceDisplay = document.getElementById('variance');
@@ -1310,11 +1345,9 @@
         let showScramble = true;
         let showCube = true;
         
-        // Comprehensive matrix backing up to 10 possible active tracked data contexts
         const sessionsData = {};
         const sessionNamesMap = {};
 
-        // Prefill default structures dynamically
         for (let i = 1; i <= 10; i++) {
             sessionsData[`session${i}`] = [];
             sessionNamesMap[`session${i}`] = `session ${i}`;
@@ -1404,6 +1437,7 @@
         function renderCubeUI() {
             faces.forEach(f => {
                 const faceEl = document.getElementById(`face-${f}`);
+                if (!faceEl) return;
                 faceEl.innerHTML = '';
                 cubeState[f].forEach(colorCode => {
                     const sticker = document.createElement('div');
@@ -1413,24 +1447,19 @@
             });
         }
 
-        async function generateScramble() {
-            try {
-                const scrambleObj = await randomScrambleForEvent("333");
-                lastGeneratedScramble = scrambleObj.toString();
-                
-                scrambleDisplay.textContent = lastGeneratedScramble;
-                
-                initCubeState();
-                const moves = lastGeneratedScramble.split(' ');
-                moves.forEach(move => {
-                    if(move.trim() !== "") applyMove(move);
-                });
-                renderCubeUI();
+        function generateScramble() {
+            // Uses the fast local native module context instantly without async fetches
+            lastGeneratedScramble = generateNativeScramble(20);
+            scrambleDisplay.textContent = lastGeneratedScramble;
+            
+            initCubeState();
+            const moves = lastGeneratedScramble.split(' ');
+            moves.forEach(move => {
+                if(move.trim() !== "") applyMove(move);
+            });
+            renderCubeUI();
 
-                applyViewPreferencesVisibility();
-            } catch (err) {
-                scrambleDisplay.textContent = "error generating random-state scramble";
-            }
+            applyViewPreferencesVisibility();
         }
 
         function normalizeSessionArray(arr) {
@@ -1470,7 +1499,6 @@
                 sessionSelect.appendChild(opt);
             }
 
-            // Fallback safety filter validation if active target gets cut off out of boundary range list bounds
             const sessionNum = parseInt(currentSelectedValue.replace('session', ''), 10);
             if (sessionNum <= totalSessionsCount) {
                 sessionSelect.value = currentSelectedValue;
@@ -1859,7 +1887,6 @@
             if (e.target === settingsModal) closeSettingsModal();
         });
 
-        // Dynamic Incremental Session Alteration Steps
         sessionDecBtn.addEventListener('click', () => {
             if (totalSessionsCount <= 1) return;
             totalSessionsCount--;
@@ -1879,7 +1906,6 @@
             buildSessionManagerControls();
         });
 
-        // Custom [on / off] Action Switch Handlers
         scrambleToggleBtn.addEventListener('click', () => {
             showScramble = !showScramble;
             setToggleSwitchState(scrambleToggleBtn, showScramble);
