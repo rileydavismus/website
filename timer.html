@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
-    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -204,7 +203,7 @@
         }
 
         /* Utility Control Buttons */
-        .layout-btn, .theme-trigger-btn {
+        .layout-btn, .theme-trigger-btn, .settings-trigger-btn {
             background-color: var(--bg-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
@@ -220,7 +219,7 @@
             transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        .layout-btn svg, .theme-trigger-btn svg {
+        .layout-btn svg, .theme-trigger-btn svg, .settings-trigger-btn svg {
             width: 18px;
             height: 18px;
             fill: none;
@@ -235,8 +234,8 @@
             transform: scaleX(-1);
         }
 
-        /* Fixed Mobile Theme Target Container - Hidden on Desktop */
-        .mobile-theme-wrapper {
+        /* Fixed Mobile Theme/Settings Container - Hidden on Desktop */
+        .mobile-controls-wrapper {
             display: none;
         }
 
@@ -413,6 +412,12 @@
             transform: scale(1);
         }
 
+        /* Wider card layout for settings framework */
+        .modal-card.settings-card {
+            width: 440px;
+            text-align: left;
+        }
+
         .modal-title {
             font-size: 0.95rem;
             color: var(--dim-color);
@@ -421,6 +426,12 @@
             text-transform: lowercase;
             letter-spacing: 0.5px;
             transition: color 0.15s ease;
+        }
+
+        .settings-card .modal-title {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
         }
 
         .modal-scramble-display {
@@ -501,6 +512,32 @@
             text-decoration: underline;
             text-transform: lowercase;
             transition: color 0.15s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .settings-card .modal-close-btn {
+            margin: 20px 0 0 0;
+        }
+
+        /* Settings Sub-panels Configurations */
+        .settings-section-block {
+            margin-bottom: 20px;
+        }
+
+        .settings-section-title {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            text-transform: lowercase;
+            margin-bottom: 4px;
+        }
+
+        .settings-section-desc {
+            font-size: 0.78rem;
+            color: var(--dim-color);
+            margin: 0 0 10px 0;
+            line-height: 1.4;
+            text-transform: lowercase;
         }
 
         /* Theme Option Grid Layout */
@@ -685,6 +722,13 @@
             cursor: pointer;
         }
 
+        /* Desktop Optimization - Completely removes side panel position toggles on desktop viewports */
+        @media (min-width: 601px) {
+            .layout-btn {
+                display: none !important;
+            }
+        }
+
         /* Mobile Adjustments Overrides */
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
@@ -706,8 +750,9 @@
                 box-sizing: border-box;
             }
             
-            .mobile-theme-wrapper {
-                display: block;
+            .mobile-controls-wrapper {
+                display: flex;
+                gap: 8px;
                 position: absolute;
                 top: 14px;
                 right: 14px;
@@ -752,11 +797,8 @@
                 border-left: 1px solid rgba(0, 0, 0, 0.05);
             }
 
-            .layout-btn {
-                display: none;
-            }
-            .sidebar .theme-trigger-btn {
-                display: none;
+            .sidebar .theme-trigger-btn, .sidebar .settings-trigger-btn {
+                display: none !important;
             }
             
             .menu-header {
@@ -863,13 +905,18 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
-    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
-        <div class="mobile-theme-wrapper">
+        <div class="mobile-controls-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
                 <svg viewBox="0 0 24 24">
                     <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                     <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </button>
+            <button class="settings-trigger-btn mobile-settings-btn-toggle" title="open configuration settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
                 </svg>
             </button>
         </div>
@@ -894,7 +941,6 @@
         </div>
     </div>
 
-    <!-- Sidebar Area -->
     <div class="sidebar">
         <div class="sidebar-left-col">
             <div class="menu-header">
@@ -912,6 +958,13 @@
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                         <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+
+                <button class="settings-trigger-btn sidebar-settings-btn-toggle" title="open configuration settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                 </button>
 
@@ -949,7 +1002,6 @@
         </div>
     </div>
 
-    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <div class="modal-title" id="modalTitle">edit solve #0</div>
@@ -967,7 +1019,6 @@
         </div>
     </div>
 
-    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <div class="modal-title">select theme</div>
@@ -981,6 +1032,25 @@
                 <button class="theme-btn" data-theme-val="forest">forest</button>
             </div>
             <button class="modal-close-btn" id="themeModalCloseBtn">close</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card settings-card">
+            <div class="modal-title">settings</div>
+            
+            <div class="settings-section-block">
+                <div class="settings-section-title">data management</div>
+                <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
+                <button class="option-btn" id="exportBtn" style="width: auto; padding: 8px 14px;">export active session (.txt)</button>
+            </div>
+
+            <div class="settings-section-block">
+                <div class="settings-section-title">timer preferences</div>
+                <p class="settings-section-desc" style="opacity: 0.4; font-style: italic;">additional timer preferences and inspection behaviors will appear here.</p>
+            </div>
+
+            <button class="modal-close-btn" id="settingsModalCloseBtn">close</button>
         </div>
     </div>
 
@@ -1015,6 +1085,13 @@
         const themeButtons = document.querySelectorAll('.theme-btn');
         const desktopThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
         const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
+
+        // Settings Elements Bindings
+        const settingsModal = document.getElementById('settingsModal');
+        const settingsModalCloseBtn = document.getElementById('settingsModalCloseBtn');
+        const desktopSettingsBtn = document.querySelector('.sidebar-settings-btn-toggle');
+        const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
+        const exportBtn = document.getElementById('exportBtn');
 
         let state = 'idle'; 
         let startTime = 0;
@@ -1434,6 +1511,30 @@
             });
         });
 
+        // Settings Dialog Window Drivers Logic
+        function openSettingsModal() {
+            settingsModal.classList.add('open');
+        }
+
+        function closeSettingsModal() {
+            settingsModal.classList.remove('open');
+        }
+
+        desktopSettingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSettingsModal();
+        });
+
+        mobileSettingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSettingsModal();
+        });
+
+        settingsModalCloseBtn.addEventListener('click', closeSettingsModal);
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) closeSettingsModal();
+        });
+
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
@@ -1477,7 +1578,7 @@
         }
 
         function triggerStartSequence() {
-            if (editModal.classList.contains('open') || themeModal.classList.contains('open')) return;
+            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
 
             if (state === 'running') {
                 stopTimer();
@@ -1512,6 +1613,12 @@
         }
 
         window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (editModal.classList.contains('open')) closeEditModal();
+                if (themeModal.classList.contains('open')) closeThemeModal();
+                if (settingsModal.classList.contains('open')) closeSettingsModal();
+                return;
+            }
             if (e.key !== ' ' || e.repeat) return;
             triggerStartSequence();
         });
@@ -1562,6 +1669,49 @@
                 timerDisplay.textContent = '0.00';
                 generateScramble();
             }
+        });
+
+        // Text Export Context Pipeline Driver Routine
+        exportBtn.addEventListener('click', () => {
+            const activeTimes = sessionsData[currentSession] || [];
+            
+            if (activeTimes.length === 0) {
+                alert('there are no solves in this session to export.');
+                return;
+            }
+
+            const sessionLabel = sessionSelect.options[sessionSelect.selectedIndex].text;
+            
+            let fileContent = `========================================\n`;
+            fileContent += `  cube timer export - ${sessionLabel.toLowerCase()}\n`;
+            fileContent += `========================================\n\n`;
+
+            activeTimes.forEach((solve, idx) => {
+                let solveDisplay = '';
+                if (solve.dnf) {
+                    solveDisplay = 'DNF';
+                } else {
+                    const finalTime = solve.rawTime + (solve.plusTwo ? 2 : 0);
+                    solveDisplay = finalTime.toFixed(2) + (solve.plusTwo ? ' (+2)' : '');
+                }
+                
+                fileContent += `#${idx + 1} | time: ${solveDisplay}\n`;
+                fileContent += `scramble: ${solve.scramble || 'n/a'}\n`;
+                fileContent += `----------------------------------------\n`;
+            });
+
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8;' });
+            const blobUrl = URL.createObjectURL(blob);
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = blobUrl;
+            downloadLink.download = `${sessionLabel.toLowerCase().replace(/\s+/g, '_')}_export.txt`;
+            
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(blobUrl);
         });
 
         loadData();
