@@ -121,6 +121,7 @@
             padding: 20px;
             box-sizing: border-box;
             z-index: 10;
+            flex-shrink: 0;
             transition: background-color 0.15s ease, border-color 0.15s ease;
         }
 
@@ -140,7 +141,6 @@
         .session-container {
             flex-grow: 1;
             display: flex;
-            gap: 4px;
         }
 
         .session-select {
@@ -161,7 +161,7 @@
         }
 
         /* Utility Control Buttons */
-        .layout-btn, .theme-trigger-btn, .rename-session-btn {
+        .layout-btn, .theme-trigger-btn {
             background-color: var(--bg-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
@@ -177,7 +177,7 @@
             transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        .layout-btn svg, .theme-trigger-btn svg, .rename-session-btn svg {
+        .layout-btn svg, .theme-trigger-btn svg {
             width: 18px;
             height: 18px;
             fill: none;
@@ -460,27 +460,6 @@
             transition: color 0.15s ease;
         }
 
-        /* Rename Input Styling */
-        .modal-input {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            font-family: 'Source Code Pro', monospace;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            outline: none;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-            text-transform: lowercase;
-            text-align: center;
-            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-        }
-        .modal-input:focus {
-            border-color: var(--dim-color);
-        }
-
         /* Theme Option Grid Layout */
         .theme-grid {
             display: grid;
@@ -511,39 +490,42 @@
             background-color: rgba(34, 197, 94, 0.05);
         }
 
-        /* Main Display Area */
+        /* Main Display Area Layout Architecture */
         .main-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             position: relative;
+            padding: 24px 20px;
+            box-sizing: border-box;
+            height: 100vh;
         }
 
         .container {
             text-align: center;
             width: 100%;
             max-width: 1100px;
-            padding: 30px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            height: 100%;
             pointer-events: none;
             z-index: 2;
         }
 
         #scramble {
-            font-size: 2.475rem;
+            font-size: 2.2rem;
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.4;
-            margin-bottom: 2.8rem;
-            min-height: 5.25rem;
-            max-width: 1050px;
-            word-spacing: 8px;
+            margin: 0 0 1.5rem 0;
+            min-height: 4.5rem;
+            max-width: 1000px;
+            word-spacing: 6px;
             transition: opacity 0.1s ease, color 0.15s ease;
         }
 
@@ -552,8 +534,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2.2rem;
-            min-height: 12.5rem;
+            flex-grow: 1;
+            min-height: 10rem;
         }
 
         #timer {
@@ -598,7 +580,7 @@
             color: var(--dim-color);
             letter-spacing: 1px;
             text-transform: lowercase;
-            margin-bottom: 3.5rem;
+            margin-bottom: 2rem;
             transition: color 0.15s ease;
         }
 
@@ -611,6 +593,7 @@
             height: 232px;
             transition: opacity 0.1s ease;
             flex-shrink: 0;
+            margin-bottom: 10px;
         }
 
         #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden {
@@ -667,6 +650,7 @@
                 width: 100%;
                 flex-grow: 0;
                 order: 2 !important;
+                padding: 12px 10px;
             }
             
             /* Positioning mobile theme selector absolute inside main workspace container */
@@ -711,7 +695,7 @@
                 border-left: 1px solid rgba(0, 0, 0, 0.05);
             }
 
-            .layout-btn, .rename-session-btn {
+            .layout-btn {
                 display: none;
             }
             /* Hide desktop placement within sidebar for mobile layouts */
@@ -762,11 +746,11 @@
             }
             .container {
                 max-width: 700px;
-                padding: 10px;
+                justify-content: space-between;
             }
             .timer-wrapper {
-                margin-bottom: 0.25rem;
-                min-height: 7.5rem;
+                margin-bottom: 0;
+                min-height: 6rem;
             }
             #timer {
                 font-size: 5.25rem;
@@ -778,19 +762,20 @@
             }
             #scramble {
                 font-size: 1.125rem;
-                margin-bottom: 0.85rem;
+                margin: 0 0 0.5rem 0;
                 min-height: 2.25rem;
                 max-width: 550px;
                 line-height: 1.35;
             }
             .instructions {
                 font-size: 0.8rem;
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.5rem;
             }
             .cube-visualization {
                 width: 156px;
                 height: 117px;
                 gap: 4px;
+                margin-bottom: 0;
             }
             .face {
                 gap: 1px;
@@ -846,12 +831,6 @@
                         <option value="session4">session 4</option>
                         <option value="session5">session 5</option>
                     </select>
-                    <button class="rename-session-btn" id="renameSessionBtn" title="rename current session space">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                            <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
-                    </button>
                 </div>
                 
                 <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
@@ -925,17 +904,6 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="renameModal">
-        <div class="modal-card">
-            <div class="modal-title">rename session</div>
-            <input type="text" class="modal-input" id="sessionRenameInput" maxlength="20" placeholder="enter context label...">
-            <div class="modal-options">
-                <button class="option-btn active-modifier" id="saveRenameBtn" style="background-color: rgba(34, 197, 94, 0.1); border-color: var(--ready-color); color: var(--ready-color);">save custom label</button>
-            </div>
-            <button class="modal-close-btn" id="renameModalCloseBtn">cancel</button>
-        </div>
-    </div>
-
     <script type="module">
         import { randomScrambleForEvent } from "https://cdn.cubing.net/v0/js/cubing/scramble";
 
@@ -970,13 +938,6 @@
         const desktopThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
         const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
 
-        // Rename Session Elements
-        const renameModal = document.getElementById('renameModal');
-        const renameSessionBtn = document.getElementById('renameSessionBtn');
-        const sessionRenameInput = document.getElementById('sessionRenameInput');
-        const saveRenameBtn = document.getElementById('saveRenameBtn');
-        const renameModalCloseBtn = document.getElementById('renameModalCloseBtn');
-
         let state = 'idle'; 
         let startTime = 0;
         let elapsedTimerInterval = null;
@@ -994,15 +955,6 @@
             session3: [],
             session4: [],
             session5: []
-        };
-
-        // Track custom session text labels
-        const sessionLabels = {
-            session1: 'session 1',
-            session2: 'session 2',
-            session3: 'session 3',
-            session4: 'session 4',
-            session5: 'session 5'
         };
 
         const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
@@ -1136,7 +1088,6 @@
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
             const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
             const savedTheme = localStorage.getItem('cube_timer_theme');
-            const savedLabels = localStorage.getItem('cube_timer_session_labels');
             
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
@@ -1144,14 +1095,6 @@
                     sessionsData[k] = normalizeSessionArray(parsed[k]);
                 });
             }
-            if (savedLabels) {
-                const parsedLabels = JSON.parse(savedLabels);
-                Object.keys(parsedLabels).forEach(k => {
-                    sessionLabels[k] = parsedLabels[k];
-                });
-            }
-            
-            updateSessionSelectorOptions();
 
             if (savedCurrentSession && sessionsData[savedCurrentSession]) {
                 currentSession = savedCurrentSession;
@@ -1174,15 +1117,6 @@
         function saveData() {
             localStorage.setItem('cube_timer_sessions', JSON.stringify(sessionsData));
             localStorage.setItem('cube_timer_active_session', currentSession);
-            localStorage.setItem('cube_timer_session_labels', JSON.stringify(sessionLabels));
-        }
-
-        function updateSessionSelectorOptions() {
-            Array.from(sessionSelect.options).forEach(opt => {
-                if (sessionLabels[opt.value]) {
-                    opt.textContent = sessionLabels[opt.value];
-                }
-            });
         }
 
         function startTimer() {
@@ -1424,51 +1358,6 @@
             });
         });
 
-        // Rename Session Modal System Actions
-        function openRenameModal() {
-            sessionRenameInput.value = sessionLabels[currentSession] || '';
-            renameModal.classList.add('open');
-            setTimeout(() => sessionRenameInput.focus(), 50);
-        }
-
-        function closeRenameModal() {
-            renameModal.classList.remove('open');
-            sessionRenameInput.blur();
-        }
-
-        function handleSaveRename() {
-            const trimmed = sessionRenameInput.value.trim().toLowerCase();
-            if (trimmed.length > 0) {
-                sessionLabels[currentSession] = trimmed;
-            } else {
-                // Fallback to default index layout context if wiped clear
-                sessionLabels[currentSession] = 'session ' + currentSession.replace('session', '');
-            }
-            saveData();
-            updateSessionSelectorOptions();
-            closeRenameModal();
-        }
-
-        renameSessionBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openRenameModal();
-        });
-
-        saveRenameBtn.addEventListener('click', handleSaveRename);
-        renameModalCloseBtn.addEventListener('click', closeRenameModal);
-        renameModal.addEventListener('click', (e) => {
-            if (e.target === renameModal) closeRenameModal();
-        });
-        sessionRenameInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSaveRename();
-            }
-            if (e.key === 'Escape') {
-                closeRenameModal();
-            }
-        });
-
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
@@ -1512,7 +1401,7 @@
         }
 
         function triggerStartSequence() {
-            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || renameModal.classList.contains('open')) return;
+            if (editModal.classList.contains('open') || themeModal.classList.contains('open')) return;
 
             if (state === 'running') {
                 stopTimer();
@@ -1587,7 +1476,7 @@
         });
 
         clearBtn.addEventListener('click', () => {
-            const labelText = sessionLabels[currentSession] || sessionSelect.options[sessionSelect.selectedIndex].text;
+            const labelText = sessionSelect.options[sessionSelect.selectedIndex].text;
             if (confirm(`clear all solves for ${labelText}?`)) {
                 sessionsData[currentSession] = [];
                 saveData();
