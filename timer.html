@@ -495,7 +495,7 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             position: relative;
             padding: 24px 20px;
@@ -511,8 +511,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            height: 100%;
+            justify-content: center;
+            height: auto;
+            gap: 20px;
             pointer-events: none;
             z-index: 2;
         }
@@ -522,8 +523,8 @@
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.4;
-            margin: 0 0 1.5rem 0;
-            min-height: 4.5rem;
+            margin: 0;
+            min-height: auto;
             max-width: 1000px;
             word-spacing: 6px;
             transition: opacity 0.1s ease, color 0.15s ease;
@@ -534,8 +535,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-grow: 1;
-            min-height: 10rem;
+            flex-grow: 0;
+            min-height: auto;
+            padding: 15px 0;
         }
 
         #timer {
@@ -580,7 +582,7 @@
             color: var(--dim-color);
             letter-spacing: 1px;
             text-transform: lowercase;
-            margin-bottom: 2rem;
+            margin-bottom: 5px;
             transition: color 0.15s ease;
         }
 
@@ -593,7 +595,7 @@
             height: 232px;
             transition: opacity 0.1s ease;
             flex-shrink: 0;
-            margin-bottom: 10px;
+            margin-bottom: 0;
         }
 
         #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden {
@@ -671,11 +673,11 @@
             
             .sidebar {
                 width: 100%;
-                height: 180px;
+                height: 150px;
                 border-left: none !important;
                 border-right: none !important;
                 border-top: 1px solid var(--border-color);
-                padding: 14px;
+                padding: 12px;
                 box-sizing: border-box;
                 order: 2 !important;
                 display: grid;
@@ -712,7 +714,7 @@
             }
             
             .menu-header {
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.4rem;
             }
             .session-select {
                 padding: 6px;
@@ -724,7 +726,7 @@
                 overflow-y: auto;
             }
             .stat-row {
-                margin-bottom: 0.4rem;
+                margin-bottom: 0.3rem;
                 font-size: 0.85rem;
             }
             .history-header {
@@ -764,7 +766,7 @@
                 margin-bottom: 0;
                 min-height: auto;
                 flex-grow: 0;
-                padding: 10px 0;
+                padding: 8px 0;
             }
             
             #timer {
