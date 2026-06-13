@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
+    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -420,7 +421,6 @@
             background: var(--border-color);
         }
 
-        /* Top-Right Modern Low-Fi [x] Close Box Design */
         .modal-x-close-btn {
             position: absolute;
             top: 16px;
@@ -562,6 +562,12 @@
             transition: background-color 0.15s ease, border-color 0.15s ease;
         }
 
+        .settings-row.block-input-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
         .settings-label-group {
             display: flex;
             flex-direction: column;
@@ -581,7 +587,6 @@
             text-transform: lowercase;
         }
 
-        /* Session Setup Manager Layout Controls */
         .session-count-row {
             display: flex;
             align-items: center;
@@ -657,7 +662,7 @@
             min-width: 24px;
         }
 
-        .session-name-input {
+        .session-name-input, .settings-text-input {
             background-color: var(--sidebar-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
@@ -671,7 +676,11 @@
             transition: border-color 0.15s ease;
         }
 
-        .session-name-input:focus {
+        .settings-text-input {
+            width: 100%;
+        }
+
+        .session-name-input:focus, .settings-text-input:focus {
             border-color: var(--ready-color);
         }
 
@@ -822,13 +831,27 @@
             color: var(--ready-color);
         }
 
-        .instructions {
+        .metrics-display-line {
             font-size: 1.15rem;
             color: var(--dim-color);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: lowercase;
             margin-bottom: 5px;
+            min-height: 1.5rem;
             transition: color 0.15s ease;
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .metrics-display-line span {
+            color: var(--dim-color);
+        }
+
+        .metrics-display-line strong {
+            font-weight: 400;
+            color: var(--text-color);
         }
 
         .cube-visualization {
@@ -843,7 +866,7 @@
             margin-bottom: 0;
         }
 
-        #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden, #scramble.scramble-hidden, .cube-visualization.cube-hidden {
+        #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden, #scramble.scramble-hidden, .cube-visualization.cube-hidden, .metrics-display-line.metrics-hidden {
             display: none !important;
             opacity: 0 !important;
         }
@@ -1045,9 +1068,10 @@
                 padding: 0 10px;
             }
             
-            .instructions {
-                font-size: 0.8rem;
+            .metrics-display-line {
+                font-size: 0.85rem;
                 margin-bottom: 0;
+                gap: 8px;
             }
             
             .cube-visualization {
@@ -1071,6 +1095,7 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
+    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
         <div class="mobile-controls-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
@@ -1094,7 +1119,7 @@
                 <div id="timer">0.00</div>
                 <div id="variance" class="hidden"></div>
             </div>
-            <div class="instructions" id="instruction">hold space or touch to ready</div>
+            <div class="metrics-display-line" id="centerMetricsLine"></div>
             
             <div class="cube-visualization" id="cubeDisplay">
                 <div class="face face-u" id="face-U"></div>
@@ -1107,6 +1132,7 @@
         </div>
     </div>
 
+    <!-- Sidebar Area -->
     <div class="sidebar">
         <div class="sidebar-left-col">
             <div class="menu-header">
@@ -1162,6 +1188,7 @@
         </div>
     </div>
 
+    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <button class="modal-x-close-btn" id="modalCloseBtn">[x]</button>
@@ -1179,6 +1206,7 @@
         </div>
     </div>
 
+    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <button class="modal-x-close-btn" id="themeModalCloseBtn">[x]</button>
@@ -1195,11 +1223,13 @@
         </div>
     </div>
 
+    <!-- Global Settings Dashboard Modal Overlay Layout Panel -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card settings-card">
             <button class="modal-x-close-btn" id="settingsModalCloseBtn">[x]</button>
             <div class="modal-title">settings</div>
             
+            <!-- Session Management Panel -->
             <div class="settings-section-block">
                 <div class="settings-section-title">session manager</div>
                 <p class="settings-section-desc">add, remove, or customize profile labels for your workspace tracking sets.</p>
@@ -1212,13 +1242,16 @@
                 </div>
 
                 <div class="session-rename-list" id="sessionRenameContainer">
-                    </div>
+                    <!-- Dynamic Input Fields Rendered via JavaScript Module Initialization -->
+                </div>
             </div>
 
+            <!-- Timer Preferences Area -->
             <div class="settings-section-block">
                 <div class="settings-section-title">timer preferences</div>
                 <p class="settings-section-desc">customize display parameters and interface layout behaviors during active tracks.</p>
                 
+                <!-- Scramble Toggle -->
                 <div class="settings-row">
                     <div class="settings-label-group">
                         <div class="settings-control-title">scramble display</div>
@@ -1230,6 +1263,7 @@
                     </button>
                 </div>
 
+                <!-- Cube Toggle -->
                 <div class="settings-row">
                     <div class="settings-label-group">
                         <div class="settings-control-title">cube visualization</div>
@@ -1240,8 +1274,30 @@
                         <span class="sw-off text-muted">off</span>
                     </button>
                 </div>
+
+                <!-- Center Metrics Panel Visibility Switch -->
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">solve metrics view</div>
+                        <div class="settings-control-desc">display customized average statistics under the running timer</div>
+                    </div>
+                    <button type="button" class="toggle-switch is-active" id="metricsToggleBtn" role="switch" aria-checked="true">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                    </button>
+                </div>
+
+                <!-- Center Metrics Custom Array Configurations Input Row -->
+                <div class="settings-row block-input-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">configure metrics trackers</div>
+                        <div class="settings-control-desc">comma-separated sizes to evaluate (e.g. 3, 5, 12, 50, 100)</div>
+                    </div>
+                    <input type="text" class="settings-text-input" id="metricsFormatInput" value="3, 5, 12" placeholder="3, 5, 12">
+                </div>
             </div>
 
+            <!-- Data Management Section Area -->
             <div class="settings-section-block">
                 <div class="settings-section-title">data management</div>
                 <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
@@ -1262,7 +1318,6 @@
 
             for (let i = 0; i < length; i++) {
                 let face;
-                // Avoid redundant consecutive moves on the same face, or back-and-forth pairs split by an opposing layout
                 do {
                     face = MOVES[Math.floor(Math.random() * MOVES.length)];
                 } while (
@@ -1290,7 +1345,7 @@
 
         const timerDisplay = document.getElementById('timer');
         const varianceDisplay = document.getElementById('variance');
-        const instructionDisplay = document.getElementById('instruction');
+        const centerMetricsLine = document.getElementById('centerMetricsLine');
         const scrambleDisplay = document.getElementById('scramble');
         const cubeDisplay = document.getElementById('cubeDisplay');
         const historyList = document.getElementById('historyList');
@@ -1325,6 +1380,8 @@
         const exportBtn = document.getElementById('exportBtn');
         const scrambleToggleBtn = document.getElementById('scrambleToggleBtn');
         const cubeToggleBtn = document.getElementById('cubeToggleBtn');
+        const metricsToggleBtn = document.getElementById('metricsToggleBtn');
+        const metricsFormatInput = document.getElementById('metricsFormatInput');
 
         // Session Manager Bindings
         const sessionCountDisplay = document.getElementById('sessionCountDisplay');
@@ -1344,6 +1401,8 @@
         let activeTheme = 'dark';
         let showScramble = true;
         let showCube = true;
+        let showMetrics = true;
+        let configuredMetricsList = [3, 5, 12];
         
         const sessionsData = {};
         const sessionNamesMap = {};
@@ -1448,7 +1507,6 @@
         }
 
         function generateScramble() {
-            // Uses the fast local native module context instantly without async fetches
             lastGeneratedScramble = generateNativeScramble(20);
             scrambleDisplay.textContent = lastGeneratedScramble;
             
@@ -1485,6 +1543,12 @@
                 cubeDisplay.classList.remove('hidden', 'cube-hidden');
             } else {
                 cubeDisplay.classList.add('cube-hidden');
+            }
+
+            if (showMetrics && state !== 'running') {
+                centerMetricsLine.classList.remove('metrics-hidden');
+            } else {
+                centerMetricsLine.classList.add('metrics-hidden');
             }
         }
 
@@ -1549,6 +1613,8 @@
             const savedTheme = localStorage.getItem('cube_timer_theme');
             const savedShowScramble = localStorage.getItem('cube_timer_show_scramble');
             const savedShowCube = localStorage.getItem('cube_timer_show_cube');
+            const savedShowMetrics = localStorage.getItem('cube_timer_show_metrics');
+            const savedMetricsList = localStorage.getItem('cube_timer_metrics_list');
             
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
@@ -1595,10 +1661,25 @@
                 showCube = savedShowCube === 'true';
             }
             setToggleSwitchState(cubeToggleBtn, showCube);
+
+            if (savedShowMetrics !== null) {
+                showMetrics = savedShowMetrics === 'true';
+            }
+            setToggleSwitchState(metricsToggleBtn, showMetrics);
+
+            if (savedMetricsList !== null) {
+                try {
+                    configuredMetricsList = JSON.parse(savedMetricsList);
+                } catch(e) {
+                    configuredMetricsList = [3, 5, 12];
+                }
+            }
+            metricsFormatInput.value = configuredMetricsList.join(', ');
             
             buildSessionManagerControls();
             updateHistoryUI();
             updateStatsUI();
+            updateCenterMetricsDisplay();
             updateVarianceUI();
             generateScramble();
         }
@@ -1610,6 +1691,8 @@
             localStorage.setItem('cube_timer_active_session', currentSession);
             localStorage.setItem('cube_timer_show_scramble', showScramble);
             localStorage.setItem('cube_timer_show_cube', showCube);
+            localStorage.setItem('cube_timer_show_metrics', showMetrics);
+            localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
         }
 
         function setToggleSwitchState(btnElement, isActive) {
@@ -1626,8 +1709,8 @@
             state = 'running';
             scrambleDisplay.classList.add('hidden');
             cubeDisplay.classList.add('hidden');
+            centerMetricsLine.classList.add('metrics-hidden');
             varianceDisplay.className = 'hidden';
-            instructionDisplay.textContent = 'stop timer';
             startTime = performance.now();
             
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
@@ -1646,7 +1729,6 @@
         function stopTimer() {
             state = 'idle';
             cancelAnimationFrame(elapsedTimerInterval);
-            instructionDisplay.textContent = 'hold to ready';
             
             const finalTime = (performance.now() - startTime) / 1000;
             timerDisplay.textContent = formatTime(finalTime);
@@ -1668,6 +1750,7 @@
             saveData();
             updateHistoryUI();
             updateStatsUI();
+            updateCenterMetricsDisplay();
             updateVarianceUI();
         }
 
@@ -1781,6 +1864,7 @@
             
             updateHistoryUI();
             updateStatsUI();
+            updateCenterMetricsDisplay();
             updateVarianceUI();
         });
 
@@ -1798,6 +1882,7 @@
             
             updateHistoryUI();
             updateStatsUI();
+            updateCenterMetricsDisplay();
             updateVarianceUI();
         });
 
@@ -1810,6 +1895,7 @@
                 
                 updateHistoryUI();
                 updateStatsUI();
+                updateCenterMetricsDisplay();
                 updateVarianceUI();
             }
         });
@@ -1865,6 +1951,7 @@
 
         function openSettingsModal() {
             buildSessionManagerControls();
+            metricsFormatInput.value = configuredMetricsList.join(', ');
             settingsModal.classList.add('open');
         }
 
@@ -1895,6 +1982,7 @@
             buildSessionManagerControls();
             updateHistoryUI();
             updateStatsUI();
+            updateCenterMetricsDisplay();
             updateVarianceUI();
         });
 
@@ -1920,6 +2008,24 @@
             applyViewPreferencesVisibility();
         });
 
+        metricsToggleBtn.addEventListener('click', () => {
+            showMetrics = !showMetrics;
+            setToggleSwitchState(metricsToggleBtn, showMetrics);
+            saveData();
+            applyViewPreferencesVisibility();
+        });
+
+        metricsFormatInput.addEventListener('input', (e) => {
+            const rawValue = e.target.value;
+            const parsedArray = rawValue.split(',')
+                                         .map(val => parseInt(val.trim(), 10))
+                                         .filter(val => !isNaN(val) && val > 0);
+            
+            configuredMetricsList = parsedArray;
+            saveData();
+            updateCenterMetricsDisplay();
+        });
+
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession] || [];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
@@ -1935,6 +2041,15 @@
             
             const recentSolves = activeTimes.slice(-n);
             const dnfCount = recentSolves.filter(s => s.dnf).length;
+
+            // Handle Mean Calculation rules for sizes under 5 steps natively
+            if (n < 5) {
+                if (dnfCount > 0) return 'DNF';
+                const totalSum = recentSolves.reduce((acc, curr) => acc + (curr.rawTime + (curr.plusTwo ? 2 : 0)), 0);
+                return formatTime(totalSum / n);
+            }
+
+            // Standard Average of X framework execution rules (trimmed metric calculations)
             if (dnfCount > 1) return 'DNF';
 
             const sorted = [];
@@ -1954,6 +2069,23 @@
             
             const sum = sorted.reduce((acc, curr) => acc + curr, 0);
             return formatTime(sum / sorted.length);
+        }
+
+        function updateCenterMetricsDisplay() {
+            centerMetricsLine.innerHTML = '';
+            if (configuredMetricsList.length === 0) {
+                centerMetricsLine.textContent = '-';
+                return;
+            }
+
+            configuredMetricsList.forEach(size => {
+                const metricLabel = size < 5 ? `mo${size}` : `ao${size}`;
+                const evaluatedValue = calculateAverageOf(size);
+                
+                const itemWrapper = document.createElement('div');
+                itemWrapper.innerHTML = `<span>${metricLabel}:</span> <strong>${evaluatedValue}</strong>`;
+                centerMetricsLine.appendChild(itemWrapper);
+            });
         }
 
         function updateStatsUI() {
@@ -2038,6 +2170,7 @@
             saveData();
             updateHistoryUI();
             updateStatsUI();
+            updateCenterMetricsDisplay();
             updateVarianceUI();
             timerDisplay.textContent = '0.00';
             generateScramble();
@@ -2050,6 +2183,7 @@
                 saveData();
                 updateHistoryUI();
                 updateStatsUI();
+                updateCenterMetricsDisplay();
                 updateVarianceUI();
                 timerDisplay.textContent = '0.00';
                 generateScramble();
