@@ -170,11 +170,10 @@
         const countdownInterval = setInterval(updateCountdown, 1000);
 
 
-        // --- 2. Minimal Rain Animation Logic ---
+        // --- 2. Brighter Rain Animation Logic ---
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Dynamically scale canvas to match display viewport size
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -182,27 +181,23 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Configuration variables for the rain
         const maxDrops = 120; 
         const raindrops = [];
 
-        // Build individual drop parameters
         for (let i = 0; i < maxDrops; i++) {
             raindrops.push({
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
-                velocity: Math.random() * 4 + 4, // Drop fall speed spectrum
-                length: Math.random() * 15 + 10  // Visual streak length
+                velocity: Math.random() * 4 + 4, 
+                length: Math.random() * 15 + 10  
             });
         }
 
-        // Active looping drawing engine
         function animateRain() {
-            // Clears canvas while keeping dark backdrop intact
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Set rain aesthetic properties (Same color style #a2e8bc with a subtle 0.06 opacity)
-            ctx.strokeStyle = 'rgba(162, 232, 188, 0.06)';
+            // Increased opacity here from 0.06 to 0.25 for higher visibility
+            ctx.strokeStyle = 'rgba(162, 232, 188, 0.25)';
             ctx.lineWidth = 1;
             ctx.lineCap = 'round';
 
@@ -214,10 +209,8 @@
                 ctx.lineTo(drop.x, drop.y + drop.length);
                 ctx.stroke();
 
-                // Increment vertical position by individual rate of speed
                 drop.y += drop.velocity;
 
-                // Reset drop position back to the top once it passes off-screen
                 if (drop.y > canvas.height) {
                     drop.y = -drop.length;
                     drop.x = Math.random() * canvas.width;
