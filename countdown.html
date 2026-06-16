@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown to September 1, 2026</title>
+    <title>Goodbye :(</title>
     
+    <!-- Import Source Code Pro from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
@@ -28,10 +29,9 @@
         h1 {
             font-weight: 400;
             font-size: 1.5rem;
-            color: #888;
+            color: #777;
             margin-bottom: 2rem;
             letter-spacing: 2px;
-            text-transform: uppercase;
         }
 
         .countdown-container {
@@ -51,13 +51,13 @@
         .number {
             font-size: 3.5rem;
             font-weight: 600;
-            color: #00ffcc; /* Accent color for readability */
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+            color: #a2e8bc; /* Soft minimal green */
+            text-shadow: 0 0 8px rgba(162, 232, 188, 0.15);
         }
 
         .label {
             font-size: 0.75rem;
-            color: #666;
+            color: #555;
             text-transform: uppercase;
             margin-top: 0.5rem;
             letter-spacing: 1px;
@@ -66,7 +66,7 @@
         .separator {
             font-size: 3.5rem;
             font-weight: 400;
-            color: #444;
+            color: #333;
             display: flex;
             align-items: center;
         }
@@ -77,7 +77,7 @@
                 gap: 0.8rem;
             }
             .number, .separator {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             .time-box {
                 min-width: 60px;
@@ -87,19 +87,9 @@
 </head>
 <body>
 
-    <h1>Time Remaining</h1>
+    <h1>Goodbye :(</h1>
 
     <div class="countdown-container">
-        <div class="time-box">
-            <span class="number" id="months">00</span>
-            <span class="label">Months</span>
-        </div>
-        <div class="separator">:</div>
-        <div class="time-box">
-            <span class="number" id="weeks">00</span>
-            <span class="label">Weeks</span>
-        </div>
-        <div class="separator">:</div>
         <div class="time-box">
             <span class="number" id="days">00</span>
             <span class="label">Days</span>
@@ -122,8 +112,8 @@
     </div>
 
     <script>
-        // Target Date in Brisbane Time (AEST/AEDT depending on date, Brisbane is always AEST - UTC+10)
-        // September 1st, 2026 at 00:00:00 Brisbane time is equivalent to 2026-08-31T14:00:00Z UTC
+        // Target Date in Brisbane Time (AEST is UTC+10)
+        // September 1st, 2026 at 00:00:00 Brisbane time
         const targetDate = new Date(Date.UTC(2026, 8, 1, 0, 0, 0) - (10 * 60 * 60 * 1000));
 
         function updateCountdown() {
@@ -131,44 +121,18 @@
             const difference = targetDate - now;
 
             if (difference <= 0) {
-                document.querySelector('.countdown-container').innerHTML = "<div class='number'>Countdown Finished</div>";
+                document.querySelector('.countdown-container').innerHTML = "<div class='number'>00:00:00:00</div>";
                 clearInterval(intervalId);
                 return;
             }
 
-            // Time calculations
-            const msPerSecond = 1000;
-            const msPerMinute = msPerSecond * 60;
-            const msPerHour = msPerMinute * 60;
-            const msPerDay = msPerHour * 24;
-            
-            // To accurately calculate calendar months, we compare structural dates
-            let yearsDiff = targetDate.getFullYear() - now.getFullYear();
-            let monthsDiff = targetDate.getMonth() - now.getMonth() + (yearsDiff * 12);
-            
-            // Create a temporary date to check if we've passed the target day-of-month yet
-            let tempDate = new Date(now);
-            tempDate.setMonth(tempDate.getMonth() + monthsDiff);
-            
-            // If the temp date overshot the target, roll back one month
-            if (tempDate > targetDate) {
-                monthsDiff--;
-                tempDate = new Date(now);
-                tempDate.setMonth(tempDate.getMonth() + monthsDiff);
-            }
+            // Math conversions for total days down to seconds
+            const seconds = Math.floor((difference / 1000) % 60);
+            const minutes = Math.floor((difference / 1000 / 60) % 60);
+            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
 
-            // The remaining time after accounting for whole months
-            const remainingMs = targetDate - tempDate;
-
-            const weeks = Math.floor(remainingMs / (msPerDay * 7));
-            const days = Math.floor((remainingMs % (msPerDay * 7)) / msPerDay);
-            const hours = Math.floor((remainingMs % msPerDay) / msPerHour);
-            const minutes = Math.floor((remainingMs % msPerHour) / msPerMinute);
-            const seconds = Math.floor((remainingMs % msPerMinute) / msPerSecond);
-
-            // Pad numbers with leading zeros if they are single digits
-            document.getElementById('months').innerText = String(monthsDiff).padStart(2, '0');
-            document.getElementById('weeks').innerText = String(weeks).padStart(2, '0');
+            // Pad numbers with leading zeros
             document.getElementById('days').innerText = String(days).padStart(2, '0');
             document.getElementById('hours').innerText = String(hours).padStart(2, '0');
             document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
