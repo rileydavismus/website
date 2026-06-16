@@ -10,18 +10,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* Dark Theme & Layout Setup */
+        /* --- Dynamic Theme Variables --- */
+        :root {
+            --bg-color: #121212;
+            --title-color: #777;
+            --accent-color: #a2e8bc;      /* Soft minimal green */
+            --accent-rgb: 162, 232, 188;  /* For canvas opacity math */
+            --separator-color: #333;
+            --label-color: #555;
+            --modal-bg: #1e1e1e;
+            --modal-text: #e0e0e0;
+            --button-border: #444;
+        }
+
+        [data-theme="light-blue"] {
+            --bg-color: #f4f7f6;
+            --title-color: #8898a6;
+            --accent-color: #3b82f6;      /* Vibrant blue */
+            --accent-rgb: 59, 130, 246;
+            --separator-color: #cbd5e1;
+            --label-color: #64748b;
+            --modal-bg: #ffffff;
+            --modal-text: #1f2937;
+            --button-border: #e5e7eb;
+        }
+
+        [data-theme="cyberpunk-red"] {
+            --bg-color: #0d0202;
+            --title-color: #501111;
+            --accent-color: #ff0055;      /* Neon red/pink */
+            --accent-rgb: 255, 0, 85;
+            --separator-color: #2a080c;
+            --label-color: #7a1523;
+            --modal-bg: #1a0406;
+            --modal-text: #ff0055;
+            --button-border: #4a0c13;
+        }
+
+        [data-theme="sakura-pink"] {
+            --bg-color: #fff5f5;
+            --title-color: #dca3a3;
+            --accent-color: #ffb7c5;      /* Cherry blossom pink */
+            --accent-rgb: 255, 183, 197;
+            --separator-color: #fcd7d9;
+            --label-color: #bfa0a4;
+            --modal-bg: #ffffff;
+            --modal-text: #4a3739;
+            --button-border: #ffe3e5;
+        }
+
+        /* --- Structural Styles --- */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #121212;
+            background-color: var(--bg-color);
             font-family: 'Source Code Pro', monospace;
+            transition: background-color 0.4s ease;
         }
 
-        /* Canvas falls underneath the content layer */
         #rainCanvas {
             position: absolute;
             top: 0;
@@ -32,7 +81,6 @@
             pointer-events: none;
         }
 
-        /* Foreground interface container */
         .content-container {
             position: relative;
             z-index: 2;
@@ -48,13 +96,13 @@
         h1 {
             font-weight: 400;
             font-size: 1.5rem;
-            color: #777;
+            color: var(--title-color);
             margin-bottom: 2rem;
             letter-spacing: 2px;
             user-select: none;
+            transition: color 0.4s ease;
         }
 
-        /* Aligns numbers and colons horizontally */
         .countdown-row {
             display: flex;
             align-items: flex-start;
@@ -70,45 +118,142 @@
         .number {
             font-size: 3.5rem;
             font-weight: 600;
-            color: #a2e8bc; /* Soft minimal green */
-            text-shadow: 0 0 8px rgba(162, 232, 188, 0.15);
+            color: var(--accent-color);
+            text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.15);
             line-height: 1;
             padding: 0 0.75rem; 
+            transition: color 0.4s ease, text-shadow 0.4s ease;
         }
 
         .label {
             font-size: 0.75rem;
-            color: #555;
+            color: var(--label-color);
             text-transform: uppercase;
             margin-top: 0.7rem;
             letter-spacing: 1px;
             user-select: none;
+            transition: color 0.4s ease;
         }
 
         .separator {
             font-size: 3.5rem;
             font-weight: 600;
-            color: #333;
+            color: var(--separator-color);
             line-height: 0.95; 
             user-select: none;
+            transition: color 0.4s ease;
+        }
+
+        /* --- Gear Icon --- */
+        .settings-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            z-index: 3;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            opacity: 0.4;
+            transition: opacity 0.2s ease;
+        }
+        .settings-btn:hover {
+            opacity: 0.9;
+        }
+        .settings-btn svg {
+            fill: var(--accent-color);
+            transition: fill 0.4s ease;
+        }
+
+        /* --- Theme Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: var(--modal-bg);
+            color: var(--modal-text);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            transform: translateY(10px);
+            transition: transform 0.25s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+        .modal-overlay.open .modal-content {
+            transform: translateY(0);
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+        .theme-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .theme-btn {
+            font-family: 'Source Code Pro', monospace;
+            background: transparent;
+            color: inherit;
+            border: 1px solid var(--button-border);
+            padding: 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, border-color 0.4s;
+        }
+        .theme-btn:hover {
+            background-color: rgba(var(--accent-rgb), 0.1);
         }
 
         /* Mobile Adjustments */
         @media (max-width: 600px) {
-            .number {
-                font-size: 2.2rem;
-                padding: 0 0.4rem; 
-            }
-            .separator {
-                font-size: 2.2rem;
-            }
-            .label {
-                font-size: 0.6rem;
-            }
+            .number { font-size: 2.2rem; padding: 0 0.4rem; }
+            .separator { font-size: 2.2rem; }
+            .label { font-size: 0.6rem; }
+            .settings-btn { top: 15px; right: 15px; }
         }
     </style>
 </head>
 <body>
+
+    <button class="settings-btn" id="openModal" aria-label="Open Theme Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5t1-13.5l-103-78 110-190 119 50q11-8 23-15t24.5-12l16-128h220l16 128q13 5 24.5 12t23 15l119-50 110 190-103 78q1 7 1 13.5t-1 13.5l103 78-110 190-119-50q-11 8-23 15t-24.5 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+        </svg>
+    </button>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <h2>Select Theme</h2>
+            <div class="theme-options">
+                <button class="theme-btn" data-set-theme="default">Minimal Dark</button>
+                <button class="theme-btn" data-set-theme="light-blue">Light Blue</button>
+                <button class="theme-btn" data-set-theme="cyberpunk-red">Cyberpunk Red</button>
+                <button class="theme-btn" data-set-theme="sakura-pink">Sakura Pink</button>
+            </div>
+        </div>
+    </div>
 
     <canvas id="rainCanvas"></canvas>
 
@@ -142,7 +287,7 @@
     </div>
 
     <script>
-        // --- 1. Target Countdown Logic (Brisbane Time Lock - UTC+10) ---
+        // --- 1. System Target Countdown Logic (Brisbane Lock - UTC+10) ---
         const targetDate = new Date(Date.UTC(2026, 8, 1, 0, 0, 0) - (10 * 60 * 60 * 1000));
 
         function updateCountdown() {
@@ -170,7 +315,42 @@
         const countdownInterval = setInterval(updateCountdown, 1000);
 
 
-        // --- 2. Brighter Rain Animation Logic ---
+        // --- 2. Live Theme Switching Modal Operations ---
+        const openModalBtn = document.getElementById('openModal');
+        const modalOverlay = document.getElementById('modalOverlay');
+        let currentRainColor = 'rgba(162, 232, 188, 0.25)'; // Track canvas styling dynamically
+
+        openModalBtn.addEventListener('click', () => modalOverlay.classList.add('open'));
+        
+        // Close modal when clicking background space outside panel box
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) modalOverlay.classList.remove('open');
+        });
+
+        // Loop array selector to change styling data attributes
+        document.querySelectorAll('[data-set-theme]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const selectedTheme = e.target.getAttribute('data-set-theme');
+                
+                if (selectedTheme === 'default') {
+                    document.documentElement.removeAttribute('data-theme');
+                } else {
+                    document.documentElement.setAttribute('data-theme', selectedTheme);
+                }
+                
+                // Real-time canvas engine updates based on computed styles
+                setTimeout(() => {
+                    const computedStyle = getComputedStyle(document.documentElement);
+                    const rgbValues = computedStyle.getPropertyValue('--accent-rgb').trim();
+                    currentRainColor = `rgba(${rgbValues}, 0.25)`;
+                }, 50);
+
+                modalOverlay.classList.remove('open');
+            });
+        });
+
+
+        // --- 3. Dynamic Canvas Rain Logic ---
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -196,8 +376,7 @@
         function animateRain() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Increased opacity here from 0.06 to 0.25 for higher visibility
-            ctx.strokeStyle = 'rgba(162, 232, 188, 0.25)';
+            ctx.strokeStyle = currentRainColor; // Uses variable updated by theme switcher
             ctx.lineWidth = 1;
             ctx.lineCap = 'round';
 
