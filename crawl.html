@@ -21,7 +21,7 @@
             padding: 0;
             height: 100%;
             background-color: #000;
-            overflow: hidden; /* Strict lock to prevent body canvas scrolling */
+            overflow: hidden;
         }
 
         body {
@@ -36,7 +36,7 @@
         #terminal-container {
             width: 100%;
             max-width: 1000px;
-            height: 100%; /* Force matching of exact visual screen bounds */
+            height: 100%;
             background-color: var(--term-bg);
             border: 3px solid var(--term-border);
             border-radius: 6px;
@@ -47,9 +47,9 @@
             overflow: hidden;
         }
 
-        /* SECTION 1: TOP PANEL */
+        /* TOP PANEL */
         #top-sector {
-            flex-shrink: 0; /* Never allow stats panel to shrink or compress */
+            flex-shrink: 0;
             border-bottom: 2px dashed var(--term-border);
             display: grid;
             grid-template-columns: 1.2fr 1fr 1.5fr;
@@ -86,15 +86,15 @@
             gap: 2px 8px;
         }
 
-        /* SECTION 2: MIDDLE PANEL (SCROLLABLE STORY HOUSING) */
+        /* MIDDLE PANEL */
         #middle-sector {
-            flex-grow: 1; 
-            overflow-y: auto; /* Internal scroll only */
+            flex-grow: 1;
+            overflow-y: auto;
             padding: 12px 2px;
             font-size: 0.95em;
             line-height: 1.4;
             border-bottom: 2px dashed var(--term-border);
-            -webkit-overflow-scrolling: touch; /* Smooth mobile scroll acceleration */
+            -webkit-overflow-scrolling: touch;
         }
 
         .log-entry {
@@ -107,13 +107,39 @@
         .loot-item { color: var(--term-gold); }
         .story-narrative { color: #ffffff; }
 
-        /* SECTION 3: BOTTOM PANEL */
+        /* OPTIONS BUTTON CONTAINER */
+        #options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 10px 0 5px 0;
+            flex-shrink: 0;
+        }
+
+        .option-btn {
+            background: transparent;
+            border: 1px solid var(--term-border);
+            color: var(--term-green);
+            text-align: left;
+            padding: 8px 12px;
+            font-family: inherit;
+            cursor: pointer;
+            font-size: 0.9em;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: rgba(51, 255, 51, 0.1);
+            border-color: var(--term-green);
+        }
+
+        /* BOTTOM PANEL */
         #bottom-sector {
-            flex-shrink: 0; /* Input layout is strictly pinned */
-            height: 50px;
+            flex-shrink: 0;
+            height: 40px;
             display: flex;
             align-items: center;
-            padding-top: 8px;
         }
 
         .terminal-prompt {
@@ -143,7 +169,7 @@
 <body>
 
 <div id="terminal-container">
-    <!-- TOP PANEL: REAL-TIME STATISTICS MONITOR -->
+    <!-- TOP PANEL -->
     <div id="top-sector">
         <div>
             <div class="sector-title">CHARACTER PROFILE</div>
@@ -171,15 +197,18 @@
         </div>
     </div>
 
-    <!-- MIDDLE PANEL: TEXT HISTORY CHRONICLE -->
+    <!-- MIDDLE PANEL -->
     <div id="middle-sector">
         <div class="log-entry">====================================================================</div>
         <div class="log-entry">                         DUNGEON CRAWLER                            </div>
         <div class="log-entry">====================================================================</div>
-        <div class="log-entry sys">Welcome, traveler. Enter a custom name to begin your character setup...</div>
+        <div class="log-entry sys">Welcome, traveler. Enter a custom character name below to begin...</div>
     </div>
 
-    <!-- BOTTOM PANEL: ACTIVE INTERACTION ENGINE -->
+    <!-- EXPLICIT OPTIONS POOL CONTAINER -->
+    <div id="options-container"></div>
+
+    <!-- BOTTOM PANEL -->
     <div id="bottom-sector">
         <span class="terminal-prompt">&gt;</span>
         <input type="text" id="cli-input" placeholder="Type character name..." autofocus autocomplete="off">
@@ -187,7 +216,7 @@
 </div>
 
 <script>
-    // --- DATABASES ---
+    // --- DATABASES & GRAMMAR MATRICES ---
     const RACES = ['Human', 'Elf', 'Dwarf', 'Halfling'];
     const ALL_CLASSES = [
         { name: 'Fighter', hitDie: 10, weapon: 'Longsword', armor: 'Chain Mail' },
@@ -208,23 +237,35 @@
         'Potion of Healing': { type: 'consumable' }
     };
 
-    const STORY_ATMOSPHERES = [
-        "A heavy chill hangs over the area, rendering your breathing visible in the dim light.",
-        "The distant sound of clicking machinery echoes intermittently behind the stone blocks.",
-        "Clumps of gray moss choke out the corners, glowing with an eerie bioluminescent aura.",
-        "The air here tastes distinctly like copper, accompanied by a low hum vibrating through the floor stones."
+    const ROOM_ARCHETYPES = [
+        {
+            type: "Crypt",
+            atmospheres: ["Ancient dust blankets shattered stone sarcophagi.", "The stench of ancient rot drafts up from deep floor fissures.", "Flickering tallow candles cast long shadow figures across rows of skulls."],
+            features: ["a stone altar leaking dark water", "a cracked wall displaying dynamic historical glyphs", "an unlooted, chained stone iron chest"]
+        },
+        {
+            type: "Alchemical Lab",
+            atmospheres: ["Racks of bubbling, multi-colored glass vials cast an unnatural neon glare.", "Thick emerald gas flows sluggishly along the cold masonry channels.", "A giant rusted copper machine hums and drops liquid oil from its gear joints."],
+            features: ["a table piled high with charred grimoires", "a massive, bubbling iron cauldron", "a glass cabinet housing strange preservation specimen jars"]
+        },
+        {
+            type: "Sunken Library",
+            atmospheres: ["Rotting bookshelves stretch high into darkness, half-collapsed into stagnant water.", "The faint whisper of turning parchment scrolls echoes across empty space.", "Luminescent blue lichen clings to damp, molding leather bindings."],
+            features: ["a crystalline reading desk glowing softly", "a locked heavy iron safe behind a velvet drape", "a pedestal supporting an oversized jade tome"]
+        },
+        {
+            type: "Fungal Nest",
+            atmospheres: ["Giant purple caps swell from floorboards, exhaling clouds of sparkling spores.", "Spongy, moist organic fibers crunch wetly beneath your footsteps.", "The ambient air is warm, thick, and smells faintly of overripe yeast fruits."],
+            features: ["a hollowed trunk leaking glowing yellow fluid", "a skeletal corpse thoroughly overgrown with fibrous roots", "a massive silk cocoon twitching slightly"]
+        }
     ];
 
-    const STORY_HAZARDS = [
-        "A deep trench splits the pathway directly ahead, filled with shattered stone debris.",
-        "Hefty iron cages sway lazily from rusting ceiling chains directly over your path.",
-        "An old defaced altar rests against the far wall, covered in sticky organic residue.",
-        "Cracked copper lines overhead slowly drip a glowing, acidic slime onto the flagstones."
-    ];
+    const ENEMY_PREFIXES = ["Decayed", "Glow-infused", "Spectral", "Rune-carved", "Savage"];
+    const ENEMY_TYPES = ["Stalker", "Ghoul", "Construct", "Viper", "Aberration"];
 
     // --- ENGINE STATE ---
-    let gamePhase = "NAME_SELECTION"; // PHASE TRACKER: NAME_SELECTION -> CLASS_SELECTION -> NAV -> COMBAT
-    let rolledClasses = []; // Stores the 3 random classes presented to user
+    let gamePhase = "NAME_SELECTION"; 
+    let rolledClasses = []; 
     let player = {
         name: "Wanderer", race: "", class: "",
         stats: {}, modifiers: {}, hp: 0, maxHp: 0, ac: 10,
@@ -233,9 +274,12 @@
     };
     let activeEnemy = null;
     let dungeonMap = {};
+    let currentChoices = [];
 
-    // --- INTERFACE UTILITIES ---
+    // --- INTERFACE HANDLING ---
     const inputElement = document.getElementById('cli-input');
+    const optionsContainer = document.getElementById('options-container');
+
     inputElement.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             const rawInput = this.value.trim();
@@ -254,8 +298,22 @@
         entry.className = `log-entry ${type}`;
         entry.innerText = text;
         box.appendChild(entry);
-        // Automatic frame scrolling alignment execution
         box.scrollTop = box.scrollHeight;
+    }
+
+    function renderOptions(optionsArray) {
+        optionsContainer.innerHTML = '';
+        currentChoices = optionsArray;
+        optionsArray.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `[${idx + 1}] ${opt.text}`;
+            btn.onclick = () => {
+                log(`\n> Selecting: "${opt.text}"`, 'player-input');
+                opt.action();
+            };
+            optionsContainer.appendChild(btn);
+        });
     }
 
     function rollDice(diceStr) {
@@ -267,46 +325,71 @@
         return total + mod;
     }
 
-    // --- MULTI-PHASE CHARACTER SETUP SETUP ---
+    // --- GAME PHASES HANDLING ---
+    function processFreeText(input) {
+        const indexSelection = parseInt(input) - 1;
+        if (!isNaN(indexSelection) && currentChoices[indexSelection]) {
+            currentChoices[indexSelection].action();
+            return;
+        }
+
+        if (gamePhase === "NAME_SELECTION") {
+            generateClassChoices(input);
+            return;
+        }
+        
+        // If they write a completely customized entry during narrative mode
+        if (gamePhase === "NAV") {
+            log(`You push beyond standard choices, attempting to: "${input}".`, "story-narrative");
+            // Evaluate generic text routing proxy
+            if (input.toLowerCase().includes("search") || input.toLowerCase().includes("look")) {
+                processSearchLogic();
+            } else if (input.toLowerCase().includes("potion") || input.toLowerCase().includes("drink")) {
+                processInventoryLogic("potion");
+            } else {
+                log("Your action leaves the room unchanged. The primary routes still loom forward.");
+                generateNavChoices();
+            }
+            return;
+        }
+
+        if (gamePhase === "COMBAT") {
+            if (input.toLowerCase().includes("potion") || input.toLowerCase().includes("heal")) {
+                executeCombatAction("potion");
+            } else {
+                executeCombatAction("attack");
+            }
+            return;
+        }
+
+        log("Command not registered in current matrix state.", "sys");
+    }
+
+    // --- CHARACTER GENERATION MATRIX ---
     function generateClassChoices(chosenName) {
         player.name = chosenName;
         gamePhase = "CLASS_SELECTION";
 
-        // Shuffle and pull exactly 3 unique class configurations
         let pool = [...ALL_CLASSES].sort(() => 0.5 - Math.random());
         rolledClasses = pool.slice(0, 3);
 
-        log(`\nGreetings, ${player.name}. Your ancestral blood awakens...`, "sys");
-        log("Select your character class from the three paths destiny has chosen for you:\n", "sys");
-        
-        rolledClasses.forEach((cls, index) => {
-            log(` [${index + 1}] ${cls.name.toUpperCase()} (Starting weapon: ${cls.weapon}, Armor: ${cls.armor})`);
-        });
+        log(`\nGreetings, ${player.name}. Your legacy calls out. Choose a training methodology:`, "sys");
 
-        inputElement.placeholder = "Type class name or number (1-3)...";
+        const classOptions = rolledClasses.map(cls => ({
+            text: `${cls.name.toUpperCase()} (Starts with ${cls.weapon} and ${cls.armor})`,
+            action: () => finalizeCharacter(cls)
+        }));
+        renderOptions(classOptions);
+        inputElement.placeholder = "Select or type your class selection...";
     }
 
-    function finalizeCharacter(selection) {
-        let selectedClass = null;
-        const normalized = selection.toLowerCase().trim();
-
-        // Check entry choice index vs literal wording variants
-        if (normalized === "1" || normalized === rolledClasses[0].name.toLowerCase()) selectedClass = rolledClasses[0];
-        else if (normalized === "2" || normalized === rolledClasses[1].name.toLowerCase()) selectedClass = rolledClasses[1];
-        else if (normalized === "3" || normalized === rolledClasses[2].name.toLowerCase()) selectedClass = rolledClasses[2];
-
-        if (!selectedClass) {
-            log("Invalid choice. Please type a valid class number (1, 2, 3) or its direct name to step forward.", "sys");
-            return;
-        }
-
+    function finalizeCharacter(selectedClass) {
         player.class = selectedClass.name;
         player.race = RACES[Math.floor(Math.random() * RACES.length)];
 
-        // Core D&D 5e Ability Scores processing layout
         ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'].forEach(attr => {
             let rolls = Array.from({length: 4}, () => Math.floor(Math.random() * 6) + 1).sort();
-            rolls.shift(); // Drop the lowest roll
+            rolls.shift();
             player.stats[attr] = rolls.reduce((a, b) => a + b, 0) + (player.race === 'Human' ? 1 : 0);
             player.modifiers[attr] = Math.floor((player.stats[attr] - 10) / 2);
         });
@@ -320,11 +403,10 @@
         recalculateAC();
         gamePhase = "NAV";
         
-        log(`\nCharacter sheet generated successfully. You are ${player.name}, the ${player.race} ${player.class}.`, "sys");
+        log(`\nCharacter synchronized. You are ${player.name}, the ${player.race} ${player.class}. Your journey drops down into darkness...`, "sys");
         updateScreenView();
         
-        // Launch dynamic sandbox world grid node
-        buildDynamicRoom(0, 0, "You open your eyes in a vaulted, damp subterranean chamber. Heavy iron doors behind you are fused shut by age. The path forward is cold, dark, and calling your name.");
+        buildDynamicRoom(0, 0, "You slide down a loose gravel shaft into a vaulted, cold stone foyer. Debris locks the passage behind you. The air is old, damp, and completely silent.");
     }
 
     function recalculateAC() {
@@ -338,250 +420,208 @@
         else player.ac = armor.ac;
     }
 
-    // --- CONTEXT INTENT INTERPRETATION ---
-    function analyzeIntent(input) {
-        const text = input.toLowerCase();
-        let scores = { movement: 0, search: 0, combat: 0, inventory: 0 };
-
-        if (/\b(north|south|east|west|walk|go|run|move|climb|leave|enter|step|travel|advance|crawl|head)\b/.test(text)) scores.movement += 3;
-        if (/\b(look|search|examine|inspect|find|check|scan|peer|observe)\b/.test(text)) scores.search += 3;
-        if (/\b(attack|hit|strike|kill|fight|stab|swing|shoot|cast|punch|slay)\b/.test(text)) scores.combat += 4;
-        if (/\b(use|drink|quaff|equip|wear|read)\b/.test(text)) scores.inventory += 3;
-
-        let maxIntent = 'interact';
-        let maxScore = 0;
-        for (let intent in scores) {
-            if (scores[intent] > maxScore) {
-                maxScore = scores[intent];
-                maxIntent = intent;
-            }
-        }
-        return maxScore > 0 ? maxIntent : 'interact';
-    }
-
-    // --- MASTER ENGINE PROCESSING INTERPOLATOR ---
-    function processFreeText(input) {
-        if (gamePhase === "NAME_SELECTION") {
-            generateClassChoices(input);
-            return;
-        }
-        if (gamePhase === "CLASS_SELECTION") {
-            finalizeCharacter(input);
-            return;
-        }
-        if (gamePhase === "GAMEOVER") {
-            log("The crawl has ended. Reload the game window to rise once again.", "sys");
-            return;
-        }
-
-        const intent = analyzeIntent(input);
-        
-        if (gamePhase === "COMBAT") {
-            if (intent === "combat" || input.includes("attack") || input.includes("fight")) {
-                executeCombatAction("attack", input);
-            } else if (input.includes("potion") || input.includes("drink") || input.includes("heal")) {
-                executeCombatAction("potion", input);
-            } else {
-                log(`You choose to: "${input}".`, "story-narrative");
-                log(`The ${activeEnemy.name} pushes aggressively through your distracting action!`, "combat-e");
-                executeCombatAction("distraction", input);
-            }
-            return;
-        }
-
-        if (intent === "movement") {
-            if (input.includes("north")) player.y += 1;
-            else if (input.includes("south")) player.y -= 1;
-            else if (input.includes("east")) player.x += 1;
-            else if (input.includes("west")) player.x -= 1;
-            else {
-                if (Math.random() > 0.5) player.x += (Math.random() > 0.5 ? 1 : -1);
-                else player.y += (Math.random() > 0.5 ? 1 : -1);
-            }
-            buildDynamicRoom(player.x, player.y);
-        } 
-        else if (intent === "search") {
-            processSearchLogic(input);
-        } 
-        else if (intent === "inventory") {
-            processInventoryLogic(input);
-        }
-        else {
-            log(`You attempt to: "${input}". Your movements echo into the surrounding tunnels, but no traps or paths immediately trigger from the choice.`, "story-narrative");
-            log("\n[PROMPT] How would you like to proceed? You can travel to a new area or look closer for clues.", "sys");
-        }
-        updateScreenView();
-    }
-
-    // --- PROCEDURAL SCENARIO FACTORY ---
-    function generateStorySnippet() {
-        const atm = STORY_ATMOSPHERES[Math.floor(Math.random() * STORY_ATMOSPHERES.length)];
-        const haz = STORY_HAZARDS[Math.floor(Math.random() * STORY_HAZARDS.length)];
-        return `${atm} ${haz}`;
-    }
-
+    // --- PROCEDURAL GENERATION PLATFORM ---
     function buildDynamicRoom(x, y, customText = null) {
         const key = `${x},${y}`;
+        
         if (dungeonMap[key]) {
-            log(`You travel back down to coordinates (${x},${y}).\n${dungeonMap[key].desc}`, "story-narrative");
+            log(`\n[BACKTRACK] You step backward into known territory at points (${x},${y}).\n${dungeonMap[key].desc}`, "story-narrative");
             if (dungeonMap[key].enemy) {
                 activeEnemy = { ...dungeonMap[key].enemy };
                 gamePhase = "COMBAT";
-                log(`\nENGAGED: The ${activeEnemy.name.toUpperCase()} bars your path once again!`, "combat-e");
+                log(`The dangerous ${activeEnemy.name} is waiting where you left it!`, "combat-e");
+                generateCombatChoices();
             } else {
-                log("\n[PROMPT] The area remains clear of enemies. Where to now?", "sys");
+                generateNavChoices();
             }
             return;
         }
 
-        let baseDescription = customText || `You explore forward into an uncharted section of the ruins at point (${x},${y}). ${generateStorySnippet()}`;
-        let room = { desc: baseDescription, loot: [], enemy: null };
-        const distance = Math.abs(x) + Math.abs(y);
+        // 1. Generate Archetype
+        const arch = ROOM_ARCHETYPES[Math.floor(Math.random() * ROOM_ARCHETYPES.length)];
+        const atm = arch.atmospheres[Math.floor(Math.random() * arch.atmospheres.length)];
+        const feat = arch.features[Math.floor(Math.random() * arch.features.length)];
         
+        let desc = customText || `You transition into a chilling [${arch.type.toUpperCase()}] sector at coordinates (${x},${y}). ${atm} Centered in the sector, you spot ${feat}.`;
+        let room = { type: arch.type, desc: desc, loot: [], enemy: null };
+        const distance = Math.abs(x) + Math.abs(y);
+
+        // 2. Generate Threats / Items dynamically
         if (!customText) {
             const roll = Math.random();
-            if (roll < 0.40) { // Instantiate a hostile combat encounter block
-                room.enemy = { 
-                    name: "Feral Scavenger", 
-                    ac: 11 + Math.min(distance, 5), 
-                    hp: 8 + (distance * 4), 
-                    maxHp: 8 + (distance * 4), 
-                    attackBonus: 2 + Math.floor(distance / 2), 
-                    damageDie: "1d6+1" 
+            if (roll < 0.45) { // Combat Event Trigger
+                const pre = ENEMY_PREFIXES[Math.floor(Math.random() * ENEMY_PREFIXES.length)];
+                const typ = ENEMY_TYPES[Math.floor(Math.random() * ENEMY_TYPES.length)];
+                room.enemy = {
+                    name: `${pre} ${typ}`,
+                    ac: 11 + Math.min(distance, 5),
+                    hp: 10 + (distance * 3),
+                    maxHp: 10 + (distance * 3),
+                    attackBonus: 2 + Math.floor(distance / 2),
+                    damageDie: "1d6+2"
                 };
-                baseDescription += `\n\n[PROMPT] A red-eyed, growling ${room.enemy.name} scrambles down from a ceiling gap! It bars your passage. What do you do?`;
-            } else if (roll > 0.75) { // Drop scattered items inside state array
-                const itemKeys = Object.keys(ITEMS);
-                const chosenLoot = itemKeys[Math.floor(Math.random() * itemKeys.length)];
-                room.loot.push(chosenLoot);
-                baseDescription += `\n\n[PROMPT] You notice a metallic glimmer shifting inside an old discarded equipment pouch. What do you do?`;
-            } else {
-                baseDescription += `\n\n[PROMPT] This zone is momentarily quiet, but structural openings split off into the darkness. How do you respond?`;
+                desc += `\n\n[DANGER] Out from the darkness slinks a ${room.enemy.name}, cutting off your path!`;
+                room.desc = desc;
+            } else if (roll > 0.70) { // Loot Injection Event
+                const pool = Object.keys(ITEMS);
+                room.loot.push(pool[Math.floor(Math.random() * pool.length)]);
             }
         }
 
         dungeonMap[key] = room;
-        log(baseDescription, "story-narrative");
+        log(`\n${desc}`, "story-narrative");
 
         if (room.enemy) {
             activeEnemy = { ...room.enemy };
             gamePhase = "COMBAT";
+            generateCombatChoices();
+        } else {
+            generateNavChoices();
         }
     }
 
-    function processSearchLogic(input) {
+    // --- DECISION ARRAYS ENGINE ---
+    function generateNavChoices() {
+        const room = dungeonMap[`${player.x},${player.y}`];
+        let choices = [
+            { text: "Advance deeper into the North corridor", action: () => { player.y += 1; buildDynamicRoom(player.x, player.y); } },
+            { text: "Explore winding passages toward the East", action: () => { player.x += 1; buildDynamicRoom(player.x, player.y); } },
+        ];
+
+        // Contextual choice appending based on room composition matrix
+        if (room && room.loot.length > 0) {
+            choices.unshift({ text: "Search the environment container for loose supplies", action: () => processSearchLogic() });
+        } else {
+            choices.push({ text: "Thoroughly inspect structural walls for secret vaults", action: () => processSearchLogic() });
+        }
+
+        if (player.inventory.includes("Potion of Healing")) {
+            choices.push({ text: "Drink a Potion of Healing from your storage pack", action: () => processInventoryLogic("potion") });
+        }
+
+        renderOptions(choices);
+        inputElement.placeholder = "Select an option or type a custom action...";
+    }
+
+    function generateCombatChoices() {
+        let choices = [
+            { text: `Launch an attack with your equipped ${player.equippedWeapon.toUpperCase()}`, action: () => executeCombatAction("attack") }
+        ];
+
+        if (player.inventory.includes("Potion of Healing")) {
+            choices.push({ text: "Retrieve and drink a Potion of Healing", action: () => executeCombatAction("potion") });
+        }
+
+        choices.push({ text: "Attempt to feint and retreat backward safely", action: () => executeCombatAction("retreat") });
+
+        renderOptions(choices);
+        inputElement.placeholder = "Combat active! Choose your survival action...";
+    }
+
+    // --- GAME ACTIONS MATRIX ---
+    function processSearchLogic() {
         const room = dungeonMap[`${player.x},${player.y}`];
         if (room && room.loot.length > 0) {
             room.loot.forEach(item => {
                 player.inventory.push(item);
-                log(`Success: Found [${item.toUpperCase()}] and slipped it into your gear storage.`, "loot-item");
+                log(`[LOOT SECTOR] You find a functional [${item.toUpperCase()}] and load it into your inventory pack!`, "loot-item");
             });
             room.loot = [];
-            log("\n[PROMPT] The search area is cleared. Where do you want to steer your adventure now?", "sys");
         } else {
-            log(`You search based on your choice: "${input}". You filter through fine silt and loose gravel, but find nothing of worth.`, "story-narrative");
-            log("\n[PROMPT] What will you do next?", "sys");
+            log("You meticulously run your hands across the structure walls and masonry seams, but find nothing but ancient soot.");
         }
+        updateScreenView();
+        generateNavChoices();
     }
 
-    function processInventoryLogic(input) {
-        if (input.includes("potion")) {
+    function processInventoryLogic(type) {
+        if (type === "potion") {
             const idx = player.inventory.indexOf('Potion of Healing');
             if (idx > -1) {
                 player.inventory.splice(idx, 1);
                 const heal = rollDice('2d4+2');
                 player.hp = Math.min(player.maxHp, player.hp + heal);
-                log(`You drink your healing potion. Warm energy seals your gashes, restoring ${heal} HP.`, "combat-p");
-            } else {
-                log("You sift through your packs but find no functional potions.", "sys");
+                log(`You quaff the thick crimson elixir. Your deep gashes close up, restoring ${heal} HP.`, "combat-p");
             }
-        } else {
-            let handled = false;
-            Object.keys(ITEMS).forEach(item => {
-                if (input.includes(item.toLowerCase()) && player.inventory.includes(item)) {
-                    const idx = player.inventory.indexOf(item);
-                    if (ITEMS[item].type === 'weapon') {
-                        player.inventory.push(player.equippedWeapon);
-                        player.equippedWeapon = item;
-                        player.inventory.splice(idx, 1);
-                        log(`You ready your weapon loop and grip your ${item.toUpperCase()}.`);
-                    } else if (ITEMS[item].type === 'armor') {
-                        player.inventory.push(player.equippedArmor);
-                        player.equippedArmor = item;
-                        player.inventory.splice(idx, 1);
-                        log(`You click the security straps of your ${item.toUpperCase()} together.`);
-                        recalculateAC();
-                    }
-                    handled = true;
-                }
-            });
-            if (!handled) log("You check your inventory tabs but make no gear modifications.", "sys");
         }
+        updateScreenView();
+        generateNavChoices();
     }
 
-    // --- COMBAT PROCESSING LAYER ---
-    function executeCombatAction(type, input) {
-        if (type === 'attack') {
+    function executeCombatAction(type) {
+        if (type === "retreat") {
+            log("\nYou turn around and sprint back to previous coordinates!", "story-narrative");
+            player.x -= 1; // Slide position out of hostile alignment grid
+            gamePhase = "NAV";
+            activeEnemy = null;
+            buildDynamicRoom(player.x, player.y);
+            return;
+        }
+
+        if (type === "attack") {
             const attackRoll = rollDice('1d20');
             const weapon = ITEMS[player.equippedWeapon];
             const mod = player.modifiers[weapon.stat.toUpperCase()];
             const totalAttack = attackRoll + mod;
 
-            log(`Action: You strike out against your assailant!`, "combat-p");
-            log(`[ROLL MONITOR] d20 (${attackRoll}) + Mod (${mod}) = ${totalAttack} vs Armor Class (${activeEnemy.ac})`, "sys");
+            log(`\nYou slash forward with your ${player.equippedWeapon.toUpperCase()}!`, "combat-p");
+            log(`[ROLL MONITOR] d20 (${attackRoll}) + Bonus (${mod}) = ${totalAttack} vs Target AC (${activeEnemy.ac})`, "sys");
 
             if (attackRoll === 20 || (attackRoll !== 1 && totalAttack >= activeEnemy.ac)) {
                 let dmg = Math.max(1, rollDice(weapon.die) + mod);
-                if (attackRoll === 20) { dmg += rollDice(weapon.die); log("CRITICAL STRK! You break clean through their stance.", "combat-p"); }
+                if (attackRoll === 20) { dmg += rollDice(weapon.die); log("CRITICAL STRK! Defenses blown clear open.", "combat-p"); }
                 activeEnemy.hp -= dmg;
-                log(`Hit! You strike the foe for ${dmg} damage.`, "combat-p");
+                log(`Direct strike! You carve into the flesh of the ${activeEnemy.name} for ${dmg} damage.`, "combat-p");
             } else {
-                log("The enemy anticipates your strike and slinks out of range.", "sys");
+                log("The monster slithers down beneath the swinging blow.", "sys");
             }
         } 
-        else if (type === 'potion') {
+        else if (type === "potion") {
             const idx = player.inventory.indexOf('Potion of Healing');
             if (idx > -1) {
                 player.inventory.splice(idx, 1);
                 const heal = rollDice('2d4+2');
                 player.hp = Math.min(player.maxHp, player.hp + heal);
-                log(`You consume a potion mid-battle, patching up your vitals for ${heal} HP.`, "combat-p");
-            } else {
-                log("You check your pockets, but your potion supply is spent!", "sys");
+                log(`You hastily down your potion under hostile focus, recovering ${heal} HP.`, "combat-p");
             }
         }
 
+        // Death tracking calculation node
         if (activeEnemy.hp <= 0) {
-            log(`\nWith a final roar, the ${activeEnemy.name} falls motionless.`, "combat-p");
+            log(`\nWith a wet crash, the ${activeEnemy.name} drops lifeless into the puddle layers below. Threat removed.`, "combat-p");
             dungeonMap[`${player.x},${player.y}`].enemy = null;
             activeEnemy = null;
             gamePhase = "NAV";
-            log("\n[PROMPT] Silence settles over the corridor. The room lies open before you. How do you wish to proceed?", "story-narrative");
             updateScreenView();
+            generateNavChoices();
             return;
         }
 
-        // Foe counter-turn calculations
+        // Hostile response round
         const monsterAttack = rollDice('1d20') + activeEnemy.attackBonus;
-        log(`\nThe ${activeEnemy.name} retaliates swiftly! (Roll: ${monsterAttack} vs Your AC: ${player.ac})`, "sys");
+        log(`\nThe ${activeEnemy.name} strikes back at you! (Roll: ${monsterAttack} vs Your AC: ${player.ac})`, "sys");
 
         if (monsterAttack >= player.ac) {
             const dmg = rollDice(activeEnemy.damageDie);
             player.hp -= dmg;
-            log(`Direct hit! You take ${dmg} tearing damage.`, "combat-e");
+            log(`The attack breaches your armor line! You take ${dmg} tearing damage.`, "combat-e");
         } else {
-            log(`You raise your arm guards and deflect the claws safely away.`, "combat-p");
+            log(`You raise your arm guards and cleanly parry the incoming strike away.`, "combat-p");
         }
 
         if (player.hp <= 0) {
             player.hp = 0;
-            log("\nYour vitals crash to absolute zero. Connection terminated... GAME OVER.", "combat-e");
+            log("\nYour vital signals drop to absolute failure. Connection closed... GAME OVER.", "combat-e");
             gamePhase = "GAMEOVER";
+            optionsContainer.innerHTML = '';
+            return;
         }
+
         updateScreenView();
+        generateCombatChoices();
     }
 
-    // --- INTERFACE SCREEN VIEW FRESHENER ---
+    // --- INTERFACE CANVAS SYSTEM REFRESHER ---
     function updateScreenView() {
         if (gamePhase === "NAME_SELECTION" || gamePhase === "CLASS_SELECTION") return;
 
@@ -603,13 +643,13 @@
         document.getElementById('lbl-armor').innerText = player.equippedArmor.toUpperCase();
 
         const invBox = document.getElementById('lbl-inventory');
-        if (player.inventory.length === 0) invBox.innerText = "No assets held.";
+        if (player.inventory.length === 0) invBox.innerText = "No carrying elements.";
         else invBox.innerHTML = player.inventory.map(item => `<div>- ${item.toUpperCase()}</div>`).join('');
 
         if (gamePhase === "COMBAT") {
-            inputElement.placeholder = `COMBAT: ${activeEnemy.name.toUpperCase()} (HP: ${activeEnemy.hp}/${activeEnemy.maxHp}). Choose your action...`;
+            inputElement.placeholder = `COMBAT ACTIVE vs ${activeEnemy.name.toUpperCase()} (HP: ${activeEnemy.hp}/${activeEnemy.maxHp})...`;
         } else {
-            inputElement.placeholder = "Read the narrative prompt above and describe your action...";
+            inputElement.placeholder = "Select a button choice or describe your actions...";
         }
     }
 </script>
