@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goodbye :(</title>
     
-    <!-- Import Source Code Pro from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
@@ -34,10 +33,10 @@
             letter-spacing: 2px;
         }
 
-        .countdown-container {
+        /* Displays everything in a single, aligned horizontal row */
+        .countdown-row {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            align-items: flex-start; /* Aligns the tops of numbers and colons */
             justify-content: center;
         }
 
@@ -45,7 +44,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 90px;
         }
 
         .number {
@@ -53,34 +51,37 @@
             font-weight: 600;
             color: #a2e8bc; /* Soft minimal green */
             text-shadow: 0 0 8px rgba(162, 232, 188, 0.15);
+            line-height: 1;
         }
 
         .label {
             font-size: 0.75rem;
             color: #555;
             text-transform: uppercase;
-            margin-top: 0.5rem;
+            margin-top: 0.7rem;
             letter-spacing: 1px;
         }
 
+        /* Colons are styled to perfectly match the alignment and size of the numbers */
         .separator {
             font-size: 3.5rem;
-            font-weight: 400;
+            font-weight: 600;
             color: #333;
-            display: flex;
-            align-items: center;
+            line-height: 0.95; /* Slight adjustment to vertically center the colon dots with the numbers */
+            padding: 0 0.5rem;
+            user-select: none;
         }
 
         /* Mobile responsiveness */
         @media (max-width: 600px) {
-            .countdown-container {
-                gap: 0.8rem;
-            }
             .number, .separator {
                 font-size: 2.2rem;
             }
-            .time-box {
-                min-width: 60px;
+            .separator {
+                padding: 0 0.2rem;
+            }
+            .label {
+                font-size: 0.6rem;
             }
         }
     </style>
@@ -89,25 +90,28 @@
 
     <h1>Goodbye :(</h1>
 
-    <div class="countdown-container">
+    <div class="countdown-row">
         <div class="time-box">
             <span class="number" id="days">00</span>
             <span class="label">Days</span>
         </div>
         <div class="separator">:</div>
+        
         <div class="time-box">
             <span class="number" id="hours">00</span>
             <span class="label">Hours</span>
         </div>
         <div class="separator">:</div>
+        
         <div class="time-box">
             <span class="number" id="minutes">00</span>
-            <span class="label">Minutes</span>
+            <span class="label">Mins</span>
         </div>
         <div class="separator">:</div>
+        
         <div class="time-box">
             <span class="number" id="seconds">00</span>
-            <span class="label">Seconds</span>
+            <span class="label">Secs</span>
         </div>
     </div>
 
@@ -121,7 +125,7 @@
             const difference = targetDate - now;
 
             if (difference <= 0) {
-                document.querySelector('.countdown-container').innerHTML = "<div class='number'>00:00:00:00</div>";
+                document.querySelector('.countdown-row').innerHTML = "<div class='number'>00:00:00:00</div>";
                 clearInterval(intervalId);
                 return;
             }
