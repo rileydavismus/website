@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to September 1, 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Dark Theme Styling */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Source Code Pro', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-weight: 400;
+            font-size: 1.5rem;
+            color: #888;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .countdown-container {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 90px;
+        }
+
+        .number {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: #00ffcc; /* Accent color for readability */
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        .label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .separator {
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: #444;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            .countdown-container {
+                gap: 0.8rem;
+            }
+            .number, .separator {
+                font-size: 2rem;
+            }
+            .time-box {
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Time Remaining</h1>
+
+    <div class="countdown-container">
+        <div class="time-box">
+            <span class="number" id="months">00</span>
+            <span class="label">Months</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="weeks">00</span>
+            <span class="label">Weeks</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="days">00</span>
+            <span class="label">Days</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="hours">00</span>
+            <span class="label">Hours</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="minutes">00</span>
+            <span class="label">Minutes</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="seconds">00</span>
+            <span class="label">Seconds</span>
+        </div>
+    </div>
+
+    <script>
+        // Target Date in Brisbane Time (AEST/AEDT depending on date, Brisbane is always AEST - UTC+10)
+        // September 1st, 2026 at 00:00:00 Brisbane time is equivalent to 2026-08-31T14:00:00Z UTC
+        const targetDate = new Date(Date.UTC(2026, 8, 1, 0, 0, 0) - (10 * 60 * 60 * 1000));
+
+        function updateCountdown() {
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.querySelector('.countdown-container').innerHTML = "<div class='number'>Countdown Finished</div>";
+                clearInterval(intervalId);
+                return;
+            }
+
+            // Time calculations
+            const msPerSecond = 1000;
+            const msPerMinute = msPerSecond * 60;
+            const msPerHour = msPerMinute * 60;
+            const msPerDay = msPerHour * 24;
+            
+            // To accurately calculate calendar months, we compare structural dates
+            let yearsDiff = targetDate.getFullYear() - now.getFullYear();
+            let monthsDiff = targetDate.getMonth() - now.getMonth() + (yearsDiff * 12);
+            
+            // Create a temporary date to check if we've passed the target day-of-month yet
+            let tempDate = new Date(now);
+            tempDate.setMonth(tempDate.getMonth() + monthsDiff);
+            
+            // If the temp date overshot the target, roll back one month
+            if (tempDate > targetDate) {
+                monthsDiff--;
+                tempDate = new Date(now);
+                tempDate.setMonth(tempDate.getMonth() + monthsDiff);
+            }
+
+            // The remaining time after accounting for whole months
+            const remainingMs = targetDate - tempDate;
+
+            const weeks = Math.floor(remainingMs / (msPerDay * 7));
+            const days = Math.floor((remainingMs % (msPerDay * 7)) / msPerDay);
+            const hours = Math.floor((remainingMs % msPerDay) / msPerHour);
+            const minutes = Math.floor((remainingMs % msPerHour) / msPerMinute);
+            const seconds = Math.floor((remainingMs % msPerMinute) / msPerSecond);
+
+            // Pad numbers with leading zeros if they are single digits
+            document.getElementById('months').innerText = String(monthsDiff).padStart(2, '0');
+            document.getElementById('weeks').innerText = String(weeks).padStart(2, '0');
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        // Run immediately on load, then update every second
+        updateCountdown();
+        const intervalId = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
