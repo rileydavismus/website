@@ -48,15 +48,15 @@
         }
 
         [data-theme="sakura-pink"] {
-            --bg-color: #fff5f5;
-            --title-color: #dca3a3;
-            --accent-color: #ffb7c5;      /* Cherry blossom pink */
-            --accent-rgb: 255, 183, 197;
-            --separator-color: #fcd7d9;
-            --label-color: #bfa0a4;
+            --bg-color: #fffafa;          /* Softest cherry blossom background tint */
+            --title-color: #c98286;
+            --accent-color: #ff6b8b;      /* Vibrant deep Sakura pink for readability */
+            --accent-rgb: 255, 107, 139;
+            --separator-color: #fcd5da;
+            --label-color: #a87e83;
             --modal-bg: #ffffff;
-            --modal-text: #4a3739;
-            --button-border: #ffe3e5;
+            --modal-text: #4a3436;
+            --button-border: #ffb8c6;
         }
 
         /* --- Structural Styles --- */
@@ -322,12 +322,10 @@
 
         openModalBtn.addEventListener('click', () => modalOverlay.classList.add('open'));
         
-        // Close modal when clicking background space outside panel box
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) modalOverlay.classList.remove('open');
         });
 
-        // Loop array selector to change styling data attributes
         document.querySelectorAll('[data-set-theme]').forEach(button => {
             button.addEventListener('click', (e) => {
                 const selectedTheme = e.target.getAttribute('data-set-theme');
@@ -376,7 +374,7 @@
         function animateRain() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            ctx.strokeStyle = currentRainColor; // Uses variable updated by theme switcher
+            ctx.strokeStyle = currentRainColor; 
             ctx.lineWidth = 1;
             ctx.lineCap = 'round';
 
