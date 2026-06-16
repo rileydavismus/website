@@ -10,17 +10,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* Dark Theme Styling */
-        body {
+        /* Dark Theme & Layout Setup */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             background-color: #121212;
-            color: #e0e0e0;
             font-family: 'Source Code Pro', monospace;
+        }
+
+        /* Canvas falls underneath the content layer */
+        #rainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Foreground interface container */
+        .content-container {
+            position: relative;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
             padding: 20px;
             box-sizing: border-box;
         }
@@ -31,12 +51,13 @@
             color: #777;
             margin-bottom: 2rem;
             letter-spacing: 2px;
+            user-select: none;
         }
 
-        /* Displays everything in a single, aligned horizontal row */
+        /* Aligns numbers and colons horizontally */
         .countdown-row {
             display: flex;
-            align-items: flex-start; /* Aligns the tops of numbers and colons */
+            align-items: flex-start;
             justify-content: center;
         }
 
@@ -52,6 +73,7 @@
             color: #a2e8bc; /* Soft minimal green */
             text-shadow: 0 0 8px rgba(162, 232, 188, 0.15);
             line-height: 1;
+            padding: 0 0.75rem; 
         }
 
         .label {
@@ -60,25 +82,25 @@
             text-transform: uppercase;
             margin-top: 0.7rem;
             letter-spacing: 1px;
+            user-select: none;
         }
 
-        /* Colons are styled to perfectly match the alignment and size of the numbers */
         .separator {
             font-size: 3.5rem;
             font-weight: 600;
             color: #333;
-            line-height: 0.95; /* Slight adjustment to vertically center the colon dots with the numbers */
-            padding: 0 0.5rem;
+            line-height: 0.95; 
             user-select: none;
         }
 
-        /* Mobile responsiveness */
+        /* Mobile Adjustments */
         @media (max-width: 600px) {
-            .number, .separator {
+            .number {
                 font-size: 2.2rem;
+                padding: 0 0.4rem; 
             }
             .separator {
-                padding: 0 0.2rem;
+                font-size: 2.2rem;
             }
             .label {
                 font-size: 0.6rem;
@@ -88,36 +110,39 @@
 </head>
 <body>
 
-    <h1>Goodbye :(</h1>
+    <canvas id="rainCanvas"></canvas>
 
-    <div class="countdown-row">
-        <div class="time-box">
-            <span class="number" id="days">00</span>
-            <span class="label">Days</span>
-        </div>
-        <div class="separator">:</div>
-        
-        <div class="time-box">
-            <span class="number" id="hours">00</span>
-            <span class="label">Hours</span>
-        </div>
-        <div class="separator">:</div>
-        
-        <div class="time-box">
-            <span class="number" id="minutes">00</span>
-            <span class="label">Mins</span>
-        </div>
-        <div class="separator">:</div>
-        
-        <div class="time-box">
-            <span class="number" id="seconds">00</span>
-            <span class="label">Secs</span>
+    <div class="content-container">
+        <h1>Goodbye :(</h1>
+
+        <div class="countdown-row">
+            <div class="time-box">
+                <span class="number" id="days">00</span>
+                <span class="label">Days</span>
+            </div>
+            <div class="separator">:</div>
+            
+            <div class="time-box">
+                <span class="number" id="hours">00</span>
+                <span class="label">Hours</span>
+            </div>
+            <div class="separator">:</div>
+            
+            <div class="time-box">
+                <span class="number" id="minutes">00</span>
+                <span class="label">Mins</span>
+            </div>
+            <div class="separator">:</div>
+            
+            <div class="time-box">
+                <span class="number" id="seconds">00</span>
+                <span class="label">Secs</span>
+            </div>
         </div>
     </div>
 
     <script>
-        // Target Date in Brisbane Time (AEST is UTC+10)
-        // September 1st, 2026 at 00:00:00 Brisbane time
+        // --- 1. Target Countdown Logic (Brisbane Time Lock - UTC+10) ---
         const targetDate = new Date(Date.UTC(2026, 8, 1, 0, 0, 0) - (10 * 60 * 60 * 1000));
 
         function updateCountdown() {
@@ -126,26 +151,83 @@
 
             if (difference <= 0) {
                 document.querySelector('.countdown-row').innerHTML = "<div class='number'>00:00:00:00</div>";
-                clearInterval(intervalId);
+                clearInterval(countdownInterval);
                 return;
             }
 
-            // Math conversions for total days down to seconds
             const seconds = Math.floor((difference / 1000) % 60);
             const minutes = Math.floor((difference / 1000 / 60) % 60);
             const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
 
-            // Pad numbers with leading zeros
             document.getElementById('days').innerText = String(days).padStart(2, '0');
             document.getElementById('hours').innerText = String(hours).padStart(2, '0');
             document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
             document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
         }
 
-        // Run immediately on load, then update every second
         updateCountdown();
-        const intervalId = setInterval(updateCountdown, 1000);
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+
+        // --- 2. Minimal Rain Animation Logic ---
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Dynamically scale canvas to match display viewport size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Configuration variables for the rain
+        const maxDrops = 120; 
+        const raindrops = [];
+
+        // Build individual drop parameters
+        for (let i = 0; i < maxDrops; i++) {
+            raindrops.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                velocity: Math.random() * 4 + 4, // Drop fall speed spectrum
+                length: Math.random() * 15 + 10  // Visual streak length
+            });
+        }
+
+        // Active looping drawing engine
+        function animateRain() {
+            // Clears canvas while keeping dark backdrop intact
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Set rain aesthetic properties (Same color style #a2e8bc with a subtle 0.06 opacity)
+            ctx.strokeStyle = 'rgba(162, 232, 188, 0.06)';
+            ctx.lineWidth = 1;
+            ctx.lineCap = 'round';
+
+            for (let i = 0; i < maxDrops; i++) {
+                let drop = raindrops[i];
+                
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x, drop.y + drop.length);
+                ctx.stroke();
+
+                // Increment vertical position by individual rate of speed
+                drop.y += drop.velocity;
+
+                // Reset drop position back to the top once it passes off-screen
+                if (drop.y > canvas.height) {
+                    drop.y = -drop.length;
+                    drop.x = Math.random() * canvas.width;
+                    drop.velocity = Math.random() * 4 + 4;
+                }
+            }
+            requestAnimationFrame(animateRain);
+        }
+
+        animateRain();
     </script>
 </body>
 </html>
