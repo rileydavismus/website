@@ -26,6 +26,16 @@
             --term-txt: #0f380f;
         }
 
+        [data-theme="pastel"] {
+            --term-bg: #eaf4ec;
+            --term-green: #4f775c;
+            --term-dim: #709775;
+            --term-alert: #bc6c25;
+            --term-gold: #b5838d;
+            --term-border: #a3b19b;
+            --term-txt: #3a506b;
+        }
+
         * { box-sizing: border-box; }
 
         html, body {
@@ -44,6 +54,11 @@
             justify-content: center;
             align-items: center;
             background-color: #050505;
+            transition: background 0.3s;
+        }
+
+        [data-theme="pastel"] body {
+            background-color: #dbe7df;
         }
 
         #terminal-container {
@@ -59,6 +74,7 @@
             padding: 12px;
             overflow: hidden;
             position: relative;
+            transition: all 0.3s;
         }
 
         /* PALETTE PICKER BUTTON */
@@ -174,9 +190,15 @@
             word-wrap: break-word;
         }
 
-        .option-btn:hover {
+        .option-btn:hover:not(:disabled) {
             background-color: var(--term-border);
             color: var(--term-bg);
+        }
+
+        .option-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-style: dotted;
         }
 
         /* MODAL DIALOG POPUP */
@@ -216,6 +238,18 @@
         .theme-select-btn:hover {
             background-color: var(--term-border);
             color: var(--term-bg);
+        }
+
+        /* TYPING CURSOR BLINK EFFECT */
+        .cursor-active::after {
+            content: '█';
+            animation: blink 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -259,9 +293,8 @@
     <!-- MIDDLE PANEL -->
     <div id="middle-sector">
         <div class="divider-line"></div>
-        <div class="log-entry" style="text-align: center; font-weight: bold;">DUNGEON CRAWLER: PROCEDURAL ENGINE v2</div>
+        <div class="log-entry" style="text-align: center; font-weight: bold;">DUNGEON CRAWLER: TYPEWRITER EDITION v3</div>
         <div class="divider-line"></div>
-        <div class="log-entry sys">Welcome, traveler. Ready your virtual dice matrix to step forward into the unknown...</div>
     </div>
 
     <!-- ACTION INTERFACE POOL -->
@@ -273,6 +306,7 @@
             <div class="sector-title" style="margin-bottom: 15px;">SELECT CONSOLE SYSTEM</div>
             <button class="theme-select-btn" onclick="applyTheme('dark')">🟢 Retro Cyber Dark Term</button>
             <button class="theme-select-btn" onclick="applyTheme('gameboy')">📟 Classic DMG-01 Gameboy</button>
+            <button class="theme-select-btn" onclick="applyTheme('pastel')">🌿 Soft Pastel Mint</button>
             <hr style="border: none; border-top: 1px dashed var(--term-border); margin: 15px 0;">
             <button class="theme-select-btn" onclick="toggleModal(false)" style="border-color: var(--term-dim)">Close</button>
         </div>
@@ -286,7 +320,7 @@
     const ATMOSPHERES = [
         "Chilling, pressurized cold locks your joints as ancient ash dances in the drafts.",
         "The absolute stench of sulfurized oil and long-dried gore drips from overhead seams.",
-        "Stagnant, emerald-tingated water pools around half-crushed marble bones.",
+        "Stagnant, emerald-tinged water pools around half-crushed marble bones.",
         "Shattered, glyph-covered slate tiles crunch softly beneath your weight.",
         "Luminescent purple molds pulse along rows of iron-grated wall niches.",
         "Distated, distant machinery groans and vibrates structural stones deep below.",
@@ -340,7 +374,8 @@
     };
     let activeEnemy = null;
     let dungeonMap = {};
-    let pendingLootItem = null; // Holds item pending user choice sequence
+    let pendingLootItem = null;
+    let isTyping = false; // Semaphore to block user interface inputs
 
     const optionsContainer = document.getElementById('options-container');
 
@@ -349,19 +384,59 @@
         document.getElementById('theme-modal').style.display = show ? 'flex' : 'none';
     }
     function applyTheme(themeName) {
+        document.documentElement.removeAttribute('data-theme');
         if (themeName === 'gameboy') document.documentElement.setAttribute('data-theme', 'gameboy');
-        else document.documentElement.removeAttribute('data-theme');
+        if (themeName === 'pastel') document.documentElement.setAttribute('data-theme', 'pastel');
         toggleModal(false);
         updateScreenView();
     }
 
-    function log(text, type = '') {
+    // --- TELETYPE PRINT ENGINE LAYER ---
+    function log(text, type = '', onCompleteCallback = null) {
         const box = document.getElementById('middle-sector');
         const entry = document.createElement('div');
         entry.className = `log-entry ${type}`;
-        entry.innerText = text;
         box.appendChild(entry);
-        box.scrollTop = box.scrollHeight;
+        
+        // Disable action buttons during streaming layout updates
+        setButtonsDisabled(true);
+        isTyping = true;
+
+        let index = 0;
+        // Speeds up output text blocks slightly for multi-line logs
+        const msPerChar = text.length > 100 ? 8 : 15; 
+
+        entry.classList.add('cursor-active');
+
+        function printChar() {
+            if (index < text.length) {
+                // Peek ahead to handle newline layouts smoothly
+                if (text.substr(index, 2) === '\n\n') {
+                    entry.appendChild(document.createElement('br'));
+                    entry.appendChild(document.createElement('br'));
+                    index += 2;
+                } else if (text[index] === '\n') {
+                    entry.appendChild(document.createElement('br'));
+                    index++;
+                } else {
+                    entry.append(text[index]);
+                    index++;
+                }
+                box.scrollTop = box.scrollHeight;
+                setTimeout(printChar, msPerChar);
+            } else {
+                entry.classList.remove('cursor-active');
+                isTyping = false;
+                setButtonsDisabled(false);
+                if (onCompleteCallback) onCompleteCallback();
+            }
+        }
+        printChar();
+    }
+
+    function setButtonsDisabled(disable) {
+        const buttons = optionsContainer.querySelectorAll('.option-btn');
+        buttons.forEach(btn => btn.disabled = disable);
     }
 
     function renderOptions(optionsArray) {
@@ -370,9 +445,12 @@
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.innerText = opt.text;
-            btn.onclick = () => opt.action();
+            btn.onclick = () => {
+                if (!isTyping) opt.action();
+            };
             optionsContainer.appendChild(btn);
         });
+        if (isTyping) setButtonsDisabled(true);
     }
 
     function rollDice(diceStr) {
@@ -386,10 +464,11 @@
 
     // --- CHARACTER CONFIGURATION ---
     function startCharacterRolling() {
-        log("\nInitializing advanced procedural matrix generation code...", "sys");
-        renderOptions([
-            { text: "🎲 Roll Random Identity & Stats", action: () => executeCharacterRoll() }
-        ]);
+        log("Welcome, traveler. Ready your virtual dice matrix to step forward into the unknown...", "sys", () => {
+            renderOptions([
+                { text: "🎲 Roll Random Identity & Stats", action: () => executeCharacterRoll() }
+            ]);
+        });
     }
 
     function executeCharacterRoll() {
@@ -412,24 +491,22 @@
         player.inventory = ['Potion of Healing'];
 
         recalculateAC();
-        
-        log(`\n=========================================`, "sys");
-        log(`🎲 PROFILE CONFIRMED:`, "loot-item");
-        log(`Name: ${player.name} | Hero: ${player.race} ${player.class}`, "story-narrative");
-        log(`HP: ${player.hp} | Base AC: ${player.ac}`, "story-narrative");
-        log(`=========================================`, "sys");
-
         updateScreenView();
+
+        const profileSummary = `\n=========================================\n🎲 PROFILE CONFIRMED:\nName: ${player.name}\nHero Identity: ${player.race} ${player.class}\nHP Capacity: ${player.hp} | Armor Rating: ${player.ac}\n=========================================`;
         
-        renderOptions([
-            { text: "Enter Dungeon with this Character", action: () => enterDungeon() },
-            { text: "🔄 Reroll Character Profile", action: () => executeCharacterRoll() }
-        ]);
+        log(profileSummary, "story-narrative", () => {
+            renderOptions([
+                { text: "Enter Dungeon with this Character", action: () => enterDungeon() },
+                { text: "🔄 Reroll Character Profile", action: () => executeCharacterRoll() }
+            ]);
+        });
     }
 
     function enterDungeon() {
-        log(`\nYou breach the iron perimeter, dropping down into uncharted ruins. Your lifecycle loops...`, "story-narrative");
-        buildDynamicRoom(0, 0);
+        log(`\nYou breach the iron perimeter, dropping down into uncharted ruins. Your lifecycle loops...`, "story-narrative", () => {
+            buildDynamicRoom(0, 0);
+        });
     }
 
     function recalculateAC() {
@@ -451,18 +528,17 @@
         const key = `${x},${y}`;
         
         if (dungeonMap[key]) {
-            log(`\n[BACKTRACK] Re-entering familiar geometry at points (${x},${y}).`, "sys");
-            log(dungeonMap[key].desc, "story-narrative");
-            generateNavChoices();
+            log(`\n[BACKTRACK] Re-entering familiar geometry at points (${x},${y}).\n${dungeonMap[key].desc}`, "story-narrative", () => {
+                generateNavChoices();
+            });
             return;
         }
 
-        // Generate highly unique textual combinations to eliminate repeating scenarios
         const chamberType = CHAMBER_TYPES[Math.floor(Math.random() * CHAMBER_TYPES.length)];
         const atmosphere = ATMOSPHERES[Math.floor(Math.random() * ATMOSPHERES.length)];
         const feature = INTERACTABLES[Math.floor(Math.random() * INTERACTABLES.length)];
         
-        let desc = `You slide into a distinct [${chamberType.toUpperCase()}] sector at zone layout (${x},${y}). ${atmosphere} Fixed ahead is ${feature.name}.`;
+        let desc = `You slide into a distinct [${chamberType.toUpperCase()}] sector at zone layout (${x},${y}). ${atmosphere}\n\nFixed ahead is ${feature.name}.`;
         let room = { type: chamberType, desc: desc, feature: { ...feature }, resolved: false, enemy: null };
         const distance = Math.abs(x) + Math.abs(y);
 
@@ -483,14 +559,15 @@
         }
 
         dungeonMap[key] = room;
-        log(`\n${desc}`, "story-narrative");
-
-        if (room.enemy) {
-            activeEnemy = { ...room.enemy };
-            generateCombatChoices();
-        } else {
-            generateNavChoices();
-        }
+        
+        log(`\n${desc}`, "story-narrative", () => {
+            if (room.enemy) {
+                activeEnemy = { ...room.enemy };
+                generateCombatChoices();
+            } else {
+                generateNavChoices();
+            }
+        });
     }
 
     function generateNavChoices() {
@@ -501,7 +578,7 @@
             const feat = room.feature;
             const modifier = player.modifiers[feat.stat];
             choices.push({
-                text: `✨ Interact with: ${feat.name.split(' carrying')[0].split(' sealed')[0]} [${feat.stat} Check] (${modifier >= 0 ? '+' : ''}${modifier})`,
+                text: `✨ Interact with object [${feat.stat} Check] (${modifier >= 0 ? '+' : ''}${modifier})`,
                 action: () => executeAttributeCheck(feat)
             });
         }
@@ -522,29 +599,29 @@
         const total = d20 + mod;
         const targetDC = 12;
 
-        log(`\n🎲 Rolling check: d20 (${d20}) + ${feature.stat} Mod (${mod >= 0 ? '+' : ''}${mod}) = ${total} vs DC 12`);
+        const checkStr = `\n🎲 Rolling check: d20 (${d20}) + ${feature.stat} Mod (${mod >= 0 ? '+' : ''}${mod}) = ${total} vs DC 12`;
 
-        const room = dungeonMap[`${player.x},${player.y}`];
-        room.resolved = true;
+        log(checkStr, "sys", () => {
+            const room = dungeonMap[`${player.x},${player.y}`];
+            room.resolved = true;
 
-        if (total >= targetDC) {
-            log(`🎉 SUCCESS: ${feature.success}`, "combat-p");
-            
-            // Item selection pool pool expansion
-            const lootPool = Object.keys(ITEMS);
-            const discoveredItem = lootPool[Math.floor(Math.random() * lootPool.length)];
-            
-            triggerLootDecisionSequence(discoveredItem);
-        } else {
-            log(`❌ FAILURE: ${feature.failure}`, "combat-e");
-            const damage = rollDice('1d4');
-            player.hp -= damage;
-            log(`You sustain ${damage} injury damage from the tactical failure error.`, "combat-e");
-            if (player.hp <= 0) { checkDeath(); return; }
-            
-            updateScreenView();
-            generateNavChoices();
-        }
+            if (total >= targetDC) {
+                log(`🎉 SUCCESS: ${feature.success}`, "combat-p", () => {
+                    const lootPool = Object.keys(ITEMS);
+                    const discoveredItem = lootPool[Math.floor(Math.random() * lootPool.length)];
+                    triggerLootDecisionSequence(discoveredItem);
+                });
+            } else {
+                const damage = rollDice('1d4');
+                player.hp -= damage;
+                updateScreenView();
+
+                log(`❌ FAILURE: ${feature.failure}\nYou sustain ${damage} injury damage from the tactical error.`, "combat-e", () => {
+                    if (player.hp <= 0) { checkDeath(); return; }
+                    generateNavChoices();
+                });
+            }
+        });
     }
 
     // --- USER LOOT DECISION SYSTEM ---
@@ -552,37 +629,33 @@
         pendingLootItem = itemName;
         const target = ITEMS[itemName];
         
-        log(`\n=========================================`, "sys");
-        log(`🎁 UNCLAIMED SUPPLY DISCOVERED:`, "loot-item");
-        log(`Item: ${itemName.toUpperCase()} [${target.info}]`, "story-narrative");
+        let lootManifest = `\n=========================================\n🎁 UNCLAIMED SUPPLY DISCOVERED:\nItem: ${itemName.toUpperCase()} [${target.info}]\n`;
         
         if (target.type === 'weapon') {
-            log(`Current Equipped Weapon: ${player.equippedWeapon.toUpperCase()} [${ITEMS[player.equippedWeapon].info}]`, "sys");
+            lootManifest += `Current Equipped Weapon: ${player.equippedWeapon.toUpperCase()} [${ITEMS[player.equippedWeapon].info}]\n`;
         } else if (target.type === 'armor') {
-            log(`Current Equipped Armor: ${player.equippedArmor.toUpperCase()} [${ITEMS[player.equippedArmor].info}]`, "sys");
+            lootManifest += `Current Equipped Armor: ${player.equippedArmor.toUpperCase()} [${ITEMS[player.equippedArmor].info}]\n`;
         }
-        log(`=========================================`, "sys");
-
-        let lootOptions = [];
+        lootManifest += `=========================================`;
         
-        if (target.type === 'weapon' || target.type === 'armor') {
+        log(lootManifest, "loot-item", () => {
+            let lootOptions = [];
+            if (target.type === 'weapon' || target.type === 'armor') {
+                lootOptions.push({
+                    text: `⚔️ Equip directly and swap out current gear`,
+                    action: () => resolveLootSelection('EQUIP')
+                });
+            }
             lootOptions.push({
-                text: `⚔️ Equip directly and displace current protection gear`,
-                action: () => resolveLootSelection('EQUIP')
+                text: `💼 Secure item into your inventory pouch`,
+                action: () => resolveLootSelection('STASH')
             });
-        }
-        
-        lootOptions.push({
-            text: `💼 Secure item into your back inventory storage pack`,
-            action: () => resolveLootSelection('STASH')
+            lootOptions.push({
+                text: `❌ Leave item discarded on the floor`,
+                action: () => resolveLootSelection('LEAVE')
+            });
+            renderOptions(lootOptions);
         });
-        
-        lootOptions.push({
-            text: `❌ Leave item discarded on the freezing stone deck`,
-            action: () => resolveLootSelection('LEAVE')
-        });
-
-        renderOptions(lootOptions);
     }
 
     function resolveLootSelection(decision) {
@@ -590,39 +663,43 @@
         const target = ITEMS[itemName];
         pendingLootItem = null;
 
+        let resolutionText = "";
         if (decision === 'EQUIP') {
-            log(`You discard your old equipment and equip the ${itemName.toUpperCase()}.`, "loot-item");
+            resolutionText = `You throw aside your old gear and equip the ${itemName.toUpperCase()}.`;
             if (target.type === 'weapon') player.equippedWeapon = itemName;
             if (target.type === 'armor') player.equippedArmor = itemName;
             recalculateAC();
         } else if (decision === 'STASH') {
-            log(`You securely pack the ${itemName.toUpperCase()} away into storage.`, "loot-item");
+            resolutionText = `You slip the ${itemName.toUpperCase()} away into storage.`;
             player.inventory.push(itemName);
         } else {
-            log(`You walk past the ${itemName.toUpperCase()}, abandoning it to the cavern floor.`, "sys");
+            resolutionText = `You step past the ${itemName.toUpperCase()}, abandoning it to the cavern floor.`;
         }
 
         updateScreenView();
         
-        if (activeEnemy) generateCombatChoices();
-        else generateNavChoices();
+        log(`\n${resolutionText}`, "sys", () => {
+            if (activeEnemy) generateCombatChoices();
+            else generateNavChoices();
+        });
     }
 
-    // --- COMBAT CORE CORE ---
+    // --- COMBAT CORE ---
     function generateCombatChoices() {
         const weapon = ITEMS[player.equippedWeapon];
         const mod = player.modifiers[weapon.stat];
         renderOptions([
-            { text: `⚔️ Attack Enemy with ${player.equippedWeapon} [Attack] (${mod >= 0 ? '+' : ''}${mod})`, action: () => combatRound("attack") },
-            { text: "跑 Attempt Emergency Retreat backward", action: () => combatRound("retreat") }
+            { text: `⚔️ Attack with ${player.equippedWeapon} [Attack] (${mod >= 0 ? '+' : ''}${mod})`, action: () => combatRound("attack") },
+            { text: "🏃 Attempt Emergency Retreat backward", action: () => combatRound("retreat") }
         ]);
     }
 
     function combatRound(type) {
         if (type === "retreat") {
-            log(`\n🏃 You flee madly away out of line-of-sight!`, "sys");
-            activeEnemy = null;
-            buildDynamicRoom(player.x - 1, player.y);
+            log(`\n🏃 You flee madly away out of line-of-sight!`, "sys", () => {
+                activeEnemy = null;
+                buildDynamicRoom(player.x - 1, player.y);
+            });
             return;
         }
 
@@ -631,40 +708,51 @@
         const mod = player.modifiers[weapon.stat];
         const totalAttack = d20 + mod;
 
-        log(`\n⚔️ Attack roll: d20 (${d20}) + Mod (${mod >= 0 ? '+' : ''}${mod}) = ${totalAttack} vs Target AC (${activeEnemy.ac})`);
+        let roundString = `\n⚔️ Attack roll: d20 (${d20}) + Mod (${mod >= 0 ? '+' : ''}${mod}) = ${totalAttack} vs Target AC (${activeEnemy.ac})\n`;
 
         if (d20 === 20 || (d20 !== 1 && totalAttack >= activeEnemy.ac)) {
             let dmg = Math.max(1, rollDice(weapon.die) + mod);
-            if (d20 === 20) { dmg *= 2; log("💥 CRITICAL STRIKE COMPLETED!", "loot-item"); }
+            if (d20 === 20) { 
+                dmg *= 2; 
+                roundString += `💥 CRITICAL STRIKE! Hit! Pierced target flesh for ${dmg} output damage.`;
+            } else {
+                roundString += `Hit! Pierced target flesh for ${dmg} output damage.`;
+            }
             activeEnemy.hp -= dmg;
-            log(`Hit! Pierced target flesh for ${dmg} output damage.`, "combat-p");
         } else {
-            log("Your strike deflects cleanly away off skin plates.", "sys");
+            roundString += `Your strike deflects cleanly away off skin plates.`;
         }
 
-        if (activeEnemy.hp <= 0) {
-            log(`\n🎉 The ${activeEnemy.name} turns into gray soot piles. Danger clear.`, "combat-p");
-            dungeonMap[`${player.x},${player.y}`].enemy = null;
-            activeEnemy = null;
+        log(roundString, "sys", () => {
+            if (activeEnemy.hp <= 0) {
+                log(`\n🎉 The ${activeEnemy.name} turns into gray soot piles. Danger clear.`, "combat-p", () => {
+                    dungeonMap[`${player.x},${player.y}`].enemy = null;
+                    activeEnemy = null;
+                    updateScreenView();
+                    generateNavChoices();
+                });
+                return;
+            }
+
+            // Enemy phase calculation
+            const ed20 = rollDice('1d20') + activeEnemy.attackBonus;
+            let enemyString = `\n👹 Enemy counters: Strike calculation ${ed20} vs Your AC (${player.ac})\n`;
+
+            if (ed20 >= player.ac) {
+                const edmg = rollDice(activeEnemy.damageDie);
+                player.hp -= edmg;
+                enemyString += `Direct hit! You catch ${edmg} trauma damage!`;
+            } else {
+                enemyString += `You drop down flat under the swinging sweep trajectory.`;
+            }
+
             updateScreenView();
-            generateNavChoices();
-            return;
-        }
 
-        const ed20 = rollDice('1d20') + activeEnemy.attackBonus;
-        log(`👹 Enemy counters: Strike calculation ${ed20} vs Your AC (${player.ac})`);
-
-        if (ed20 >= player.ac) {
-            const edmg = rollDice(activeEnemy.damageDie);
-            player.hp -= edmg;
-            log(`Direct hit! You catch ${edmg} trauma damage!`, "combat-e");
-            if (player.hp <= 0) { checkDeath(); return; }
-        } else {
-            log("You drop down flat under the swinging sweep trajectory.", "combat-p");
-        }
-
-        updateScreenView();
-        generateCombatChoices();
+            log(enemyString, "sys", () => {
+                if (player.hp <= 0) { checkDeath(); return; }
+                generateCombatChoices();
+            });
+        });
     }
 
     function drinkPotion() {
@@ -673,20 +761,22 @@
             player.inventory.splice(idx, 1);
             const roll = rollDice('2d4+2');
             player.hp = Math.min(player.maxHp, player.hp + roll);
-            log(`\n🧪 Downed healing vial contents. Wounds mesh closed, gaining ${roll} HP.`, "combat-p");
             updateScreenView();
+            log(`\n🧪 Downed healing vial contents. Wounds mesh closed, gaining ${roll} HP.`, "combat-p", () => {
+                if (activeEnemy) generateCombatChoices(); else generateNavChoices();
+            });
         }
-        if (activeEnemy) generateCombatChoices(); else generateNavChoices();
     }
 
     function checkDeath() {
         if (player.hp <= 0) {
             player.hp = 0;
             updateScreenView();
-            log("\n💀 YOUR CONSOLE LIFE CAPACITORS READ ABSOLUTE ZERO. GAME OVER.", "combat-e");
-            renderOptions([
-                { text: "♻️ Reinitialize / Spawn Next Clone", action: () => { location.reload(); } }
-            ]);
+            log("\n💀 YOUR CONSOLE LIFE CAPACITORS READ ABSOLUTE ZERO. GAME OVER.", "combat-e", () => {
+                renderOptions([
+                    { text: "♻️ Reinitialize / Spawn Next Clone", action: () => { location.reload(); } }
+                ]);
+            });
         }
     }
 
