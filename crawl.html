@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dungeon Crawler - Dice Roller Core</title>
+    <title>Dungeon Crawler - Advanced Procedural Edition</title>
     <style>
         /* CSS VARIABLE PALETTES */
         :root {
@@ -89,7 +89,7 @@
             grid-template-columns: 1.2fr 1fr 1.5fr;
             gap: 12px;
             padding-bottom: 12px;
-            padding-top: 15px; /* Leave space for button */
+            padding-top: 15px;
             font-size: 0.85em;
         }
 
@@ -121,11 +121,11 @@
             gap: 2px 8px;
         }
 
-        /* MIDDLE LOG SCROLLER (Fixed layout limits) */
+        /* MIDDLE LOG SCROLLER */
         #middle-sector {
             flex-grow: 1;
             overflow-y: auto;
-            overflow-x: hidden; /* Lock horizontal layout shifts */
+            overflow-x: hidden;
             padding: 12px 2px;
             font-size: 0.95em;
             line-height: 1.4;
@@ -259,9 +259,9 @@
     <!-- MIDDLE PANEL -->
     <div id="middle-sector">
         <div class="divider-line"></div>
-        <div class="log-entry" style="text-align: center; font-weight: bold;">DUNGEON CRAWLER: DICE ROLLER ENGINE</div>
+        <div class="log-entry" style="text-align: center; font-weight: bold;">DUNGEON CRAWLER: PROCEDURAL ENGINE v2</div>
         <div class="divider-line"></div>
-        <div class="log-entry sys">Welcome, traveler. No raw typing is required. Ready your dice engine to begin...</div>
+        <div class="log-entry sys">Welcome, traveler. Ready your virtual dice matrix to step forward into the unknown...</div>
     </div>
 
     <!-- ACTION INTERFACE POOL -->
@@ -280,9 +280,35 @@
 </div>
 
 <script>
-    // --- DATABASES & GENERAL SYSTEMS ---
+    // --- HIGH-VARIANCE PROCEDURAL TEXT MATRICES ---
+    const CHAMBER_TYPES = ["Crypt", "Alchemical Vault", "Sunken Cloister", "Fungal Colony", "Catacomb", "Torture Grid", "Iron Treasury", "Abyssal Nexus"];
+    
+    const ATMOSPHERES = [
+        "Chilling, pressurized cold locks your joints as ancient ash dances in the drafts.",
+        "The absolute stench of sulfurized oil and long-dried gore drips from overhead seams.",
+        "Stagnant, emerald-tingated water pools around half-crushed marble bones.",
+        "Shattered, glyph-covered slate tiles crunch softly beneath your weight.",
+        "Luminescent purple molds pulse along rows of iron-grated wall niches.",
+        "Distated, distant machinery groans and vibrates structural stones deep below.",
+        "Thick, hanging webs choke out visibility, trapping layers of floating black dust.",
+        "Damp, heavy condensation streaks down wall surfaces like crying tears."
+    ];
+
+    const INTERACTABLES = [
+        { name: "a heavy obsidian sarcophagus sealed with lead", stat: "STR", success: "You cleanly slide the leaded stone lid aside!", failure: "You throw out your back against the immovable slab." },
+        { name: "a copper distillation vat carrying unknown fluid", stat: "INT", success: "You calculate its precise internal mixing sequence safely.", failure: "A jet of volatile steam vents directly onto your forearm." },
+        { name: "an interactive ivory console carved with starry glyphs", stat: "WIS", success: "Your intuition reads the hidden trap release safely.", failure: "A razor wire snaps outward across your fingers." },
+        { name: "a spinning iron astrological apparatus", stat: "DEX", success: "You accurately time the bypass and pluck out its core.", failure: "The counterweights smash heavily against your wrist." },
+        { name: "a crumbling structural pillar holding a golden sconce", stat: "STR", success: "You safely ease the weight loose without causing a collapse.", failure: "Falling masonry shards pelt your shoulder blades." },
+        { name: "a glass storage tank filled with glowing organic sludge", stat: "INT", success: "You correctly cross-reference the compound formula.", failure: "The tank ruptures, leaking noxious chemicals onto your boots." }
+    ];
+
+    const ENEMY_PREFIXES = ["Decayed", "Spectral", "Rune-carved", "Corrupted", "Unstable", "Mummified", "Gargantuan", "Bloated"];
+    const ENEMY_TYPES = ["Stalker", "Ghoul", "Construct", "Viper", "Abomination", "Reaver", "Phantasm", "Scourge"];
+
     const RACES = ['Human', 'Elf', 'Dwarf', 'Halfling'];
-    const HERO_NAMES = ['Thorin', 'Lyra', 'Kaelen', 'Varis', 'Brimstone', 'Eldrin', 'Sigrid'];
+    const HERO_NAMES = ['Thorin', 'Lyra', 'Kaelen', 'Varis', 'Brimstone', 'Eldrin', 'Sigrid', 'Morrigan', 'Haldor'];
+    
     const ALL_CLASSES = [
         { name: 'Fighter', hitDie: 10, weapon: 'Longsword', armor: 'Chain Mail' },
         { name: 'Wizard', hitDie: 6, weapon: 'Quarterstaff', armor: 'Cloth Robes' },
@@ -291,40 +317,21 @@
     ];
 
     const ITEMS = {
-        'Longsword': { type: 'weapon', die: '1d8', stat: 'STR' },
-        'Quarterstaff': { type: 'weapon', die: '1d6', stat: 'STR' },
-        'Dagger': { type: 'weapon', die: '1d4', stat: 'DEX' },
-        'Mace': { type: 'weapon', die: '1d6', stat: 'STR' },
-        'Chain Mail': { type: 'armor', ac: 16 },
-        'Leather Armor': { type: 'armor', ac: 11, addDex: true },
-        'Scale Mail': { type: 'armor', ac: 14, capDex: 2 },
-        'Cloth Robes': { type: 'armor', ac: 10, addDex: true },
-        'Potion of Healing': { type: 'consumable' }
+        'Longsword': { type: 'weapon', die: '1d8', stat: 'STR', info: "Damage: 1d8" },
+        'Quarterstaff': { type: 'weapon', die: '1d6', stat: 'STR', info: "Damage: 1d6" },
+        'Dagger': { type: 'weapon', die: '1d4', stat: 'DEX', info: "Damage: 1d4" },
+        'Mace': { type: 'weapon', die: '1d6', stat: 'STR', info: "Damage: 1d6" },
+        'Battleaxe': { type: 'weapon', die: '1d10', stat: 'STR', info: "Damage: 1d10" },
+        'Rapier': { type: 'weapon', die: '1d8', stat: 'DEX', info: "Damage: 1d8" },
+        'Chain Mail': { type: 'armor', ac: 16, info: "AC: 16" },
+        'Leather Armor': { type: 'armor', ac: 11, addDex: true, info: "AC: 11 + DEX" },
+        'Scale Mail': { type: 'armor', ac: 14, capDex: 2, info: "AC: 14 + DEX (Max +2)" },
+        'Cloth Robes': { type: 'armor', ac: 10, addDex: true, info: "AC: 10 + DEX" },
+        'Plate Armor': { type: 'armor', ac: 18, info: "AC: 18" },
+        'Potion of Healing': { type: 'consumable', info: "Restores 2d4+2 HP" }
     };
 
-    const ROOM_ARCHETYPES = [
-        {
-            type: "Crypt",
-            atmospheres: ["Ancient dust blankets shattered stone sarcophagi.", "Flickering tallow candles cast long shadow figures across rows of skulls."],
-            features: [
-                { name: "a sealed stone altar leaking dark liquid", stat: "INT", success: "You crack the altar's code, revealing an opening!", failure: "You trigger a small dart trap set into the masonry." },
-                { name: "a chained heavy iron chest", stat: "STR", success: "You cleanly snap the iron chains off the hinges!", failure: "The lock mechanism jams, pinching your hand painfully." }
-            ]
-        },
-        {
-            type: "Alchemical Lab",
-            atmospheres: ["Racks of bubbling, glass vials cast an unnatural neon glare.", "Thick emerald gas flows sluggishly along cold masonry floor channels."],
-            features: [
-                { name: "a table piled with volatile grimoires", stat: "WIS", success: "You isolate a safe recipe formula without causing sparks.", failure: "A rogue cloud of soot bursts directly into your face." },
-                { name: "a heavy bubbling iron cauldron", stat: "DEX", success: "You deftly fish something valuable out of the boiling oil.", failure: "You burn your fingers on the scalding iron rim." }
-            ]
-        }
-    ];
-
-    const ENEMY_PREFIXES = ["Decayed", "Spectral", "Rune-carved", "Corrupted"];
-    const ENEMY_TYPES = ["Stalker", "Ghoul", "Construct", "Viper"];
-
-    // --- ENGINE STATE ---
+    // --- GAME ENGINE STATE ---
     let player = {
         name: "Wanderer", race: "", class: "",
         stats: {}, modifiers: {}, hp: 0, maxHp: 0, ac: 10,
@@ -333,20 +340,17 @@
     };
     let activeEnemy = null;
     let dungeonMap = {};
+    let pendingLootItem = null; // Holds item pending user choice sequence
 
     const optionsContainer = document.getElementById('options-container');
 
-    // --- UI MODAL VIEW CONTROLS ---
+    // --- MODAL & THEME HANDLING ---
     function toggleModal(show) {
         document.getElementById('theme-modal').style.display = show ? 'flex' : 'none';
     }
-
     function applyTheme(themeName) {
-        if (themeName === 'gameboy') {
-            document.documentElement.setAttribute('data-theme', 'gameboy');
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-        }
+        if (themeName === 'gameboy') document.documentElement.setAttribute('data-theme', 'gameboy');
+        else document.documentElement.removeAttribute('data-theme');
         toggleModal(false);
         updateScreenView();
     }
@@ -380,9 +384,9 @@
         return total + mod;
     }
 
-    // --- INITIAL CHARACTER ROLLING ---
+    // --- CHARACTER CONFIGURATION ---
     function startCharacterRolling() {
-        log("\nInitializing automated generation node...", "sys");
+        log("\nInitializing advanced procedural matrix generation code...", "sys");
         renderOptions([
             { text: "🎲 Roll Random Identity & Stats", action: () => executeCharacterRoll() }
         ]);
@@ -410,9 +414,9 @@
         recalculateAC();
         
         log(`\n=========================================`, "sys");
-        log(`🎲 ROLLING COMPLETED:`, "loot-item");
-        log(`Name: ${player.name} | Identity: ${player.race} ${player.class}`, "story-narrative");
-        log(`HP: ${player.hp} | AC: ${player.ac}`, "story-narrative");
+        log(`🎲 PROFILE CONFIRMED:`, "loot-item");
+        log(`Name: ${player.name} | Hero: ${player.race} ${player.class}`, "story-narrative");
+        log(`HP: ${player.hp} | Base AC: ${player.ac}`, "story-narrative");
         log(`=========================================`, "sys");
 
         updateScreenView();
@@ -424,7 +428,7 @@
     }
 
     function enterDungeon() {
-        log(`\nYou slide down into a vaulted, freezing stone foyer. Your adventure begins...`, "story-narrative");
+        log(`\nYou breach the iron perimeter, dropping down into uncharted ruins. Your lifecycle loops...`, "story-narrative");
         buildDynamicRoom(0, 0);
     }
 
@@ -439,7 +443,7 @@
         else player.ac = armor.ac;
     }
 
-    // --- ENGINE CRAWL RUNTIME ---
+    // --- UNIQUE PERMUTATION GENERATOR WORKER ---
     function buildDynamicRoom(x, y) {
         player.x = x;
         player.y = y;
@@ -447,18 +451,19 @@
         const key = `${x},${y}`;
         
         if (dungeonMap[key]) {
-            log(`\n[BACKTRACK] You move backwards into explored points (${x},${y}).`, "sys");
+            log(`\n[BACKTRACK] Re-entering familiar geometry at points (${x},${y}).`, "sys");
             log(dungeonMap[key].desc, "story-narrative");
             generateNavChoices();
             return;
         }
 
-        const arch = ROOM_ARCHETYPES[Math.floor(Math.random() * ROOM_ARCHETYPES.length)];
-        const atm = arch.atmospheres[Math.floor(Math.random() * arch.atmospheres.length)];
-        const feature = arch.features[Math.floor(Math.random() * arch.features.length)];
+        // Generate highly unique textual combinations to eliminate repeating scenarios
+        const chamberType = CHAMBER_TYPES[Math.floor(Math.random() * CHAMBER_TYPES.length)];
+        const atmosphere = ATMOSPHERES[Math.floor(Math.random() * ATMOSPHERES.length)];
+        const feature = INTERACTABLES[Math.floor(Math.random() * INTERACTABLES.length)];
         
-        let desc = `You transition into a [${arch.type.toUpperCase()}] chamber at layout (${x},${y}). ${atm} Guarded in the center is ${feature.name}.`;
-        let room = { type: arch.type, desc: desc, feature: feature, resolved: false, enemy: null };
+        let desc = `You slide into a distinct [${chamberType.toUpperCase()}] sector at zone layout (${x},${y}). ${atmosphere} Fixed ahead is ${feature.name}.`;
+        let room = { type: chamberType, desc: desc, feature: { ...feature }, resolved: false, enemy: null };
         const distance = Math.abs(x) + Math.abs(y);
 
         if (x !== 0 || y !== 0) {
@@ -472,7 +477,7 @@
                     attackBonus: 1 + Math.floor(distance / 2),
                     damageDie: "1d6+1"
                 };
-                desc += `\n\n[DANGER] A hostile ${room.enemy.name} crawls out from overhead!`;
+                desc += `\n\n[DANGER] An aggressive ${room.enemy.name} detaches from the infrastructure to intercept you!`;
                 room.desc = desc;
             }
         }
@@ -496,13 +501,13 @@
             const feat = room.feature;
             const modifier = player.modifiers[feat.stat];
             choices.push({
-                text: `✨ Interact with feature [${feat.stat} Check] (Bonus: ${modifier >= 0 ? '+' : ''}${modifier})`,
+                text: `✨ Interact with: ${feat.name.split(' carrying')[0].split(' sealed')[0]} [${feat.stat} Check] (${modifier >= 0 ? '+' : ''}${modifier})`,
                 action: () => executeAttributeCheck(feat)
             });
         }
 
-        choices.push({ text: "🚪 Explore Northern Corridor", action: () => buildDynamicRoom(player.x, player.y + 1) });
-        choices.push({ text: "🚪 Move down Eastern Vault", action: () => buildDynamicRoom(player.x + 1, player.y) });
+        choices.push({ text: "🚪 Move North along structural lines", action: () => buildDynamicRoom(player.x, player.y + 1) });
+        choices.push({ text: "🚪 Venture East deeper into dark halls", action: () => buildDynamicRoom(player.x + 1, player.y) });
 
         if (player.inventory.includes("Potion of Healing")) {
             choices.push({ text: "🧪 Consume Potion of Healing", action: () => drinkPotion() });
@@ -517,49 +522,105 @@
         const total = d20 + mod;
         const targetDC = 12;
 
-        log(`\n🎲 Rolling check: d20 (${d20}) + ${feature.stat} Mod (${mod >= 0 ? '+' : ''}${mod}) = ${total} vs Difficulty (DC 12)`);
+        log(`\n🎲 Rolling check: d20 (${d20}) + ${feature.stat} Mod (${mod >= 0 ? '+' : ''}${mod}) = ${total} vs DC 12`);
 
         const room = dungeonMap[`${player.x},${player.y}`];
         room.resolved = true;
 
         if (total >= targetDC) {
             log(`🎉 SUCCESS: ${feature.success}`, "combat-p");
-            const lootItems = ['Longsword', 'Mace', 'Scale Mail', 'Potion of Healing'];
-            const item = lootItems[Math.floor(Math.random() * lootItems.length)];
             
-            if (ITEMS[item].type === 'weapon' || ITEMS[item].type === 'armor') {
-                log(`[EQUIPMENT FOUND] You discover and equip: ${item.toUpperCase()}!`, "loot-item");
-                if (ITEMS[item].type === 'weapon') player.equippedWeapon = item;
-                if (ITEMS[item].type === 'armor') player.equippedArmor = item;
-                recalculateAC();
-            } else {
-                log(`[SUPPLY RECEIVED] Stashed a ${item} away in your packs.`, "loot-item");
-                player.inventory.push(item);
-            }
+            // Item selection pool pool expansion
+            const lootPool = Object.keys(ITEMS);
+            const discoveredItem = lootPool[Math.floor(Math.random() * lootPool.length)];
+            
+            triggerLootDecisionSequence(discoveredItem);
         } else {
             log(`❌ FAILURE: ${feature.failure}`, "combat-e");
             const damage = rollDice('1d4');
             player.hp -= damage;
-            log(`You sustain ${damage} damage from the mistake.`, "combat-e");
+            log(`You sustain ${damage} injury damage from the tactical failure error.`, "combat-e");
             if (player.hp <= 0) { checkDeath(); return; }
+            
+            updateScreenView();
+            generateNavChoices();
+        }
+    }
+
+    // --- USER LOOT DECISION SYSTEM ---
+    function triggerLootDecisionSequence(itemName) {
+        pendingLootItem = itemName;
+        const target = ITEMS[itemName];
+        
+        log(`\n=========================================`, "sys");
+        log(`🎁 UNCLAIMED SUPPLY DISCOVERED:`, "loot-item");
+        log(`Item: ${itemName.toUpperCase()} [${target.info}]`, "story-narrative");
+        
+        if (target.type === 'weapon') {
+            log(`Current Equipped Weapon: ${player.equippedWeapon.toUpperCase()} [${ITEMS[player.equippedWeapon].info}]`, "sys");
+        } else if (target.type === 'armor') {
+            log(`Current Equipped Armor: ${player.equippedArmor.toUpperCase()} [${ITEMS[player.equippedArmor].info}]`, "sys");
+        }
+        log(`=========================================`, "sys");
+
+        let lootOptions = [];
+        
+        if (target.type === 'weapon' || target.type === 'armor') {
+            lootOptions.push({
+                text: `⚔️ Equip directly and displace current protection gear`,
+                action: () => resolveLootSelection('EQUIP')
+            });
+        }
+        
+        lootOptions.push({
+            text: `💼 Secure item into your back inventory storage pack`,
+            action: () => resolveLootSelection('STASH')
+        });
+        
+        lootOptions.push({
+            text: `❌ Leave item discarded on the freezing stone deck`,
+            action: () => resolveLootSelection('LEAVE')
+        });
+
+        renderOptions(lootOptions);
+    }
+
+    function resolveLootSelection(decision) {
+        const itemName = pendingLootItem;
+        const target = ITEMS[itemName];
+        pendingLootItem = null;
+
+        if (decision === 'EQUIP') {
+            log(`You discard your old equipment and equip the ${itemName.toUpperCase()}.`, "loot-item");
+            if (target.type === 'weapon') player.equippedWeapon = itemName;
+            if (target.type === 'armor') player.equippedArmor = itemName;
+            recalculateAC();
+        } else if (decision === 'STASH') {
+            log(`You securely pack the ${itemName.toUpperCase()} away into storage.`, "loot-item");
+            player.inventory.push(itemName);
+        } else {
+            log(`You walk past the ${itemName.toUpperCase()}, abandoning it to the cavern floor.`, "sys");
         }
 
         updateScreenView();
-        generateNavChoices();
+        
+        if (activeEnemy) generateCombatChoices();
+        else generateNavChoices();
     }
 
+    // --- COMBAT CORE CORE ---
     function generateCombatChoices() {
         const weapon = ITEMS[player.equippedWeapon];
         const mod = player.modifiers[weapon.stat];
         renderOptions([
-            { text: `⚔️ Attack with ${player.equippedWeapon} [${weapon.stat} Attack] (Bonus: ${mod >= 0 ? '+' : ''}${mod})`, action: () => combatRound("attack") },
-            { text: "🏃 Attempt Combat Disengage & Retreat", action: () => combatRound("retreat") }
+            { text: `⚔️ Attack Enemy with ${player.equippedWeapon} [Attack] (${mod >= 0 ? '+' : ''}${mod})`, action: () => combatRound("attack") },
+            { text: "跑 Attempt Emergency Retreat backward", action: () => combatRound("retreat") }
         ]);
     }
 
     function combatRound(type) {
         if (type === "retreat") {
-            log(`\n🏃 You turn your back and sprint clear out of the room!`, "sys");
+            log(`\n🏃 You flee madly away out of line-of-sight!`, "sys");
             activeEnemy = null;
             buildDynamicRoom(player.x - 1, player.y);
             return;
@@ -570,19 +631,19 @@
         const mod = player.modifiers[weapon.stat];
         const totalAttack = d20 + mod;
 
-        log(`\n⚔️ You strike at the ${activeEnemy.name}: d20 (${d20}) + Mod (${mod >= 0 ? '+' : ''}${mod}) = ${totalAttack} vs enemy AC (${activeEnemy.ac})`);
+        log(`\n⚔️ Attack roll: d20 (${d20}) + Mod (${mod >= 0 ? '+' : ''}${mod}) = ${totalAttack} vs Target AC (${activeEnemy.ac})`);
 
         if (d20 === 20 || (d20 !== 1 && totalAttack >= activeEnemy.ac)) {
             let dmg = Math.max(1, rollDice(weapon.die) + mod);
-            if (d20 === 20) { dmg *= 2; log("💥 CRITICAL HIT!", "loot-item"); }
+            if (d20 === 20) { dmg *= 2; log("💥 CRITICAL STRIKE COMPLETED!", "loot-item"); }
             activeEnemy.hp -= dmg;
-            log(`Hit! You deal ${dmg} damage.`, "combat-p");
+            log(`Hit! Pierced target flesh for ${dmg} output damage.`, "combat-p");
         } else {
-            log("Your attack bounces safely away.", "sys");
+            log("Your strike deflects cleanly away off skin plates.", "sys");
         }
 
         if (activeEnemy.hp <= 0) {
-            log(`\n🎉 The ${activeEnemy.name} collapses into static dust. Threat eliminated.`, "combat-p");
+            log(`\n🎉 The ${activeEnemy.name} turns into gray soot piles. Danger clear.`, "combat-p");
             dungeonMap[`${player.x},${player.y}`].enemy = null;
             activeEnemy = null;
             updateScreenView();
@@ -591,15 +652,15 @@
         }
 
         const ed20 = rollDice('1d20') + activeEnemy.attackBonus;
-        log(`👹 Enemy retaliation: Attack Roll ${ed20} vs Your AC (${player.ac})`);
+        log(`👹 Enemy counters: Strike calculation ${ed20} vs Your AC (${player.ac})`);
 
         if (ed20 >= player.ac) {
             const edmg = rollDice(activeEnemy.damageDie);
             player.hp -= edmg;
-            log(`The monster strikes you for ${edmg} injury damage!`, "combat-e");
+            log(`Direct hit! You catch ${edmg} trauma damage!`, "combat-e");
             if (player.hp <= 0) { checkDeath(); return; }
         } else {
-            log("You perfectly side-step out of the trajectory path.", "combat-p");
+            log("You drop down flat under the swinging sweep trajectory.", "combat-p");
         }
 
         updateScreenView();
@@ -612,7 +673,7 @@
             player.inventory.splice(idx, 1);
             const roll = rollDice('2d4+2');
             player.hp = Math.min(player.maxHp, player.hp + roll);
-            log(`\n🧪 You drink a glowing potion. Wounds close, restoring ${roll} HP.`, "combat-p");
+            log(`\n🧪 Downed healing vial contents. Wounds mesh closed, gaining ${roll} HP.`, "combat-p");
             updateScreenView();
         }
         if (activeEnemy) generateCombatChoices(); else generateNavChoices();
@@ -622,9 +683,9 @@
         if (player.hp <= 0) {
             player.hp = 0;
             updateScreenView();
-            log("\n💀 YOUR LIFE SIGNALS CRASH TO ZERO. GAME OVER.", "combat-e");
+            log("\n💀 YOUR CONSOLE LIFE CAPACITORS READ ABSOLUTE ZERO. GAME OVER.", "combat-e");
             renderOptions([
-                { text: "♻️ Reclone / Start Fresh Session", action: () => { location.reload(); } }
+                { text: "♻️ Reinitialize / Spawn Next Clone", action: () => { location.reload(); } }
             ]);
         }
     }
