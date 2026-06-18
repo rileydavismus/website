@@ -2094,40 +2094,56 @@
             ao12Display.textContent = calculateAverageOf(12);
         }
 
-        function triggerStartSequence() {
-            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
+        // Add a global variable right above your functions to track if we just stopped the timer
+let justStopped = false;
 
-            if (state === 'running') {
-                stopTimer();
-            } else if (state === 'idle') {
-                if (document.activeElement) {
-                    document.activeElement.blur();
-                }
-
-                state = 'holding';
-                timerDisplay.className = 'holding';
-                timerDisplay.textContent = '0.00';
-                varianceDisplay.className = 'hidden';
-                
-                holdTimeout = setTimeout(() => {
-                    state = 'ready';
-                    timerDisplay.className = 'ready';
-                }, 500);
-            }
+function triggerStartSequence() {
+    if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
+    
+    if (state === 'running') {
+        stopTimer();
+        justStopped = true; // Mark that this press was only used to stop the timer
+    } else if (state === 'idle') {
+        if (document.activeElement) {
+            document.activeElement.blur();
         }
+        justStopped = false; // Reset flag since we are starting a fresh attempt
+        state = 'holding';
+        timerDisplay.className = 'holding';
+        timerDisplay.textContent = '0.00';
+        varianceDisplay.className = 'hidden';
+        holdTimeout = setTimeout(() => {
+            state = 'ready';
+            timerDisplay.className = 'ready';
+        }, 500);
+    }
+}
 
-        function triggerReleaseSequence() {
-            clearTimeout(holdTimeout);
+function triggerReleaseSequence() {
+    clearTimeout(holdTimeout);
+    
+    // If this release was from stopping the timer, consume the event and do nothing else
+    if (justStopped) {
+        justStopped = false;
+        return;
+    }
 
-            if (state === 'ready') {
-                timerDisplay.className = '';
-                startTimer();
-            } else if (state === 'holding') {
-                state = 'idle';
-                timerDisplay.className = '';
-                updateVarianceUI();
-            }
+    if (state === 'ready') {
+        timerDisplay.className = '';
+        startTimer();
+    } else if (state === 'holding') {
+        state = 'idle';
+        timerDisplay.className = '';
+        
+        // Restore the last solve time to the display instead of leaving it blank or at 0.00
+        const activeTimes = sessionsData[currentSession] || [];
+        if (activeTimes.length > 0) {
+            timerDisplay.textContent = displaySolveString(activeTimes[activeTimes.length - 1]);
         }
+        
+        updateVarianceUI();
+    }
+}
 
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
