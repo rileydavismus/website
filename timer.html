@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
-    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1095,7 +1094,6 @@
 </head>
 <body class="sidebar-left" data-theme="dark">
 
-    <!-- Main Workspace Area (The Touch Zone) -->
     <div class="main-content">
         <div class="mobile-controls-wrapper">
             <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
@@ -1111,8 +1109,9 @@
                 </svg>
             </button>
         </div>
-
+        
         <div class="touch-zone" id="touchZone"></div>
+        
         <div class="container">
             <div id="scramble">generating official scramble...</div>
             <div class="timer-wrapper">
@@ -1132,28 +1131,24 @@
         </div>
     </div>
 
-    <!-- Sidebar Area -->
     <div class="sidebar">
         <div class="sidebar-left-col">
             <div class="menu-header">
                 <div class="session-container">
                     <select class="session-select" id="sessionSelect"></select>
                 </div>
-                
                 <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
                         <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
                     </svg>
                 </button>
-
                 <button class="settings-trigger-btn sidebar-settings-btn-toggle" title="open configuration settings">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
                         <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                 </button>
-
                 <button class="layout-btn" id="layoutToggleBtn" title="toggle sidebar position">
                     <svg viewBox="0 0 24 24">
                         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -1162,7 +1157,7 @@
                     </svg>
                 </button>
             </div>
-
+            
             <div class="stats-section">
                 <div class="stat-row">
                     <span>best:</span>
@@ -1188,7 +1183,6 @@
         </div>
     </div>
 
-    <!-- Edit Solve Modal Overlay Frame -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-card">
             <button class="modal-x-close-btn" id="modalCloseBtn">[x]</button>
@@ -1199,14 +1193,18 @@
                 <button class="option-btn" id="modPlusTwoBtn">+2 seconds</button>
                 <button class="option-btn" id="modDnfBtn">did not finish (dnf)</button>
                 <button class="option-btn delete-btn" id="modDeleteBtn">
-                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
                     delete solve
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Theme Picker Selector Dialog Modal Overlay -->
     <div class="modal-overlay" id="themeModal">
         <div class="modal-card">
             <button class="modal-x-close-btn" id="themeModalCloseBtn">[x]</button>
@@ -1223,982 +1221,892 @@
         </div>
     </div>
 
-    <!-- Global Settings Dashboard Modal Overlay Layout Panel -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card settings-card">
             <button class="modal-x-close-btn" id="settingsModalCloseBtn">[x]</button>
-            <div class="modal-title">settings</div>
+            <div class="modal-title">global configurations</div>
             
-            <!-- Session Management Panel -->
             <div class="settings-section-block">
-                <div class="settings-section-title">session manager</div>
-                <p class="settings-section-desc">add, remove, or customize profile labels for your workspace tracking sets.</p>
+                <div class="settings-section-title">global options</div>
+                <div class="settings-section-desc">configure general interface and timer display adjustments</div>
+                
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">hide scenery while solving</div>
+                        <div class="settings-control-desc">hides the scrambles, virtual cubes, and visual tracking metrics when running</div>
+                    </div>
+                    <button class="toggle-switch" id="hideElementsToggle">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off">off</span>
+                    </button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">hide time while solving</div>
+                        <div class="settings-control-desc">hides the live clock numbers during an active solve to remove distraction</div>
+                    </div>
+                    <button class="toggle-switch" id="hideTimeToggle">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off">off</span>
+                    </button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">wca inspection countdown</div>
+                        <div class="settings-control-desc">initiates a 15-second inspection warning countdown voice phase before activation</div>
+                    </div>
+                    <button class="toggle-switch" id="inspectionToggle">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off">off</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-section-block">
+                <div class="settings-section-title">session tracking partitions</div>
+                <div class="settings-section-desc">add, clear, or rename active local workspace partitions mapped below (max 30)</div>
                 
                 <div class="session-count-row">
-                    <span class="session-count-label">total sessions</span>
-                    <button type="button" class="session-step-btn" id="sessionDecBtn">-</button>
-                    <span class="session-count-value" id="sessionCountDisplay">5</span>
-                    <button type="button" class="session-step-btn" id="sessionIncBtn">+</button>
+                    <div class="session-count-label">total tracking profiles</div>
+                    <button class="session-step-btn" id="decSessionsBtn">-</button>
+                    <div class="session-count-value" id="sessionCountDisplay">10</div>
+                    <button class="session-step-btn" id="incSessionsBtn">+</button>
                 </div>
 
-                <div class="session-rename-list" id="sessionRenameContainer">
-                    <!-- Dynamic Input Fields Rendered via JavaScript Module Initialization -->
-                </div>
+                <div class="session-rename-list" id="sessionRenameContainer"></div>
             </div>
 
-            <!-- Timer Preferences Area -->
             <div class="settings-section-block">
-                <div class="settings-section-title">timer preferences</div>
-                <p class="settings-section-desc">customize display parameters and interface layout behaviors during active tracks.</p>
+                <div class="settings-section-title">custom profile configurations backup</div>
+                <div class="settings-section-desc">export current data structures safely or clear local memory parameters</div>
                 
-                <!-- Scramble Toggle -->
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">scramble display</div>
-                        <div class="settings-control-desc">show or hide the scramble algorithm sequence on the main panel</div>
-                    </div>
-                    <button type="button" class="toggle-switch is-active" id="scrambleToggleBtn" role="switch" aria-checked="true">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off text-muted">off</span>
-                    </button>
-                </div>
-
-                <!-- Cube Toggle -->
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">cube visualization</div>
-                        <div class="settings-control-desc">show or hide the 2d virtual cube state unfold layout diagram</div>
-                    </div>
-                    <button type="button" class="toggle-switch is-active" id="cubeToggleBtn" role="switch" aria-checked="true">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off text-muted">off</span>
-                    </button>
-                </div>
-
-                <!-- Center Metrics Panel Visibility Switch -->
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">solve metrics view</div>
-                        <div class="settings-control-desc">display customized average statistics under the running timer</div>
-                    </div>
-                    <button type="button" class="toggle-switch is-active" id="metricsToggleBtn" role="switch" aria-checked="true">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off text-muted">off</span>
-                    </button>
-                </div>
-
-                <!-- Center Metrics Custom Array Configurations Input Row -->
-                <div class="settings-row block-input-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">configure metrics trackers</div>
-                        <div class="settings-control-desc">comma-separated sizes to evaluate (e.g. 3, 5, 12, 50, 100)</div>
-                    </div>
-                    <input type="text" class="settings-text-input" id="metricsFormatInput" value="3, 5, 12" placeholder="3, 5, 12">
-                </div>
-            </div>
-
-            <!-- Data Management Section Area -->
-            <div class="settings-section-block">
-                <div class="settings-section-title">data management</div>
-                <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
-                <button class="option-btn" id="exportBtn" style="width: auto; padding: 8px 14px;">export active session (.txt)</button>
+                <button class="option-btn" id="exportTimesDataBtn" style="width: 100%; justify-content: flex-start; margin-bottom: 8px;">
+                    <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    export current session data (.txt)
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Native, Zero-Dependency 3x3 Scrambler Configuration ---
-        const MOVES = ['U', 'D', 'R', 'L', 'F', 'B'];
-        const MODIFIERS = ['', "'", '2'];
+        /* Tracking Global Variables Definitions Area */
+        let state = "idle"; 
+        let startTime = 0;
+        let timerInterval = null;
+        let inspectionTimeout = null;
+        let inspectionInterval = null;
+        let isInspectionPhase = false;
+        let inspectionTimeLeft = 15;
+        let spacePressedTime = 0;
+        let activeEditIndex = null;
 
-        function generateNativeScramble(length = 20) {
-            let scramble = [];
-            let lastFace = '';
-            let secondLastFace = '';
+        // Session variables
+        let currentSessionIdx = 0;
+        let totalSessionsCount = 10;
+        let sessionsData = {};
+        let sessionNames = {};
 
-            for (let i = 0; i < length; i++) {
-                let face;
-                do {
-                    face = MOVES[Math.floor(Math.random() * MOVES.length)];
-                } while (
-                    face === lastFace || 
-                    (face === secondLastFace && areOppositeFaces(face, lastFace))
-                );
+        // Settings variables
+        let hideElementsDuringSolve = false;
+        let hideTimeDuringSolve = false;
+        let useWcaInspection = false;
+        let activeSidebarLayout = "sidebar-left"; 
 
-                const mod = MODIFIERS[Math.floor(Math.random() * MODIFIERS.length)];
-                scramble.push(face + mod);
-                
-                secondLastFace = lastFace;
-                lastFace = face;
-            }
-            return scramble.join(' ');
-        }
+        // Sound Synthesis Settings Context
+        let audioCtx = null;
 
-        function areOppositeFaces(f1, f2) {
-            return (
-                (f1 === 'U' && f2 === 'D') || (f1 === 'D' && f2 === 'U') ||
-                (f1 === 'R' && f2 === 'L') || (f1 === 'L' && f2 === 'R') ||
-                (f1 === 'F' && f2 === 'B') || (f1 === 'B' && f2 === 'F')
-            );
-        }
-        // -----------------------------------------------------------
+        // Scramble Properties Setup Definitions Mapping Values
+        const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
+        const modifiers = ['', "'", '2'];
 
+        // Initial Base Cube Definition Setup Schema Object
+        const baseCubeState = {
+            U: Array(9).fill('c-u'),
+            D: Array(9).fill('c-d'),
+            L: Array(9).fill('c-l'),
+            R: Array(9).fill('c-r'),
+            F: Array(9).fill('c-f'),
+            B: Array(9).fill('c-b')
+        };
+        let virtualCube = JSON.parse(JSON.stringify(baseCubeState));
+        let activeScrambleString = "";
+
+        // Elements Selections Targets References
         const timerDisplay = document.getElementById('timer');
         const varianceDisplay = document.getElementById('variance');
-        const centerMetricsLine = document.getElementById('centerMetricsLine');
         const scrambleDisplay = document.getElementById('scramble');
-        const cubeDisplay = document.getElementById('cubeDisplay');
         const historyList = document.getElementById('historyList');
+        const touchZone = document.getElementById('touchZone');
+        
         const bestTimeDisplay = document.getElementById('bestTime');
         const ao5Display = document.getElementById('ao5');
         const ao12Display = document.getElementById('ao12');
+        const centerMetricsLine = document.getElementById('centerMetricsLine');
+        const cubeDisplay = document.getElementById('cubeDisplay');
         const sessionSelect = document.getElementById('sessionSelect');
-        const clearBtn = document.getElementById('clearBtn');
-        const layoutToggleBtn = document.getElementById('layoutToggleBtn');
-        const touchZone = document.getElementById('touchZone');
 
+        // Modals Selections Definitions
         const editModal = document.getElementById('editModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalScrambleDisplay = document.getElementById('modalScrambleDisplay');
         const modalTimeDisplay = document.getElementById('modalTimeDisplay');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        
         const modPlusTwoBtn = document.getElementById('modPlusTwoBtn');
         const modDnfBtn = document.getElementById('modDnfBtn');
         const modDeleteBtn = document.getElementById('modDeleteBtn');
-        const modalCloseBtn = document.getElementById('modalCloseBtn');
-        
+        const clearBtn = document.getElementById('clearBtn');
+
         const themeModal = document.getElementById('themeModal');
         const themeModalCloseBtn = document.getElementById('themeModalCloseBtn');
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        const desktopThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
-        const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
-
-        // Settings Elements Bindings
         const settingsModal = document.getElementById('settingsModal');
         const settingsModalCloseBtn = document.getElementById('settingsModalCloseBtn');
-        const desktopSettingsBtn = document.querySelector('.sidebar-settings-btn-toggle');
-        const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
-        const exportBtn = document.getElementById('exportBtn');
-        const scrambleToggleBtn = document.getElementById('scrambleToggleBtn');
-        const cubeToggleBtn = document.getElementById('cubeToggleBtn');
-        const metricsToggleBtn = document.getElementById('metricsToggleBtn');
-        const metricsFormatInput = document.getElementById('metricsFormatInput');
 
-        // Session Manager Bindings
+        // Settings Elements selectors
+        const hideElementsToggle = document.getElementById('hideElementsToggle');
+        const hideTimeToggle = document.getElementById('hideTimeToggle');
+        const inspectionToggle = document.getElementById('inspectionToggle');
         const sessionCountDisplay = document.getElementById('sessionCountDisplay');
-        const sessionDecBtn = document.getElementById('sessionDecBtn');
-        const sessionIncBtn = document.getElementById('sessionIncBtn');
+        const decSessionsBtn = document.getElementById('decSessionsBtn');
+        const incSessionsBtn = document.getElementById('incSessionsBtn');
         const sessionRenameContainer = document.getElementById('sessionRenameContainer');
+        const layoutToggleBtn = document.getElementById('layoutToggleBtn');
+        const exportTimesDataBtn = document.getElementById('exportTimesDataBtn');
 
-        let state = 'idle'; 
-        let startTime = 0;
-        let elapsedTimerInterval = null;
-        let holdTimeout = null;
-        let editingIndex = null;
-        let lastGeneratedScramble = ''; 
-        
-        let currentSession = 'session1';
-        let totalSessionsCount = 5;
-        let activeTheme = 'dark';
-        let showScramble = true;
-        let showCube = true;
-        let showMetrics = true;
-        let configuredMetricsList = [3, 5, 12];
-        
-        const sessionsData = {};
-        const sessionNamesMap = {};
+        // Universal Toggle Triggers Event Catch hooks
+        const sidebarThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
+        const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
+        const sidebarSettingsBtn = document.querySelector('.sidebar-settings-btn-toggle');
+        const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
 
-        for (let i = 1; i <= 10; i++) {
-            sessionsData[`session${i}`] = [];
-            sessionNamesMap[`session${i}`] = `session ${i}`;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
         }
 
-        const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
-        let cubeState = {};
-
-        function displaySolveString(solveObj) {
-            if (!solveObj) return '-';
-            if (solveObj.dnf) return 'DNF';
-            
-            let displayVal = solveObj.rawTime;
-            if (solveObj.plusTwo) displayVal += 2;
-            
-            return formatTime(displayVal) + (solveObj.plusTwo ? ' (+2)' : '');
+        function playInspectionBeep(frequency, duration) {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = frequency;
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log("audio error context caught:", e);
+            }
         }
 
-        function formatTime(totalSeconds, includeSign = false) {
-            if (isNaN(totalSeconds) || totalSeconds === null) return '-';
+        /* Data Storage Load Initialization Engine Engine Routine */
+        function loadData() {
+            const storedSessionsCount = localStorage.getItem('totalSessionsCount');
+            if (storedSessionsCount) totalSessionsCount = parseInt(storedSessionsCount, 10);
             
-            const absoluteSeconds = Math.abs(totalSeconds);
-            let formattedStr = '';
+            const storedSessionIdx = localStorage.getItem('currentSessionIdx');
+            if (storedSessionIdx) currentSessionIdx = parseInt(storedSessionIdx, 10);
 
-            if (absoluteSeconds < 60) {
-                formattedStr = absoluteSeconds.toFixed(2);
+            const storedNames = localStorage.getItem('sessionNames');
+            if (storedNames) {
+                sessionNames = JSON.parse(storedNames);
             } else {
-                const minutes = Math.floor(absoluteSeconds / 60);
-                const seconds = Math.floor(absoluteSeconds % 60);
-                const milliseconds = Math.floor((absoluteSeconds % 1) * 100);
-                
-                const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
-                const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
-                
-                formattedStr = `${minutes}:${paddedSeconds}.${paddedMs}`;
+                sessionNames = {};
             }
 
-            if (includeSign) {
-                return (totalSeconds >= 0 ? '+' : '-') + formattedStr;
+            const storedLayout = localStorage.getItem('activeSidebarLayout');
+            if (storedLayout) {
+                activeSidebarLayout = storedLayout;
+            } else {
+                activeSidebarLayout = "sidebar-left";
             }
-            return formattedStr;
-        }
+            document.body.className = activeSidebarLayout;
 
-        function initCubeState() {
-            faces.forEach(f => {
-                cubeState[f] = Array(9).fill(f.toLowerCase());
+            const storedHideElements = localStorage.getItem('hideElementsDuringSolve');
+            if (storedHideElements) {
+                hideElementsDuringSolve = (storedHideElements === 'true');
+            }
+            if (hideElementsDuringSolve) hideElementsToggle.classList.add('is-active');
+
+            const storedHideTime = localStorage.getItem('hideTimeDuringSolve');
+            if (storedHideTime) {
+                hideTimeDuringSolve = (storedHideTime === 'true');
+            }
+            if (hideTimeDuringSolve) hideTimeToggle.classList.add('is-active');
+
+            const storedInspection = localStorage.getItem('useWcaInspection');
+            if (storedInspection) {
+                useWcaInspection = (storedInspection === 'true');
+            }
+            if (useWcaInspection) inspectionToggle.classList.add('is-active');
+
+            const storedTheme = localStorage.getItem('appTheme') || 'dark';
+            document.body.setAttribute('data-theme', storedTheme);
+            document.querySelectorAll('.theme-btn').forEach(b => {
+                if (b.getAttribute('data-theme-val') === storedTheme) b.classList.add('active');
+                else b.classList.remove('active');
             });
-        }
 
-        const adjacentFaces = {
-            'U': { faces: ['B', 'R', 'F', 'L'], cycles: [[0,1,2], [0,1,2], [0,1,2], [0,1,2]] },
-            'D': { faces: ['F', 'R', 'B', 'L'], cycles: [[6,7,8], [6,7,8], [6,7,8], [6,7,8]] },
-            'L': { faces: ['U', 'F', 'D', 'B'], cycles: [[0,3,6], [0,3,6], [0,3,6], [8,5,2]] },
-            'R': { faces: ['U', 'B', 'D', 'F'], cycles: [[8,5,2], [0,3,6], [8,5,2], [8,5,2]] },
-            'F': { faces: ['U', 'R', 'D', 'L'], cycles: [[6,7,8], [0,3,6], [2,1,0], [8,5,2]] },
-            'B': { faces: ['U', 'L', 'D', 'R'], cycles: [[2,1,0], [0,3,6], [6,7,8], [8,5,2]] }
-        };
-
-        function rotateFaceClockwise(face) {
-            const temp = [...cubeState[face]];
-            cubeState[face][0] = temp[6]; cubeState[face][1] = temp[3]; cubeState[face][2] = temp[0];
-            cubeState[face][3] = temp[7];                             cubeState[face][5] = temp[1];
-            cubeState[face][6] = temp[8]; cubeState[face][7] = temp[5]; cubeState[face][8] = temp[2];
-        }
-
-        function applyMove(move) {
-            const face = move[0];
-            const modifier = move.slice(1);
-            const turns = modifier === '' ? 1 : modifier === "'" ? 3 : 2;
-
-            for (let t = 0; t < turns; t++) {
-                rotateFaceClockwise(face);
-                const adj = adjacentFaces[face];
-                const tempStickers = adj.cycles[3].map(idx => cubeState[adj.faces[3]][idx]);
-                
-                for (let i = 3; i > 0; i--) {
-                    for (let j = 0; j < 3; j++) {
-                        cubeState[adj.faces[i]][adj.cycles[i][j]] = cubeState[adj.faces[i-1]][adj.cycles[i-1][j]];
-                    }
-                }
-                for (let j = 0; j < 3; j++) {
-                    cubeState[adj.faces[0]][adj.cycles[0][j]] = tempStickers[j];
+            sessionsData = {};
+            for (let i = 0; i < 30; i++) {
+                const data = localStorage.getItem(`session_data_${i}`);
+                if (data) {
+                    sessionsData[i] = JSON.parse(data);
+                } else {
+                    sessionsData[i] = [];
                 }
             }
+
+            sessionCountDisplay.textContent = totalSessionsCount;
+            buildSessionDropdown();
+            buildSettingsSessionList();
+            renderHistory();
         }
 
-        function renderCubeUI() {
-            faces.forEach(f => {
-                const faceEl = document.getElementById(`face-${f}`);
-                if (!faceEl) return;
-                faceEl.innerHTML = '';
-                cubeState[f].forEach(colorCode => {
-                    const sticker = document.createElement('div');
-                    sticker.className = `sticker c-${colorCode}`;
-                    faceEl.appendChild(sticker);
-                });
-            });
+        function saveData() {
+            localStorage.setItem('totalSessionsCount', totalSessionsCount);
+            localStorage.setItem('currentSessionIdx', currentSessionIdx);
+            localStorage.setItem('sessionNames', JSON.stringify(sessionNames));
+            localStorage.setItem('hideElementsDuringSolve', hideElementsDuringSolve);
+            localStorage.setItem('hideTimeDuringSolve', hideTimeDuringSolve);
+            localStorage.setItem('useWcaInspection', useWcaInspection);
+            localStorage.setItem('activeSidebarLayout', activeSidebarLayout);
+            localStorage.setItem(`session_data_${currentSessionIdx}`, JSON.stringify(sessionsData[currentSessionIdx]));
         }
 
-        function generateScramble() {
-            lastGeneratedScramble = generateNativeScramble(20);
-            scrambleDisplay.textContent = lastGeneratedScramble;
-            
-            initCubeState();
-            const moves = lastGeneratedScramble.split(' ');
-            moves.forEach(move => {
-                if(move.trim() !== "") applyMove(move);
-            });
-            renderCubeUI();
-
-            applyViewPreferencesVisibility();
-        }
-
-        function normalizeSessionArray(arr) {
-            return arr.map(item => {
-                if (typeof item === 'number') {
-                    return { rawTime: item, plusTwo: false, dnf: false, scramble: 'historical solve' };
-                }
-                if (!item.scramble) {
-                    item.scramble = 'historical solve';
-                }
-                return item;
-            });
-        }
-
-        function applyViewPreferencesVisibility() {
-            if (showScramble && state !== 'running') {
-                scrambleDisplay.classList.remove('hidden', 'scramble-hidden');
-            } else {
-                scrambleDisplay.classList.add('scramble-hidden');
-            }
-
-            if (showCube && state !== 'running') {
-                cubeDisplay.classList.remove('hidden', 'cube-hidden');
-            } else {
-                cubeDisplay.classList.add('cube-hidden');
-            }
-
-            if (showMetrics && state !== 'running') {
-                centerMetricsLine.classList.remove('metrics-hidden');
-            } else {
-                centerMetricsLine.classList.add('metrics-hidden');
-            }
-        }
-
-        function syncDropdownMenuOptions() {
-            const currentSelectedValue = sessionSelect.value || currentSession;
+        function buildSessionDropdown() {
             sessionSelect.innerHTML = '';
-            
-            for (let i = 1; i <= totalSessionsCount; i++) {
+            for (let i = 0; i < totalSessionsCount; i++) {
                 const opt = document.createElement('option');
-                opt.value = `session${i}`;
-                opt.textContent = sessionNamesMap[`session${i}`] || `session ${i}`;
+                opt.value = i;
+                const labelName = sessionNames[i] || `session ${i + 1}`;
+                opt.textContent = labelName.toLowerCase();
+                if (i === currentSessionIdx) opt.selected = true;
                 sessionSelect.appendChild(opt);
             }
-
-            const sessionNum = parseInt(currentSelectedValue.replace('session', ''), 10);
-            if (sessionNum <= totalSessionsCount) {
-                sessionSelect.value = currentSelectedValue;
-                currentSession = currentSelectedValue;
-            } else {
-                sessionSelect.value = 'session1';
-                currentSession = 'session1';
-            }
         }
 
-        function buildSessionManagerControls() {
-            sessionCountDisplay.textContent = totalSessionsCount;
+        function buildSettingsSessionList() {
             sessionRenameContainer.innerHTML = '';
-
-            for (let i = 1; i <= totalSessionsCount; i++) {
+            for (let i = 0; i < totalSessionsCount; i++) {
                 const row = document.createElement('div');
                 row.className = 'session-rename-item';
-
-                const marker = document.createElement('span');
-                marker.textContent = `s${i}:`;
-
+                
+                const span = document.createElement('span');
+                span.textContent = `#${i + 1}`;
+                
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.className = 'session-name-input';
-                input.value = sessionNamesMap[`session${i}`] || `session ${i}`;
-                input.placeholder = `session ${i}`;
-                input.maxLength = 24;
-
+                input.value = sessionNames[i] || `session ${i + 1}`;
+                input.placeholder = `session ${i + 1}`;
+                
                 input.addEventListener('input', (e) => {
-                    const cleanedText = e.target.value.trim().toLowerCase() || `session ${i}`;
-                    sessionNamesMap[`session${i}`] = cleanedText;
+                    sessionNames[i] = e.target.value;
                     saveData();
-                    syncDropdownMenuOptions();
+                    buildSessionDropdown();
                 });
 
-                row.appendChild(marker);
+                row.appendChild(span);
                 row.appendChild(input);
                 sessionRenameContainer.appendChild(row);
             }
         }
 
-        function loadData() {
-            const savedSessions = localStorage.getItem('cube_timer_sessions');
-            const savedNames = localStorage.getItem('cube_timer_session_names');
-            const savedCount = localStorage.getItem('cube_timer_total_sessions');
-            const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
-            const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
-            const savedTheme = localStorage.getItem('cube_timer_theme');
-            const savedShowScramble = localStorage.getItem('cube_timer_show_scramble');
-            const savedShowCube = localStorage.getItem('cube_timer_show_cube');
-            const savedShowMetrics = localStorage.getItem('cube_timer_show_metrics');
-            const savedMetricsList = localStorage.getItem('cube_timer_metrics_list');
-            
-            if (savedSessions) {
-                const parsed = JSON.parse(savedSessions);
-                Object.keys(parsed).forEach(k => {
-                    if (sessionsData[k]) sessionsData[k] = normalizeSessionArray(parsed[k]);
-                });
-            }
+        /* 3x3 Virtual Scramble Engine Generation and Scramble Parsing Logics Layer */
+        function generateScramble() {
+            const length = 20;
+            let moves = [];
+            let lastFace = '';
+            let secondLastFace = '';
 
-            if (savedCount) {
-                totalSessionsCount = Math.max(1, Math.min(10, parseInt(savedCount, 10)));
-            }
-
-            if (savedNames) {
-                const parsedNames = JSON.parse(savedNames);
-                Object.keys(parsedNames).forEach(k => {
-                    if (k in sessionNamesMap) sessionNamesMap[k] = parsedNames[k];
-                });
-            }
-
-            syncDropdownMenuOptions();
-
-            if (savedCurrentSession && sessionsData[savedCurrentSession]) {
-                const targetNum = parseInt(savedCurrentSession.replace('session', ''), 10);
-                if (targetNum <= totalSessionsCount) {
-                    currentSession = savedCurrentSession;
-                    sessionSelect.value = currentSession;
+            while (moves.length < length) {
+                let face = faces[Math.floor(Math.random() * faces.length)];
+                if (face !== lastFace && !(face === secondLastFace && isOppositeFace(face, lastFace))) {
+                    let mod = modifiers[Math.floor(Math.random() * modifiers.length)];
+                    moves.push(face + mod);
+                    secondLastFace = lastFace;
+                    lastFace = face;
                 }
             }
-            
-            if (savedLayoutOrientation) {
-                document.body.className = savedLayoutOrientation;
-            }
-            if (savedTheme) {
-                activeTheme = savedTheme;
-            }
-            applyThemeSelection(activeTheme);
-            
-            if (savedShowScramble !== null) {
-                showScramble = savedShowScramble === 'true';
-            }
-            setToggleSwitchState(scrambleToggleBtn, showScramble);
+            activeScrambleString = moves.join(' ');
+            scrambleDisplay.textContent = activeScrambleString.toLowerCase();
+            resetCubeVisualizerState();
+            applyScrambleToVisualizer(activeScrambleString);
+            drawCubeLayoutGraphics();
+        }
 
-            if (savedShowCube !== null) {
-                showCube = savedShowCube === 'true';
-            }
-            setToggleSwitchState(cubeToggleBtn, showCube);
+        function isOppositeFace(f1, f2) {
+            return (f1 === 'U' && f2 === 'D') || (f1 === 'D' && f2 === 'U') ||
+                   (f1 === 'L' && f2 === 'R') || (f1 === 'R' && f2 === 'L') ||
+                   (f1 === 'F' && f2 === 'B') || (f1 === 'B' && f2 === 'F');
+        }
 
-            if (savedShowMetrics !== null) {
-                showMetrics = savedShowMetrics === 'true';
-            }
-            setToggleSwitchState(metricsToggleBtn, showMetrics);
+        function resetCubeVisualizerState() {
+            virtualCube = JSON.parse(JSON.stringify(baseCubeState));
+        }
 
-            if (savedMetricsList !== null) {
-                try {
-                    configuredMetricsList = JSON.parse(savedMetricsList);
-                } catch(e) {
-                    configuredMetricsList = [3, 5, 12];
+        function rotateFaceClockwise(face) {
+            const temp = [...virtualCube[face]];
+            virtualCube[face][0] = temp[6]; virtualCube[face][1] = temp[3]; virtualCube[face][2] = temp[0];
+            virtualCube[face][3] = temp[7];                                 virtualCube[face][4] = temp[4]; virtualCube[face][5] = temp[1];
+            virtualCube[face][6] = temp[8]; virtualCube[face][7] = temp[5]; virtualCube[face][8] = temp[2];
+        }
+
+        function applyMoveMechanics(move) {
+            const f = move[0];
+            const isPrime = move.includes("'");
+            const isTwo = move.includes("2");
+            const iterations = isTwo ? 2 : (isPrime ? 3 : 1);
+
+            for (let i = 0; i < iterations; i++) {
+                rotateFaceClockwise(f);
+                let temp = [];
+                if (f === 'U') {
+                    temp = [virtualCube.F[0], virtualCube.F[1], virtualCube.F[2]];
+                    virtualCube.F[0] = virtualCube.R[0]; virtualCube.F[1] = virtualCube.R[1]; virtualCube.F[2] = virtualCube.R[2];
+                    virtualCube.R[0] = virtualCube.B[0]; virtualCube.R[1] = virtualCube.B[1]; virtualCube.R[2] = virtualCube.B[2];
+                    virtualCube.B[0] = virtualCube.L[0]; virtualCube.B[1] = virtualCube.L[1]; virtualCube.B[2] = virtualCube.L[2];
+                    virtualCube.L[0] = temp[0];          virtualCube.L[1] = temp[1];          virtualCube.L[2] = temp[2];
+                } else if (f === 'D') {
+                    temp = [virtualCube.F[6], virtualCube.F[7], virtualCube.F[8]];
+                    virtualCube.F[6] = virtualCube.L[6]; virtualCube.F[7] = virtualCube.L[7]; virtualCube.F[8] = virtualCube.L[8];
+                    virtualCube.L[6] = virtualCube.B[6]; virtualCube.L[7] = virtualCube.B[7]; virtualCube.L[8] = virtualCube.B[8];
+                    virtualCube.B[6] = virtualCube.R[6]; virtualCube.B[7] = virtualCube.R[7]; virtualCube.B[8] = virtualCube.R[8];
+                    virtualCube.R[6] = temp[0];          virtualCube.R[7] = temp[1];          virtualCube.R[8] = temp[2];
+                } else if (f === 'R') {
+                    temp = [virtualCube.U[2], virtualCube.U[5], virtualCube.U[8]];
+                    virtualCube.U[2] = virtualCube.F[2]; virtualCube.U[5] = virtualCube.F[5]; virtualCube.U[8] = virtualCube.F[8];
+                    virtualCube.F[2] = virtualCube.D[2]; virtualCube.F[5] = virtualCube.D[5]; virtualCube.F[8] = virtualCube.D[8];
+                    virtualCube.D[2] = virtualCube.B[6]; virtualCube.D[5] = virtualCube.B[3]; virtualCube.D[8] = virtualCube.B[0];
+                    virtualCube.B[6] = virtualCube.U[2]; virtualCube.B[3] = virtualCube.U[5]; virtualCube.B[0] = virtualCube.U[8];
+                } else if (f === 'L') {
+                    temp = [virtualCube.U[0], virtualCube.U[3], virtualCube.U[7]]; 
+                    temp = [virtualCube.U[0], virtualCube.U[3], virtualCube.U[6]];
+                    virtualCube.U[0] = virtualCube.B[8]; virtualCube.U[3] = virtualCube.B[5]; virtualCube.U[6] = virtualCube.B[2];
+                    virtualCube.B[8] = virtualCube.D[0]; virtualCube.B[5] = virtualCube.D[3]; virtualCube.B[2] = virtualCube.D[6];
+                    virtualCube.D[0] = virtualCube.F[0]; virtualCube.D[3] = virtualCube.F[3]; virtualCube.D[6] = virtualCube.F[6];
+                    virtualCube.F[0] = temp[0];          virtualCube.F[3] = temp[1];          virtualCube.F[6] = temp[2];
+                } else if (f === 'F') {
+                    temp = [virtualCube.U[6], virtualCube.U[7], virtualCube.U[8]];
+                    virtualCube.U[6] = virtualCube.L[8]; virtualCube.U[7] = virtualCube.L[5]; virtualCube.U[8] = virtualCube.L[2];
+                    virtualCube.L[8] = virtualCube.D[2]; virtualCube.L[5] = virtualCube.D[1]; virtualCube.L[2] = virtualCube.D[0];
+                    virtualCube.D[2] = virtualCube.R[0]; virtualCube.D[1] = virtualCube.R[3]; virtualCube.D[0] = virtualCube.R[6];
+                    virtualCube.R[0] = temp[0];          virtualCube.R[3] = temp[1];          virtualCube.R[6] = temp[2];
+                } else if (f === 'B') {
+                    temp = [virtualCube.U[0], virtualCube.U[1], virtualCube.U[2]];
+                    virtualCube.U[0] = virtualCube.R[2]; virtualCube.U[1] = virtualCube.R[5]; virtualCube.U[2] = virtualCube.R[8];
+                    virtualCube.R[2] = virtualCube.D[8]; virtualCube.R[5] = virtualCube.D[7]; virtualCube.R[8] = virtualCube.D[6];
+                    virtualCube.D[8] = virtualCube.L[6]; virtualCube.D[7] = virtualCube.L[3]; virtualCube.D[6] = virtualCube.L[0];
+                    virtualCube.L[6] = temp[0];          virtualCube.L[3] = temp[1];          virtualCube.L[0] = temp[2];
                 }
             }
-            metricsFormatInput.value = configuredMetricsList.join(', ');
-            
-            buildSessionManagerControls();
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-            generateScramble();
         }
 
-        function saveData() {
-            localStorage.setItem('cube_timer_sessions', JSON.stringify(sessionsData));
-            localStorage.setItem('cube_timer_session_names', JSON.stringify(sessionNamesMap));
-            localStorage.setItem('cube_timer_total_sessions', totalSessionsCount);
-            localStorage.setItem('cube_timer_active_session', currentSession);
-            localStorage.setItem('cube_timer_show_scramble', showScramble);
-            localStorage.setItem('cube_timer_show_cube', showCube);
-            localStorage.setItem('cube_timer_show_metrics', showMetrics);
-            localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
-        }
-
-        function setToggleSwitchState(btnElement, isActive) {
-            if (isActive) {
-                btnElement.classList.add('is-active');
-                btnElement.setAttribute('aria-checked', 'true');
-            } else {
-                btnElement.classList.remove('is-active');
-                btnElement.setAttribute('aria-checked', 'false');
-            }
-        }
-
-        function startTimer() {
-            state = 'running';
-            scrambleDisplay.classList.add('hidden');
-            cubeDisplay.classList.add('hidden');
-            centerMetricsLine.classList.add('metrics-hidden');
-            varianceDisplay.className = 'hidden';
-            startTime = performance.now();
-            
-            elapsedTimerInterval = requestAnimationFrame(updateTimer);
-        }
-
-        function updateTimer() {
-            if (state !== 'running') return;
-            
-            const now = performance.now();
-            const difference = (now - startTime) / 1000;
-            timerDisplay.textContent = formatTime(difference);
-            
-            elapsedTimerInterval = requestAnimationFrame(updateTimer);
-        }
-
-        function stopTimer() {
-            state = 'idle';
-            cancelAnimationFrame(elapsedTimerInterval);
-            
-            const finalTime = (performance.now() - startTime) / 1000;
-            timerDisplay.textContent = formatTime(finalTime);
-            
-            saveSolve(finalTime);
-            generateScramble();
-        }
-
-        function saveSolve(time) {
-            if(!sessionsData[currentSession]) {
-                sessionsData[currentSession] = [];
-            }
-            sessionsData[currentSession].push({
-                rawTime: time,
-                plusTwo: false,
-                dnf: false,
-                scramble: lastGeneratedScramble || 'unknown scramble'
+        function applyScrambleToVisualizer(scrambleText) {
+            if (!scrambleText) return;
+            const moves = scrambleText.split(' ');
+            moves.forEach(m => {
+                if (m) applyMoveMechanics(m);
             });
-            saveData();
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
         }
 
-        function getEffectiveTime(solveObj) {
-            if (!solveObj || solveObj.dnf) return null;
-            return solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
+        function drawCubeLayoutGraphics() {
+            ['U', 'D', 'L', 'R', 'F', 'B'].forEach(faceKey => {
+                const container = document.getElementById(`face-${faceKey}`);
+                if (!container) return;
+                container.innerHTML = '';
+                virtualCube[faceKey].forEach(colorClass => {
+                    const sticker = document.createElement('div');
+                    sticker.className = `sticker ${colorClass}`;
+                    container.appendChild(sticker);
+                });
+            });
         }
 
-        function updateVarianceUI() {
-            const activeTimes = sessionsData[currentSession] || [];
-            varianceDisplay.className = 'hidden';
-            varianceDisplay.textContent = '';
-
-            if (activeTimes.length < 2) return;
-
-            const currentEff = getEffectiveTime(activeTimes[activeTimes.length - 1]);
-            const previousEff = getEffectiveTime(activeTimes[activeTimes.length - 2]);
-
-            if (currentEff === null || previousEff === null) return;
-
-            const diff = currentEff - previousEff;
-            varianceDisplay.textContent = `(${formatTime(diff, true)})`;
-
-            if (diff > 0) {
-                varianceDisplay.className = 'plus';
-            } else if (diff < 0) {
-                varianceDisplay.className = 'minus';
-            } else {
-                varianceDisplay.className = '';
-            }
-        }
-
-        function updateHistoryUI() {
-            historyList.innerHTML = '';
-            const activeTimes = sessionsData[currentSession] || [];
+        /* Statistical Calculation Operations Algorithms (AO5, AO12, Deviation Vectors) */
+        function calculateSessionAverages() {
+            const solves = sessionsData[currentSessionIdx] || [];
+            const activeTimes = solves.filter(s => !s.dnf);
             
-            for (let i = activeTimes.length - 1; i >= 0; i--) {
-                const solve = activeTimes[i];
+            if (activeTimes.length === 0) {
+                bestTimeDisplay.textContent = "-";
+                ao5Display.textContent = "-";
+                ao12Display.textContent = "-";
+                centerMetricsLine.innerHTML = '';
+                return;
+            }
+
+            const parsedTimesList = solves.map(s => {
+                if (s.dnf) return Infinity;
+                return s.rawTime + (s.plusTwo ? 2 : 0);
+            });
+
+            // Best single calculation
+            let bestSingle = Infinity;
+            solves.forEach(s => {
+                if (!s.dnf) {
+                    const t = s.rawTime + (s.plusTwo ? 2 : 0);
+                    if (t < bestSingle) bestSingle = t;
+                }
+            });
+            bestTimeDisplay.textContent = bestSingle === Infinity ? "-" : bestSingle.toFixed(2);
+
+            // Calculation engine routines for Ao5 / Ao12
+            ao5Display.textContent = getTrimmedAverage(parsedTimesList, 5);
+            ao12Display.textContent = getTrimmedAverage(parsedTimesList, 12);
+
+            // Center metric lines generation mapping session bounds
+            const count = solves.length;
+            const sessionSum = activeTimes.reduce((acc, curr) => acc + (curr.rawTime + (curr.plusTwo ? 2 : 0)), 0);
+            const sessionMean = count > 0 ? (sessionSum / activeTimes.length) : 0;
+            
+            centerMetricsLine.innerHTML = `<div>solves: <strong>${count}</strong> | mean: <strong>${sessionMean ? sessionMean.toFixed(2) : '-'}</strong></div>`;
+        }
+
+        function getTrimmedAverage(timesList, size) {
+            if (timesList.length < size) return "-";
+            const segment = timesList.slice(-size);
+            
+            // count infinity limits
+            const infCount = segment.filter(v => v === Infinity).length;
+            if (infCount > 1) return "dnf";
+
+            segment.sort((a, b) => a - b);
+            // remove heads and tails elements
+            segment.pop();
+            segment.shift();
+
+            const sum = segment.reduce((acc, curr) => acc + curr, 0);
+            return (sum / segment.length).toFixed(2);
+        }
+
+        /* History Listing Interface Rendering Engine Layer */
+        function renderHistory() {
+            historyList.innerHTML = '';
+            const solves = sessionsData[currentSessionIdx] || [];
+            
+            if (solves.length === 0) {
+                const emptySpacer = document.createElement('li');
+                emptySpacer.className = 'history-item blank-spacer';
+                historyList.appendChild(emptySpacer);
+                calculateSessionAverages();
+                return;
+            }
+
+            // Draw list items tracking inverse sequence arrays mapping bottom scroll positions
+            solves.forEach((solve, idx) => {
                 const li = document.createElement('li');
                 li.className = 'history-item';
                 
-                const dataDiv = document.createElement('div');
-                dataDiv.className = 'history-data';
-                dataDiv.innerHTML = `
-                    <span class="history-index">#${i + 1}</span>
-                    <span>${displaySolveString(solve)}</span>
-                `;
+                const dataWrapper = document.createElement('div');
+                dataWrapper.className = 'history-data';
                 
+                const indexSpan = document.createElement('span');
+                indexSpan.className = 'history-index';
+                indexSpan.textContent = `${idx + 1}.`;
+                
+                const timeSpan = document.createElement('span');
+                let displayVal = "";
+                if (solve.dnf) {
+                    displayVal = "dnf";
+                } else {
+                    const totalValue = solve.rawTime + (solve.plusTwo ? 2 : 0);
+                    displayVal = totalValue.toFixed(2) + (solve.plusTwo ? "+" : "");
+                }
+                timeSpan.textContent = displayVal;
+
+                dataWrapper.appendChild(indexSpan);
+                dataWrapper.appendChild(timeSpan);
+
                 const editBtn = document.createElement('button');
                 editBtn.className = 'edit-time-btn';
-                editBtn.title = 'edit solve states';
-                editBtn.setAttribute('data-index', i);
-                editBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="12" cy="5" r="1"></circle>
-                        <circle cx="12" cy="19" r="1"></circle>
-                    </svg>
-                `;
+                editBtn.title = "adjust solve parameters";
+                editBtn.innerHTML = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`;
                 
                 editBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    openEditModal(i);
+                    openEditSolveModal(idx);
                 });
 
-                li.appendChild(dataDiv);
+                li.appendChild(dataWrapper);
                 li.appendChild(editBtn);
-                historyList.appendChild(li);
-            }
+                historyList.insertBefore(li, historyList.firstChild);
+            });
 
-            const spacer1 = document.createElement('li');
-            spacer1.className = 'history-item blank-spacer';
-            historyList.appendChild(spacer1);
-
-            const spacer2 = document.createElement('li');
-            spacer2.className = 'history-item blank-spacer';
-            historyList.appendChild(spacer2);
+            calculateSessionAverages();
         }
 
-        function openEditModal(index) {
-            editingIndex = index;
-            const solve = sessionsData[currentSession][index];
+        /* Modal Interactivity Operation and Interfacing Functions */
+        function openEditSolveModal(index) {
+            const solves = sessionsData[currentSessionIdx] || [];
+            const solve = solves[index];
             if (!solve) return;
 
+            activeEditIndex = index;
             modalTitle.textContent = `edit solve #${index + 1}`;
-            modalScrambleDisplay.textContent = solve.scramble || 'no scramble data available';
-            modalTimeDisplay.textContent = displaySolveString(solve);
+            modalScrambleDisplay.textContent = (solve.scramble || "n/a").toLowerCase();
+            modalTimeDisplay.textContent = solve.rawTime.toFixed(2);
 
-            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
-            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
+            // Match structural configurations elements state configurations loops
+            if (solve.plusTwo) modPlusTwoBtn.classList.add('active-modifier');
+            else modPlusTwoBtn.classList.remove('active-modifier');
+
+            if (solve.dnf) modDnfBtn.classList.add('active-modifier');
+            else modDnfBtn.classList.remove('active-modifier');
 
             editModal.classList.add('open');
         }
 
-        function closeEditModal() {
+        function closeEditSolveModal() {
             editModal.classList.remove('open');
-            editingIndex = null;
+            activeEditIndex = null;
         }
 
-        modPlusTwoBtn.addEventListener('click', () => {
-            if (editingIndex === null) return;
-            const solve = sessionsData[currentSession][editingIndex];
-            solve.plusTwo = !solve.plusTwo;
-            
-            if (solve.plusTwo) solve.dnf = false; 
+        /* Timer Core Intervals State Controllers Loop and Events Routines */
+        function startInspectionTrackerChain() {
+            isInspectionPhase = true;
+            inspectionTimeLeft = 15;
+            state = "inspection";
+            timerDisplay.textContent = inspectionTimeLeft;
+            timerDisplay.className = "holding"; // Amber color initialization tracking step
 
-            saveData();
-            modalTimeDisplay.textContent = displaySolveString(solve);
-            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
-            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
-            
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-        });
+            initAudio();
 
-        modDnfBtn.addEventListener('click', () => {
-            if (editingIndex === null) return;
-            const solve = sessionsData[currentSession][editingIndex];
-            solve.dnf = !solve.dnf;
-            
-            if (solve.dnf) solve.plusTwo = false;
-
-            saveData();
-            modalTimeDisplay.textContent = displaySolveString(solve);
-            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
-            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
-            
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-        });
-
-        modDeleteBtn.addEventListener('click', () => {
-            if (editingIndex === null) return;
-            if (confirm(`delete solve #${editingIndex + 1} permanently?`)) {
-                sessionsData[currentSession].splice(editingIndex, 1);
-                saveData();
-                closeEditModal();
-                
-                updateHistoryUI();
-                updateStatsUI();
-                updateCenterMetricsDisplay();
-                updateVarianceUI();
-            }
-        });
-
-        modalCloseBtn.addEventListener('click', closeEditModal);
-        editModal.addEventListener('click', (e) => {
-            if (e.target === editModal) closeEditModal();
-        });
-
-        function openThemeModal() {
-            themeButtons.forEach(btn => {
-                if (btn.getAttribute('data-theme-val') === activeTheme) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
+            inspectionInterval = setInterval(() => {
+                inspectionTimeLeft--;
+                if (inspectionTimeLeft > 0) {
+                    timerDisplay.textContent = inspectionTimeLeft;
+                    if (inspectionTimeLeft === 7) {
+                        // voice alerts triggers simulation context tone loops
+                        playInspectionBeep(640, 0.2);
+                    } else if (inspectionTimeLeft === 3) {
+                        playInspectionBeep(880, 0.2);
+                    }
+                } else if (inspectionTimeLeft === 0) {
+                    timerDisplay.textContent = "+2";
+                    playInspectionBeep(440, 0.4);
+                } else if (inspectionTimeLeft < -2) {
+                    // DNF Threshold Exceeded bounds tracking 17 seconds total
+                    clearInterval(inspectionInterval);
+                    concludeSolveInstance(0, true, false);
                 }
-            });
-            themeModal.classList.add('open');
+            }, 1000);
         }
 
-        function closeThemeModal() {
-            themeModal.classList.remove('open');
+        function clearInspectionTimers() {
+            if (inspectionInterval) clearInterval(inspectionInterval);
+            if (inspectionTimeout) clearTimeout(inspectionTimeout);
+            inspectionInterval = null;
+            inspectionTimeout = null;
+            isInspectionPhase = false;
         }
 
-        function applyThemeSelection(themeValue) {
-            activeTheme = themeValue;
-            document.body.setAttribute('data-theme', themeValue);
-            localStorage.setItem('cube_timer_theme', themeValue);
+        function updateRunningTimerDisplay() {
+            const elapsed = (Date.now() - startTime) / 1000;
+            if (hideTimeDuringSolve) {
+                timerDisplay.innerText = "solve";
+            } else {
+                timerDisplay.innerText = elapsed.toFixed(2);
+            }
         }
 
-        desktopThemeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openThemeModal();
-        });
-
-        mobileThemeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openThemeModal();
-        });
-
-        themeModalCloseBtn.addEventListener('click', closeThemeModal);
-        themeModal.addEventListener('click', (e) => {
-            if (e.target === themeModal) closeThemeModal();
-        });
-
-        themeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTheme = button.getAttribute('data-theme-val');
-                applyThemeSelection(targetTheme);
-                closeThemeModal();
-            });
-        });
-
-        function openSettingsModal() {
-            buildSessionManagerControls();
-            metricsFormatInput.value = configuredMetricsList.join(', ');
-            settingsModal.classList.add('open');
-        }
-
-        function closeSettingsModal() {
-            settingsModal.classList.remove('open');
-        }
-
-        desktopSettingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openSettingsModal();
-        });
-
-        mobileSettingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openSettingsModal();
-        });
-
-        settingsModalCloseBtn.addEventListener('click', closeSettingsModal);
-        settingsModal.addEventListener('click', (e) => {
-            if (e.target === settingsModal) closeSettingsModal();
-        });
-
-        sessionDecBtn.addEventListener('click', () => {
-            if (totalSessionsCount <= 1) return;
-            totalSessionsCount--;
-            saveData();
-            syncDropdownMenuOptions();
-            buildSessionManagerControls();
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-        });
-
-        sessionIncBtn.addEventListener('click', () => {
-            if (totalSessionsCount >= 10) return;
-            totalSessionsCount++;
-            saveData();
-            syncDropdownMenuOptions();
-            buildSessionManagerControls();
-        });
-
-        scrambleToggleBtn.addEventListener('click', () => {
-            showScramble = !showScramble;
-            setToggleSwitchState(scrambleToggleBtn, showScramble);
-            saveData();
-            applyViewPreferencesVisibility();
-        });
-
-        cubeToggleBtn.addEventListener('click', () => {
-            showCube = !showCube;
-            setToggleSwitchState(cubeToggleBtn, showCube);
-            saveData();
-            applyViewPreferencesVisibility();
-        });
-
-        metricsToggleBtn.addEventListener('click', () => {
-            showMetrics = !showMetrics;
-            setToggleSwitchState(metricsToggleBtn, showMetrics);
-            saveData();
-            applyViewPreferencesVisibility();
-        });
-
-        metricsFormatInput.addEventListener('input', (e) => {
-            const rawValue = e.target.value;
-            const parsedArray = rawValue.split(',')
-                                         .map(val => parseInt(val.trim(), 10))
-                                         .filter(val => !isNaN(val) && val > 0);
+        function startSolveInstance() {
+            clearInspectionTimers();
+            state = "running";
+            startTime = Date.now();
+            timerDisplay.className = "";
             
-            configuredMetricsList = parsedArray;
-            saveData();
-            updateCenterMetricsDisplay();
-        });
-
-        function calculateBestTime() {
-            const activeTimes = sessionsData[currentSession] || [];
-            const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
-            
-            if (validTimes.length === 0) return '-';
-            const best = Math.min(...validTimes);
-            return formatTime(best);
-        }
-
-        function calculateAverageOf(n) {
-            const activeTimes = sessionsData[currentSession] || [];
-            if (activeTimes.length < n) return '-';
-            
-            const recentSolves = activeTimes.slice(-n);
-            const dnfCount = recentSolves.filter(s => s.dnf).length;
-
-            // Handle Mean Calculation rules for sizes under 5 steps natively
-            if (n < 5) {
-                if (dnfCount > 0) return 'DNF';
-                const totalSum = recentSolves.reduce((acc, curr) => acc + (curr.rawTime + (curr.plusTwo ? 2 : 0)), 0);
-                return formatTime(totalSum / n);
+            if (hideElementsDuringSolve) {
+                scrambleDisplay.classList.add('scramble-hidden');
+                cubeDisplay.classList.add('cube-hidden');
+                centerMetricsLine.classList.add('metrics-hidden');
+                varianceDisplay.classList.add('hidden-run');
             }
 
-            // Standard Average of X framework execution rules (trimmed metric calculations)
-            if (dnfCount > 1) return 'DNF';
-
-            const sorted = [];
-            recentSolves.forEach(s => {
-                if (s.dnf) {
-                    sorted.push(Infinity);
-                } else {
-                    sorted.push(s.rawTime + (s.plusTwo ? 2 : 0));
-                }
-            });
-
-            sorted.sort((a, b) => a - b);
-            sorted.pop();
-            sorted.shift();
-            
-            if (sorted.includes(Infinity)) return 'DNF';
-            
-            const sum = sorted.reduce((acc, curr) => acc + curr, 0);
-            return formatTime(sum / sorted.length);
+            timerInterval = setInterval(updateRunningTimerDisplay, 10);
         }
 
-        function updateCenterMetricsDisplay() {
-            centerMetricsLine.innerHTML = '';
-            if (configuredMetricsList.length === 0) {
-                centerMetricsLine.textContent = '-';
+        function concludeSolveInstance(forcedTime = 0, forcedDnf = false, forcedPlusTwo = false) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+
+            scrambleDisplay.classList.remove('scramble-hidden');
+            cubeDisplay.classList.remove('cube-hidden');
+            centerMetricsLine.classList.remove('metrics-hidden');
+            varianceDisplay.classList.remove('hidden-run');
+
+            let finalDuration = forcedTime || ((Date.now() - startTime) / 1000);
+            let isDnf = forcedDnf;
+            let isPlusTwo = forcedPlusTwo;
+
+            if (isInspectionPhase) {
+                if (inspectionTimeLeft === 0 || inspectionTimeLeft === -1 || inspectionTimeLeft === -2) {
+                    isPlusTwo = true;
+                }
+            }
+
+            state = "idle";
+
+            // Render absolute outputs strings numbers displays
+            if (isDnf) {
+                timerDisplay.textContent = "dnf";
+            } else {
+                const compoundTime = finalDuration + (isPlusTwo ? 2 : 0);
+                timerDisplay.textContent = compoundTime.toFixed(2);
+            }
+            timerDisplay.className = "";
+
+            // Push tracking item into structural sequence arrays tracking sets
+            if (!forcedTime && finalDuration === 0 && isDnf) {
+                // inspection timer ran past threshold limits limit boundary
+            }
+
+            const currentSolveObject = {
+                rawTime: finalDuration,
+                plusTwo: isPlusTwo,
+                dnf: isDnf,
+                scramble: activeScrambleString,
+                timestamp: Date.now()
+            };
+
+            // Calculate historical deviation element boundaries profiles mapping
+            evaluateHistoricalVariance(currentSolveObject);
+
+            sessionsData[currentSessionIdx].push(currentSolveObject);
+            saveData();
+            renderHistory();
+            generateScramble();
+            clearInspectionTimers();
+        }
+
+        function evaluateHistoricalVariance(solveObj) {
+            const list = sessionsData[currentSessionIdx] || [];
+            const activeTimes = list.filter(s => !s.dnf);
+            if (activeTimes.length === 0 || solveObj.dnf) {
+                varianceDisplay.className = "hidden";
                 return;
             }
 
-            configuredMetricsList.forEach(size => {
-                const metricLabel = size < 5 ? `mo${size}` : `ao${size}`;
-                const evaluatedValue = calculateAverageOf(size);
-                
-                const itemWrapper = document.createElement('div');
-                itemWrapper.innerHTML = `<span>${metricLabel}:</span> <strong>${evaluatedValue}</strong>`;
-                centerMetricsLine.appendChild(itemWrapper);
-            });
+            const currentTotalValue = solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
+            
+            // Pull trailing solve context value mapping index reference elements
+            const previousSolve = list[list.length - 1];
+            if (!previousSolve || previousSolve.dnf) {
+                varianceDisplay.className = "hidden";
+                return;
+            }
+
+            const previousTotalValue = previousSolve.rawTime + (previousSolve.plusTwo ? 2 : 0);
+            const delta = currentTotalValue - previousTotalValue;
+
+            if (delta > 0) {
+                varianceDisplay.textContent = `+${delta.toFixed(2)}`;
+                varianceDisplay.className = "plus";
+            } else if (delta < 0) {
+                varianceDisplay.textContent = `${delta.toFixed(2)}`;
+                varianceDisplay.className = "minus";
+            } else {
+                varianceDisplay.textContent = `0.00`;
+                varianceDisplay.className = "";
+            }
         }
 
-        function updateStatsUI() {
-            bestTimeDisplay.textContent = calculateBestTime();
-            ao5Display.textContent = calculateAverageOf(5);
-            ao12Display.textContent = calculateAverageOf(12);
+        /* Handlers Event Listeners Interception Hooks Keypresses Inputs Layer */
+        function processTriggerInputDown() {
+            if (state === "idle") {
+                state = "holding";
+                timerDisplay.className = "holding";
+                spacePressedTime = Date.now();
+            } else if (state === "inspection") {
+                state = "holding";
+                timerDisplay.className = "holding";
+                spacePressedTime = Date.now();
+            } else if (state === "running") {
+                concludeSolveInstance();
+            }
         }
 
-        function triggerStartSequence() {
-            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
-
-            if (state === 'running') {
-                stopTimer();
-            } else if (state === 'idle') {
-                if (document.activeElement) {
-                    document.activeElement.blur();
+        function processTriggerInputUp() {
+            if (state === "holding") {
+                const holdDuration = Date.now() - spacePressedTime;
+                if (holdDuration >= 450) {
+                    timerDisplay.className = "ready";
+                    if (useWcaInspection && !isInspectionPhase) {
+                        startInspectionTrackerChain();
+                    } else {
+                        startSolveInstance();
+                    }
+                } else {
+                    // abort initialization criteria sets loop back tracks
+                    if (isInspectionPhase) {
+                        state = "inspection";
+                        timerDisplay.className = "holding";
+                        timerDisplay.textContent = inspectionTimeLeft;
+                    } else {
+                        state = "idle";
+                        timerDisplay.className = "";
+                        timerDisplay.textContent = "0.00";
+                    }
                 }
-
-                state = 'holding';
-                timerDisplay.className = 'holding';
-                timerDisplay.textContent = '0.00';
-                varianceDisplay.className = 'hidden';
-                
-                holdTimeout = setTimeout(() => {
-                    state = 'ready';
-                    timerDisplay.className = 'ready';
-                }, 500);
             }
         }
 
-        function triggerReleaseSequence() {
-            clearTimeout(holdTimeout);
-
-            if (state === 'ready') {
-                timerDisplay.className = '';
-                startTimer();
-            } else if (state === 'holding') {
-                state = 'idle';
-                timerDisplay.className = '';
-                updateVarianceUI();
-            }
-        }
-
+        // Spacebar input triggers catch hooks tracking context bindings
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if (editModal.classList.contains('open')) closeEditModal();
-                if (themeModal.classList.contains('open')) closeThemeModal();
-                if (settingsModal.classList.contains('open')) closeSettingsModal();
-                return;
+            if (e.code === "Space") {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
+                e.preventDefault();
+                processTriggerInputDown();
             }
-            if (e.key !== ' ' || e.repeat) return;
-            triggerStartSequence();
         });
 
         window.addEventListener('keyup', (e) => {
-            if (e.key !== ' ') return;
-            triggerReleaseSequence();
-        });
-
-        layoutToggleBtn.addEventListener('click', () => {
-            if (document.body.classList.contains('sidebar-left')) {
-                document.body.className = 'sidebar-right';
-                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-right');
-            } else {
-                document.body.className = 'sidebar-left';
-                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-left');
+            if (e.code === "Space") {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
+                e.preventDefault();
+                processTriggerInputUp();
             }
         });
 
+        // Touch surface interaction monitors mapping mobile executions
         touchZone.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            triggerStartSequence();
+            processTriggerInputDown();
         }, { passive: false });
 
         touchZone.addEventListener('touchend', (e) => {
             e.preventDefault();
-            triggerReleaseSequence();
+            processTriggerInputUp();
         }, { passive: false });
 
-        sessionSelect.addEventListener('change', (e) => {
-            currentSession = e.target.value;
+        /* UI Dialog Toggles and Config Modifiers Hooks Events Layout Mapping */
+        modalCloseBtn.addEventListener('click', closeEditSolveModal);
+        
+        modPlusTwoBtn.addEventListener('click', () => {
+            if (activeEditIndex === null) return;
+            const solve = sessionsData[currentSessionIdx][activeEditIndex];
+            solve.plusTwo = !solve.plusTwo;
+            if (solve.plusTwo) solve.dnf = false; // logic safety override parameters
             saveData();
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-            timerDisplay.textContent = '0.00';
-            generateScramble();
+            renderHistory();
+            openEditSolveModal(activeEditIndex);
+        });
+
+        modDnfBtn.addEventListener('click', () => {
+            if (activeEditIndex === null) return;
+            const solve = sessionsData[currentSessionIdx][activeEditIndex];
+            solve.dnf = !solve.dnf;
+            if (solve.dnf) solve.plusTwo = false; // logic safety override parameters
+            saveData();
+            renderHistory();
+            openEditSolveModal(activeEditIndex);
+        });
+
+        modDeleteBtn.addEventListener('click', () => {
+            if (activeEditIndex === null) return;
+            sessionsData[currentSessionIdx].splice(activeEditIndex, 1);
+            saveData();
+            renderHistory();
+            closeEditSolveModal();
         });
 
         clearBtn.addEventListener('click', () => {
-            const labelText = sessionSelect.options[sessionSelect.selectedIndex].text;
-            if (confirm(`clear all solves for ${labelText}?`)) {
-                sessionsData[currentSession] = [];
+            if (confirm("clear all tracking entries saved in this session profile partition?")) {
+                sessionsData[currentSessionIdx] = [];
                 saveData();
-                updateHistoryUI();
-                updateStatsUI();
-                updateCenterMetricsDisplay();
-                updateVarianceUI();
-                timerDisplay.textContent = '0.00';
-                generateScramble();
+                renderHistory();
             }
         });
 
-        exportBtn.addEventListener('click', () => {
-            const activeTimes = sessionsData[currentSession] || [];
-            
-            if (activeTimes.length === 0) {
-                alert('there are no solves in this session to export.');
-                return;
-            }
+        sessionSelect.addEventListener('change', (e) => {
+            currentSessionIdx = parseInt(e.target.value, 10);
+            saveData();
+            renderHistory();
+            generateScramble();
+        });
 
-            const sessionLabel = sessionSelect.options[sessionSelect.selectedIndex].text;
+        // Toggle visibility triggers modal logic maps
+        function bindModalTogglePair(triggers, modalCard) {
+            triggers.forEach(t => {
+                if(t) t.addEventListener('click', () => modalCard.classList.add('open'));
+            });
+        }
+
+        bindModalTogglePair([sidebarThemeBtn, mobileThemeBtn], themeModal);
+        bindModalTogglePair([sidebarSettingsBtn, mobileSettingsBtn], settingsModal);
+
+        themeModalCloseBtn.addEventListener('click', () => themeModal.classList.remove('open'));
+        settingsModalCloseBtn.addEventListener('click', () => settingsModal.classList.remove('open'));
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const nextTheme = btn.getAttribute('data-theme-val');
+                document.body.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('appTheme', nextTheme);
+            });
+        });
+
+        // Config Controls Interaction Triggers Updates Hooks
+        hideElementsToggle.addEventListener('click', () => {
+            hideElementsDuringSolve = !hideElementsDuringSolve;
+            hideElementsToggle.classList.toggle('is-active', hideElementsDuringSolve);
+            saveData();
+        });
+
+        hideTimeToggle.addEventListener('click', () => {
+            hideTimeDuringSolve = !hideTimeDuringSolve;
+            hideTimeToggle.classList.toggle('is-active', hideTimeDuringSolve);
+            saveData();
+        });
+
+        inspectionToggle.addEventListener('click', () => {
+            useWcaInspection = !useWcaInspection;
+            inspectionToggle.classList.toggle('is-active', useWcaInspection);
+            saveData();
+        });
+
+        incSessionsBtn.addEventListener('click', () => {
+            if (totalSessionsCount < 30) {
+                totalSessionsCount++;
+                saveData();
+                loadData();
+            }
+        });
+
+        decSessionsBtn.addEventListener('click', () => {
+            if (totalSessionsCount > 1) {
+                if (currentSessionIdx >= totalSessionsCount - 1) {
+                    currentSessionIdx = totalSessionsCount - 2;
+                }
+                totalSessionsCount--;
+                saveData();
+                loadData();
+            }
+        });
+
+        layoutToggleBtn.addEventListener('click', () => {
+            activeSidebarLayout = (activeSidebarLayout === "sidebar-left") ? "sidebar-right" : "sidebar-left";
+            document.body.className = activeSidebarLayout;
+            saveData();
+        });
+
+        // Export metrics formatting raw structures
+        exportTimesDataBtn.addEventListener('click', () => {
+            const activeTimes = sessionsData[currentSessionIdx] || [];
+            const sessionLabel = sessionNames[currentSessionIdx] || `session ${currentSessionIdx + 1}`;
             
             let fileContent = `========================================\n`;
             fileContent += `  cube timer export - ${sessionLabel.toLowerCase()}\n`;
@@ -2233,6 +2141,7 @@
         });
 
         loadData();
+        generateScramble();
     </script>
 </body>
 </html>
