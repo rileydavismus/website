@@ -1250,6 +1250,18 @@
             <div class="settings-section-block">
                 <div class="settings-section-title">timer preferences</div>
                 <p class="settings-section-desc">customize display parameters and interface layout behaviors during active tracks.</p>
+
+                <!-- Timer Toggle -->
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">show timer during solve</div>
+                        <div class="settings-control-desc">display the running time, or hide it to reduce distraction</div>
+                    </div>
+                    <button type="button" class="toggle-switch is-active" id="timerVisibilityToggleBtn" role="switch" aria-checked="true">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                     </button>
+                </div>
                 
                 <!-- Scramble Toggle -->
                 <div class="settings-row">
@@ -1379,6 +1391,7 @@
         const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
         const exportBtn = document.getElementById('exportBtn');
         const scrambleToggleBtn = document.getElementById('scrambleToggleBtn');
+        const timerVisibilityToggleBtn = document.getElementById('timerVisibilityToggleBtn');
         const cubeToggleBtn = document.getElementById('cubeToggleBtn');
         const metricsToggleBtn = document.getElementById('metricsToggleBtn');
         const metricsFormatInput = document.getElementById('metricsFormatInput');
@@ -1400,6 +1413,7 @@
         let totalSessionsCount = 5;
         let activeTheme = 'dark';
         let showScramble = true;
+        let showTimerDuringSolve = true;
         let showCube = true;
         let showMetrics = true;
         let configuredMetricsList = [3, 5, 12];
@@ -1615,6 +1629,12 @@
             const savedShowCube = localStorage.getItem('cube_timer_show_cube');
             const savedShowMetrics = localStorage.getItem('cube_timer_show_metrics');
             const savedMetricsList = localStorage.getItem('cube_timer_metrics_list');
+            const savedShowTimerDuringSolve = localStorage.getItem('cube_timer_show_timer');
+
+            if (savedShowTimerDuringSolve !== null) {
+                showTimerDuringSolve = savedShowTimerDuringSolve === 'true';
+                }
+            setToggleSwitchState(timerVisibilityToggleBtn, showTimerDuringSolve);
             
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
@@ -1689,6 +1709,7 @@
             localStorage.setItem('cube_timer_session_names', JSON.stringify(sessionNamesMap));
             localStorage.setItem('cube_timer_total_sessions', totalSessionsCount);
             localStorage.setItem('cube_timer_active_session', currentSession);
+            localStorage.setItem('cube_timer_show_timer', showTimerDuringSolve);
             localStorage.setItem('cube_timer_show_scramble', showScramble);
             localStorage.setItem('cube_timer_show_cube', showCube);
             localStorage.setItem('cube_timer_show_metrics', showMetrics);
@@ -1716,27 +1737,35 @@
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
 
-        function updateTimer() {
-            if (state !== 'running') return;
-            
-            const now = performance.now();
-            const difference = (now - startTime) / 1000;
-            timerDisplay.textContent = formatTime(difference);
-            
+        function startTimer() {
+            state = 'running';
+            scrambleDisplay.classList.add('hidden');
+            cubeDisplay.classList.add('hidden');
+            centerMetricsLine.classList.add('metrics-hidden');
+            varianceDisplay.className = 'hidden';
+            startTime = performance.now();
+    
+        // if setting is disabled, show an indicator instead of the time
+            if (!showTimerDuringSolve) {
+                timerDisplay.textContent = '...';
+            }
+    
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
 
-        function stopTimer() {
-            state = 'idle';
-            cancelAnimationFrame(elapsedTimerInterval);
-            
-            const finalTime = (performance.now() - startTime) / 1000;
-            timerDisplay.textContent = formatTime(finalTime);
-            
-            saveSolve(finalTime);
-            generateScramble();
+        function updateTimer() {
+            if (state !== 'running') return;
+    
+            // only calculate and update the DOM if the setting is true
+            if (showTimerDuringSolve) {
+                const now = performance.now();
+                const difference = (now - startTime) / 1000;
+                timerDisplay.textContent = formatTime(difference);
+            }
+    
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
-
+        
         function saveSolve(time) {
             if(!sessionsData[currentSession]) {
                 sessionsData[currentSession] = [];
@@ -1999,6 +2028,12 @@
             setToggleSwitchState(scrambleToggleBtn, showScramble);
             saveData();
             applyViewPreferencesVisibility();
+        });
+
+        timerVisibilityToggleBtn.addEventListener('click', () => {
+            showTimerDuringSolve = !showTimerDuringSolve;
+            setToggleSwitchState(timerVisibilityToggleBtn, showTimerDuringSolve);
+            saveData();
         });
 
         cubeToggleBtn.addEventListener('click', () => {
