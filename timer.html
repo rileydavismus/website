@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>timer</title>
-    <!-- Source Code Pro Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
@@ -23,1326 +22,826 @@
             --variance-minus: #22c55e;
             --modal-overlay-bg: rgba(0, 0, 0, 0.75);
             --toggle-active-bg: rgba(34, 197, 94, 0.15);
+            --toggle-active-thumb: #22c55e;
         }
 
         body[data-theme="light"] {
             --bg-color: #f8fafc;
             --text-color: #0f172a;
             --ready-color: #16a34a;
-            --holding-color: #d97706;
-            --dim-color: #64748b;
-            --sidebar-bg: #f1f5f9;
+            --holding-color: #ca8a04;
+            --dim-color: #94a3b8;
+            --sidebar-bg: #ffffff;
             --border-color: #e2e8f0;
             --variance-plus: #dc2626;
             --variance-minus: #16a34a;
             --modal-overlay-bg: rgba(15, 23, 42, 0.4);
             --toggle-active-bg: rgba(22, 163, 74, 0.15);
+            --toggle-active-thumb: #16a34a;
         }
 
-        body[data-theme="green"] {
-            --bg-color: #06100a;
-            --text-color: #a7f3d0;
-            --ready-color: #34d399;
-            --holding-color: #fbbf24;
-            --dim-color: #047857;
-            --sidebar-bg: #0b1a11;
-            --border-color: #112e1e;
-            --variance-plus: #f87171;
-            --variance-minus: #34d399;
-            --modal-overlay-bg: rgba(4, 16, 10, 0.8);
-            --toggle-active-bg: rgba(52, 211, 153, 0.2);
+        body[data-theme="terminal-amber"] {
+            --bg-color: #050500;
+            --text-color: #ffb000;
+            --ready-color: #80f000;
+            --holding-color: #ffcc00;
+            --dim-color: #aa7700;
+            --sidebar-bg: #0a0a00;
+            --border-color: #332200;
+            --variance-plus: #ff3300;
+            --variance-minus: #80f000;
+            --modal-overlay-bg: rgba(0, 0, 0, 0.85);
+            --toggle-active-bg: rgba(255, 176, 0, 0.15);
+            --toggle-active-thumb: #ffb000;
         }
 
-        body[data-theme="blue"] {
-            --bg-color: #070f1e;
-            --text-color: #bfdbfe;
-            --ready-color: #60a5fa;
-            --holding-color: #fbbf24;
-            --dim-color: #1d4ed8;
-            --sidebar-bg: #0c172e;
-            --border-color: #162a54;
-            --variance-plus: #f87171;
-            --variance-minus: #60a5fa;
-            --modal-overlay-bg: rgba(7, 15, 30, 0.8);
-            --toggle-active-bg: rgba(96, 165, 250, 0.2);
-        }
-
-        body[data-theme="sakura"] {
-            --bg-color: #ffdce1;
-            --text-color: #3d1b20;
-            --ready-color: #557218;
-            --holding-color: #d35400;
-            --dim-color: #a46d75;
-            --sidebar-bg: #fcc2cb;
-            --border-color: #fca1ae;
-            --variance-plus: #c93b4c;
-            --variance-minus: #557218;
-            --modal-overlay-bg: rgba(61, 27, 32, 0.2);
-            --toggle-active-bg: rgba(85, 114, 24, 0.15);
-        }
-
-        body[data-theme="cyberpunk"] {
-            --bg-color: #0f0f13;
-            --text-color: #f7768e;
-            --ready-color: #ff007f;
-            --holding-color: #eab308;
-            --dim-color: #565f89;
-            --sidebar-bg: #16161e;
-            --border-color: #242436;
-            --variance-plus: #ffffff;
-            --variance-minus: #ff007f;
-            --modal-overlay-bg: rgba(15, 15, 19, 0.85);
-            --toggle-active-bg: rgba(255, 0, 127, 0.2);
-        }
-
-        body[data-theme="forest"] {
-            --bg-color: #1c261e;
-            --text-color: #e3ede4;
-            --ready-color: #8bb38e;
-            --holding-color: #e0aa60;
-            --dim-color: #697a6b;
-            --sidebar-bg: #141c16;
-            --border-color: #29382c;
-            --variance-plus: #f28f8f;
-            --variance-minus: #8bb38e;
-            --modal-overlay-bg: rgba(10, 15, 11, 0.85);
-            --toggle-active-bg: rgba(139, 179, 142, 0.2);
-        }
-
-        :root {
-            --cube-white: #f3f4f6;
-            --cube-yellow: #facc15;
-            --cube-green: #22c55e;
-            --cube-blue: #2563eb;
-            --cube-orange: #f97316;
-            --cube-red: #dc2626;
+        /* Core Structure Reset & Monospace Layout Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Source Code Pro', monospace;
+            text-transform: lowercase;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Source Code Pro', monospace;
-            display: flex;
-            min-height: 100vh;
+            height: 100vh;
             overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none;
+            display: flex;
             transition: background-color 0.15s ease, color 0.15s ease;
         }
 
-        body.sidebar-left {
+        /* Layout Configurations */
+        body.layout-sidebar {
             flex-direction: row;
         }
-        body.sidebar-left .sidebar {
-            border-right: 1px solid var(--border-color);
-            border-left: none;
-            order: 1;
-        }
-        body.sidebar-left .main-content {
-            order: 2;
+
+        body.layout-stacked {
+            flex-direction: column-reverse;
         }
 
-        body.sidebar-right {
-            flex-direction: row;
-        }
-        body.sidebar-right .sidebar {
-            border-left: 1px solid var(--border-color);
-            border-right: none;
-            order: 2;
-        }
-        body.sidebar-right .main-content {
-            order: 1;
-        }
-
-        .sidebar {
-            width: 250px;
+        /* Sidebar Mode Layout Controls */
+        .sidebar-container {
             background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            width: 300px;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 10;
             flex-shrink: 0;
             transition: background-color 0.15s ease, border-color 0.15s ease;
         }
 
-        .sidebar-left-col, .sidebar-right-col {
-            display: contents;
-        }
-
-        .menu-header {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-shrink: 0;
+        body.layout-stacked .sidebar-container {
             width: 100%;
+            height: 250px;
+            border-right: none;
+            border-top: 1px solid var(--border-color);
         }
 
-        .session-container {
+        /* Workspace Core Panel layout */
+        .workspace-panel {
             flex-grow: 1;
+            height: 100%;
+            position: relative;
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1rem;
+            z-index: 1;
         }
 
-        .session-select {
-            background-color: var(--bg-color);
+        body.layout-stacked .workspace-panel {
+            height: calc(100vh - 250px);
+        }
+
+        /* Desktop Control Header Options Area */
+        .desktop-header-controls {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .session-selector-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        select.custom-select-element {
+            background: transparent;
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            font-family: 'Source Code Pro', monospace;
-            padding: 8px;
-            border-radius: 4px;
+            padding: 0.4rem 2rem 0.4rem 0.8rem;
             font-size: 0.85rem;
             outline: none;
             cursor: pointer;
-            width: 100%;
-            -webkit-appearance: none;
-            text-align: left;
-            text-indent: 4px;
-            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            border-radius: 0px;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%2364748b' d='M0 0l5 5 5-5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
         }
 
-        .layout-btn, .theme-trigger-btn, .settings-trigger-btn {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+        button.action-btn-link {
+            background: transparent;
+            border: none;
+            color: var(--dim-color);
+            font-size: 0.85rem;
             cursor: pointer;
-            width: 38px;
-            height: 37px;
-            flex-shrink: 0;
+            padding: 0.4rem;
+            transition: color 0.1s ease;
+        }
+
+        button.action-btn-link:hover {
+            color: var(--text-color);
+        }
+
+        /* Scramble String Panel Presentation */
+        .scramble-box-container {
+            width: 100%;
+            max-width: 750px;
+            text-align: center;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            letter-spacing: 0.02em;
+            color: var(--text-color);
+            margin: 1.5rem 0;
+            min-height: 4.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0;
-            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            font-weight: 300;
         }
 
-        .layout-btn svg, .theme-trigger-btn svg, .settings-trigger-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: none;
-            stroke: var(--text-color);
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: transform 0.2s ease, stroke 0.15s ease;
+        /* Central Timer Panel */
+        .timer-numeric-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
         }
 
-        body.sidebar-right .layout-btn svg {
-            transform: scaleX(-1);
+        #timer {
+            font-size: 6.5rem;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            user-select: none;
+            transition: color 0.05s ease, opacity 0.1s ease;
         }
 
-        .mobile-controls-wrapper {
+        #timer.holding { color: var(--holding-color); }
+        #timer.ready { color: var(--ready-color); }
+        #timer.hidden-solve { opacity: 0; }
+
+        /* Performance Variance UI Display */
+        .variance-flag-line {
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            height: 1.2rem;
+            letter-spacing: 0.05em;
+        }
+        .variance-flag-line.plus { color: var(--variance-plus); }
+        .variance-flag-line.minus { color: var(--variance-minus); }
+
+        /* Integrated Session Snapshot Line below Timer */
+        .metrics-snapshot-row {
+            font-size: 0.85rem;
+            color: var(--dim-color);
+            margin-top: 1rem;
+            letter-spacing: 0.04em;
+            text-align: center;
+            height: 1.2rem;
+            transition: opacity 0.15s ease;
+        }
+        .metrics-snapshot-row.metrics-hidden {
+            opacity: 0;
+        }
+
+        /* Visual Cube Display Component Placeholder styling */
+        .cube-preview-placeholder {
+            width: 100px;
+            height: 40px;
+            border: 1px dashed var(--border-color);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--dim-color);
+            letter-spacing: 0.05em;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Touch interaction overlay layer for handheld layout use cases */
+        .mobile-touch-gesture-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
             display: none;
         }
 
-        .stats-section {
-            margin-bottom: 1.5rem;
-            flex-shrink: 0;
+        @media (max-width: 768px) {
+            .mobile-touch-gesture-layer {
+                display: block;
+            }
+            .desktop-header-controls {
+                display: none;
+            }
         }
 
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            color: var(--dim-color);
-            transition: color 0.15s ease;
-        }
-
-        .stat-row span:last-child {
-            color: var(--text-color);
-            transition: color 0.15s ease;
-        }
-
-        .history-header {
+        /* Footer Dashboard Segment Layout */
+        .workspace-footer-stats {
+            width: 100%;
+            max-width: 800px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 5px;
-            margin-bottom: 1rem;
-            flex-shrink: 0;
-            transition: border-color 0.15s ease;
+            padding-top: 1rem;
         }
 
-        .history-title {
-            font-size: 0.85rem;
-            color: var(--dim-color);
-            text-transform: lowercase;
-            letter-spacing: 1px;
-            transition: color 0.15s ease;
+        .stat-output-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .clear-btn {
-            background: none;
-            border: none;
-            color: var(--dim-color);
-            font-family: 'Source Code Pro', monospace;
+        .stat-output-cell .label {
             font-size: 0.75rem;
-            cursor: pointer;
-            padding: 2px 6px;
-            text-transform: lowercase;
-            transition: color 0.15s ease;
+            color: var(--dim-color);
+            letter-spacing: 0.05em;
         }
 
-        .clear-btn:hover {
-            color: #ef4444;
+        .stat-output-cell .val {
+            font-size: 1.05rem;
+            font-weight: 400;
         }
 
-        .history-list {
+        .footer-utility-actions-cluster {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* History Stream Ledger Panel Listing inside Sidebar */
+        .history-pane-header {
+            padding: 1.25rem 1rem 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--dim-color);
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .history-pane-scrollable-area {
             flex-grow: 1;
             overflow-y: auto;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 0.9rem;
-            touch-action: pan-y;
+            padding: 0.5rem 0;
         }
 
-        .history-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .history-list::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-        }
-
-        .history-item {
+        body.layout-stacked .history-pane-scrollable-area {
             display: flex;
-            justify-content: space-between;
+            flex-direction: row;
+            overflow-y: hidden;
+            overflow-x: auto;
+            padding: 0 1rem;
             align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            gap: 1.5rem;
         }
 
-        body[data-theme="light"] .history-item, body[data-theme="sakura"] .history-item {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-        }
-
-        .history-item.blank-spacer {
-            border-bottom: none;
-            min-height: 1.5rem;
-        }
-
-        .history-data {
+        .history-item-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            flex-grow: 1;
-            padding-right: 8px;
-        }
-
-        .history-index {
-            color: var(--dim-color);
-            transition: color 0.15s ease;
-        }
-
-        .edit-time-btn {
-            background: none;
-            border: none;
-            color: var(--dim-color);
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            padding: 2px 4px;
-            display: flex;
-            align-items: center;
+            border-bottom: 1px solid transparent;
+        }
+
+        .history-item-row:hover {
+            background-color: var(--border-color);
+        }
+
+        body.layout-stacked .history-item-row {
+            flex-direction: column;
             justify-content: center;
-            border-radius: 3px;
-            pointer-events: auto;
-            transition: color 0.15s ease, background-color 0.15s ease;
+            padding: 0.5rem;
+            border-bottom: none;
+            height: 100%;
+            min-width: 70px;
         }
 
-        .edit-time-btn:hover {
+        .history-item-row .index-marker {
+            color: var(--dim-color);
+            width: 2.5rem;
+        }
+
+        .history-item-row .solve-value-display {
+            flex-grow: 1;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        body.layout-stacked .history-item-row .index-marker {
+            width: auto;
+            margin-bottom: 0.25rem;
+            font-size: 0.7rem;
+        }
+
+        body.layout-stacked .history-item-row .solve-value-display {
+            text-align: center;
+        }
+
+        /* Sidebar Control Utility Menu Options Area at the bottom */
+        .sidebar-utility-footer-dock {
+            padding: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        body.layout-stacked .sidebar-utility-footer-dock {
+            display: none; /* Hide desktop options cluster in stacked presentation */
+        }
+
+        .dock-action-trigger {
+            flex-grow: 1;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--dim-color);
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-align: center;
+        }
+
+        .dock-action-trigger:hover {
             color: var(--text-color);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        body[data-theme="light"] .edit-time-btn:hover, body[data-theme="sakura"] .edit-time-btn:hover {
-            background-color: rgba(0, 0, 0, 0.05);
+            border-color: var(--text-color);
         }
 
-        .edit-time-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .modal-overlay {
+        /* Floating Interactive Dialog Overlay Modals Layer styling */
+        .modal-overlay-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: var(--modal-overlay-bg);
-            backdrop-filter: blur(2px);
+            z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 100;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.15s ease;
         }
 
-        .modal-overlay.open {
+        .modal-overlay-backdrop.open {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .modal-card {
+        .modal-dialog-box {
             background-color: var(--sidebar-bg);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            width: 340px;
-            max-width: 90vw;
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative;
-            transform: scale(0.95);
-            transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .modal-overlay.open .modal-card {
-            transform: scale(1);
-        }
-
-        .modal-card.settings-card {
-            width: 460px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .modal-card.settings-card::-webkit-scrollbar {
-            width: 4px;
-        }
-        .modal-card.settings-card::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-        }
-
-        .modal-x-close-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: 1px solid transparent;
-            color: var(--dim-color);
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.85rem;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-            outline: none;
-            transition: color 0.1s ease, border-color 0.1s ease, background-color 0.1s ease;
-        }
-
-        .modal-x-close-btn:hover {
-            color: var(--text-color);
-            border-color: var(--border-color);
-            background-color: var(--bg-color);
-        }
-
-        .modal-title {
-            font-size: 0.95rem;
-            color: var(--dim-color);
-            margin-top: 0;
-            margin-bottom: 14px;
-            text-transform: lowercase;
-            letter-spacing: 0.5px;
-            transition: color 0.15s ease;
-            padding-right: 30px;
-        }
-
-        .settings-card .modal-title, #themeModal .modal-title {
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .modal-scramble-display {
-            font-size: 0.8rem;
-            color: var(--dim-color);
-            line-height: 1.4;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            word-break: break-word;
-            text-align: center;
-            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-        }
-
-        .modal-time-display {
-            font-size: 2.25rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            color: var(--text-color);
-            line-height: 1;
-            text-align: center;
-            transition: color 0.15s ease;
-        }
-
-        .modal-options {
+            width: 100%;
+            max-width: 420px;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 1.25rem;
         }
 
-        .option-btn {
-            background-color: var(--bg-color);
+        .modal-dialog-box h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .modal-scramble-context {
+            font-size: 0.8rem;
+            color: var(--dim-color);
+            line-height: 1.5;
+        }
+
+        .modal-prominent-metric {
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 0.5rem 0;
+            font-weight: 400;
+        }
+
+        .modal-actions-grid {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .modal-actions-grid button {
+            flex-grow: 1;
+            background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            font-family: 'Source Code Pro', monospace;
-            padding: 10px;
-            font-size: 0.85rem;
-            border-radius: 4px;
+            padding: 0.6rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            text-transform: lowercase;
-            transition: all 0.1s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
         }
 
-        .option-btn:hover {
+        .modal-actions-grid button:hover, .modal-actions-grid button.active {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        .modal-close-trigger-btn {
+            background: transparent;
+            border: none;
+            color: var(--dim-color);
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-align: center;
+            padding-top: 0.25rem;
+        }
+
+        .modal-close-trigger-btn:hover {
+            color: var(--text-color);
+        }
+
+        /* Settings View-panel List Rows styling */
+        .settings-list-scroller {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+
+        .setting-control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .setting-meta-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .setting-meta-details .title {
+            color: var(--text-color);
+        }
+
+        .setting-meta-details .desc {
+            font-size: 0.7rem;
+            color: var(--dim-color);
+        }
+
+        /* Toggle Switches */
+        .toggle-switch-widget {
+            width: 34px;
+            height: 20px;
+            background-color: var(--border-color);
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-switch-widget::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            left: 2px;
+            top: 2px;
+            background-color: var(--dim-color);
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .toggle-switch-widget.is-active {
+            background-color: var(--toggle-active-bg);
+            border-color: var(--toggle-active-thumb);
+        }
+
+        .toggle-switch-widget.is-active::after {
+            transform: translateX(14px);
+            background-color: var(--toggle-active-thumb);
+        }
+
+        /* Configuration Input Fields */
+        .setting-text-input {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.35rem 0.5rem;
+            font-size: 0.8rem;
+            outline: none;
+            width: 120px;
+            text-align: right;
+        }
+
+        .setting-text-input:focus {
             border-color: var(--text-color);
         }
 
-        .option-btn.active-modifier {
-            background-color: rgba(234, 179, 8, 0.1);
-            border-color: #eab308;
-            color: #eab308;
+        /* Incremental Step Controls */
+        .step-adjuster-cluster {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
         }
 
-        .option-btn.delete-btn {
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.2);
-            margin-top: 4px;
-        }
-
-        .option-btn.delete-btn:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-            border-color: #ef4444;
-        }
-
-        .settings-section-block {
-            margin-bottom: 24px;
-        }
-
-        .settings-section-title {
-            font-size: 0.85rem;
+        .step-adjuster-cluster button {
+            background: transparent;
+            border: none;
             color: var(--text-color);
-            text-transform: lowercase;
-            margin-bottom: 4px;
-            font-weight: 500;
+            width: 28px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.85rem;
         }
 
-        .settings-section-desc {
-            font-size: 0.78rem;
-            color: var(--dim-color);
-            margin: 0 0 12px 0;
-            line-height: 1.4;
-            text-transform: lowercase;
+        .step-adjuster-cluster button:hover {
+            background-color: var(--border-color);
         }
 
-        .settings-row {
+        .step-adjuster-cluster .step-val-display {
+            width: 32px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .session-rename-grid-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .session-rename-row-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 8px;
-            transition: background-color 0.15s ease, border-color 0.15s ease;
+            font-size: 0.75rem;
         }
 
-        .settings-row.block-input-row {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .settings-label-group {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            padding-right: 12px;
-        }
-
-        .settings-control-title {
-            font-size: 0.85rem;
-            color: var(--text-color);
-            text-transform: lowercase;
-        }
-
-        .settings-control-desc {
-            font-size: 0.72rem;
-            color: var(--dim-color);
-            text-transform: lowercase;
-        }
-
-        .session-count-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-bottom: 12px;
-        }
-
-        .session-count-label {
-            font-size: 0.85rem;
-            flex-grow: 1;
-            text-transform: lowercase;
-        }
-
-        .session-count-value {
-            font-size: 0.9rem;
-            font-weight: 500;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .session-step-btn {
-            background-color: var(--sidebar-bg);
+        .session-rename-row-item input {
+            background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            font-family: 'Source Code Pro', monospace;
-            width: 28px;
-            height: 28px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            padding: 0;
-            transition: border-color 0.1s ease, color 0.1s ease;
+            padding: 0.2rem 0.4rem;
+            font-size: 0.75rem;
+            outline: none;
+            width: 150px;
         }
 
-        .session-step-btn:hover {
+        .session-rename-row-item input:focus {
             border-color: var(--text-color);
         }
 
-        .session-rename-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            max-height: 180px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            padding: 8px;
-            border-radius: 4px;
-            background-color: var(--bg-color);
-        }
-        .session-rename-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .session-rename-list::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-        }
-
-        .session-rename-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .session-rename-item span {
-            font-size: 0.75rem;
-            color: var(--dim-color);
-            min-width: 24px;
-        }
-
-        .session-name-input, .settings-text-input {
-            background-color: var(--sidebar-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.8rem;
-            padding: 6px 10px;
-            border-radius: 4px;
-            flex-grow: 1;
-            outline: none;
-            box-sizing: border-box;
-            transition: border-color 0.15s ease;
-        }
-
-        .settings-text-input {
-            width: 100%;
-        }
-
-        .session-name-input:focus, .settings-text-input:focus {
-            border-color: var(--ready-color);
-        }
-
-        .toggle-switch {
-            background: none;
-            border: 1px solid var(--border-color);
-            color: var(--dim-color);
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.75rem;
-            padding: 5px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: inline-flex;
-            gap: 6px;
-            outline: none;
-            user-select: none;
-            -webkit-user-select: none;
-            transition: background-color 0.1s ease, border-color 0.1s ease, color 0.1s ease;
-        }
-
-        .toggle-switch:hover {
-            border-color: var(--text-color);
-        }
-
-        .toggle-switch .sw-on { display: none; color: var(--ready-color); font-weight: 500; }
-        .toggle-switch .sw-off { display: inline; }
-
-        .toggle-switch.is-active {
-            background-color: var(--toggle-active-bg);
-            border-color: var(--ready-color);
-            color: var(--text-color);
-        }
-
-        .toggle-switch.is-active .sw-on { display: inline; }
-        .toggle-switch.is-active .sw-off { display: none; }
-
-        .theme-grid {
+        /* Custom Dropdown Selector lists inside Theme Modals */
+        .theme-swatches-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 0.5rem;
         }
 
         .theme-btn {
-            background-color: var(--bg-color);
+            background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            font-family: 'Source Code Pro', monospace;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 0.85rem;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.8rem;
             cursor: pointer;
-            text-transform: lowercase;
-            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .theme-btn:hover {
+        .theme-btn:hover, .theme-btn.active {
+            background-color: var(--border-color);
             border-color: var(--text-color);
         }
 
-        .theme-btn.active {
-            border-color: var(--ready-color);
-            background-color: rgba(34, 197, 94, 0.05);
-        }
-
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            padding: 24px 20px;
-            box-sizing: border-box;
-            height: 100vh;
-        }
-
-        .container {
-            text-align: center;
-            width: 100%;
-            max-width: 1100px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: auto;
-            gap: 20px;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        #scramble {
-            font-size: 2.2rem;
-            font-weight: 400;
-            color: var(--text-color);
-            line-height: 1.4;
-            margin: 0;
-            min-height: auto;
-            max-width: 1000px;
-            word-spacing: 6px;
-            transition: opacity 0.1s ease, color 0.15s ease;
-        }
-
-        .timer-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 0;
-            min-height: auto;
-            padding: 15px 0;
-        }
-
-        #timer {
-            font-size: 8.25rem;
-            font-weight: 300;
-            letter-spacing: -3px;
-            line-height: 1;
-            transition: color 0.1s ease;
-        }
-
-        #variance {
-            font-size: 1.875rem;
-            font-weight: 400;
-            margin-top: 0.75rem;
-            min-height: 2.2rem;
-            line-height: 1;
-            transition: opacity 0.1s ease;
-        }
-
-        #variance.plus {
-            color: var(--variance-plus);
-        }
-
-        #variance.minus {
-            color: var(--variance-minus);
-        }
-
-        #variance.hidden {
-            opacity: 0;
-        }
-
-        #timer.holding {
-            color: var(--holding-color);
-        }
-
-        #timer.ready {
-            color: var(--ready-color);
-        }
-
-        .metrics-display-line {
-            font-size: 1.15rem;
-            color: var(--dim-color);
-            letter-spacing: 0.5px;
-            text-transform: lowercase;
-            margin-bottom: 5px;
-            min-height: 1.5rem;
-            transition: color 0.15s ease;
-            display: flex;
-            gap: 14px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .metrics-display-line span {
-            color: var(--dim-color);
-        }
-
-        .metrics-display-line strong {
-            font-weight: 400;
-            color: var(--text-color);
-        }
-
-        .cube-visualization {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 11px;
-            width: 309.38px;
-            height: 232px;
-            transition: opacity 0.1s ease;
-            flex-shrink: 0;
-            margin-bottom: 0;
-        }
-
-        #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden, #scramble.scramble-hidden, .cube-visualization.cube-hidden, .metrics-display-line.metrics-hidden {
-            display: none !important;
-            opacity: 0 !important;
-        }
-
-        .face {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 1.5px;
-            background-color: #18181b;
-            border: 1.5px solid #18181b;
-            border-radius: 4px;
-        }
-
-        .face-u { grid-column: 2; grid-row: 1; }
-        .face-l { grid-column: 1; grid-row: 2; }
-        .face-f { grid-column: 2; grid-row: 2; }
-        .face-r { grid-column: 3; grid-row: 2; }
-        .face-b { grid-column: 4; grid-row: 2; }
-        .face-d { grid-column: 2; grid-row: 3; }
-
-        .sticker {
-            width: 100%;
-            height: 100%;
-            border-radius: 2px;
-        }
-
-        .c-u { background-color: var(--cube-white); }
-        .c-d { background-color: var(--cube-yellow); }
-        .c-f { background-color: var(--cube-green); }
-        .c-b { background-color: var(--cube-blue); }
-        .c-l { background-color: var(--cube-orange); }
-        .c-r { background-color: var(--cube-red); }
-
-        .touch-zone {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            cursor: pointer;
-        }
-
-        @media (min-width: 601px) {
-            .layout-btn {
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 600px) {
-            body, body.sidebar-left, body.sidebar-right {
-                flex-direction: column !important;
-                height: 100vh;
-                overflow: hidden;
-            }
-            
-            .main-content {
-                height: 0;
-                flex-grow: 1;
-                width: 100%;
-                order: 1 !important;
-                padding: 20px 12px 0px 12px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                box-sizing: border-box;
-            }
-            
-            .mobile-controls-wrapper {
-                display: flex;
-                gap: 8px;
-                position: absolute;
-                top: 14px;
-                right: 14px;
-                z-index: 5;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: 220px;
-                border-left: none !important;
-                border-right: none !important;
-                border-top: 1px solid var(--border-color);
-                padding: 14px 12px;
-                box-sizing: border-box;
-                order: 2 !important;
-                display: flex;
-                flex-direction: row !important;
-                gap: 16px;
-                flex-shrink: 0;
-            }
-            
-            .sidebar-left-col {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                width: 52%;
-                min-height: 0;
-                flex-shrink: 0;
-            }
-            
-            .sidebar-right-col {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                width: 48%;
-                border-left: 1px solid rgba(255, 255, 255, 0.05);
-                padding-left: 14px;
-                min-height: 0;
-                box-sizing: border-box;
-            }
-            body[data-theme="light"] .sidebar-right-col, body[data-theme="sakura"] .sidebar-right-col {
-                border-left: 1px solid rgba(0, 0, 0, 0.05);
-            }
-
-            .sidebar .theme-trigger-btn, 
-            .sidebar .settings-trigger-btn,
-            .sidebar .layout-btn {
-                display: none !important;
-            }
-            
-            .menu-header {
-                margin-bottom: 0.75rem;
-            }
-            .session-select {
-                padding: 8px 6px;
-                font-size: 0.95rem;
-            }
-            .stats-section {
-                margin-bottom: 0;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .stat-row {
-                margin-bottom: 0;
-                font-size: 0.95rem;
-            }
-            .history-header {
-                margin-bottom: 0.4rem;
-                padding-bottom: 4px;
-                width: 100%;
-            }
-            .history-title {
-                font-size: 0.9rem;
-            }
-            .clear-btn {
-                font-size: 0.8rem;
-                padding: 0px 4px;
-            }
-            .history-list {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                flex-grow: 1;
-                min-height: 0;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 4px;
-                box-sizing: border-box;
-            }
-            .history-item {
-                padding: 5px 0;
-                font-size: 0.95rem;
-            }
-            
-            .container {
-                max-width: 100%;
-                justify-content: center;
-                height: auto;
-                gap: 6px;
-            }
-            
-            .timer-wrapper {
-                margin-bottom: 0;
-                min-height: auto;
-                flex-grow: 0;
-                padding: 2px 0;
-            }
-            
-            #timer {
-                font-size: 4.5rem;
-            }
-            
-            #variance {
-                font-size: 1.15rem;
-                margin-top: 0.1rem;
-                min-height: 1.25rem;
-            }
-            
-            #scramble {
-                font-size: 1.1rem;
-                margin: 0;
-                min-height: auto;
-                max-width: 100%;
-                line-height: 1.3;
-                padding: 0 10px;
-            }
-            
-            .metrics-display-line {
-                font-size: 0.85rem;
-                margin-bottom: 0;
-                gap: 8px;
-            }
-            
-            .cube-visualization {
-                width: 130px;
-                height: 98px;
-                gap: 3px;
-                margin-bottom: 0;
-                margin-top: 2px;
-            }
-            
-            .face {
-                gap: 1px;
-                border: 1px solid #18181b;
-                border-radius: 3px;
-            }
-            .sticker {
-                border-radius: 1px;
-            }
+        .theme-btn.active::after {
+            content: '•';
         }
     </style>
 </head>
-<body class="sidebar-left" data-theme="dark">
+<body class="layout-sidebar" data-theme="dark">
 
-    <!-- Main Workspace Area (The Touch Zone) -->
-    <div class="main-content">
-        <div class="mobile-controls-wrapper">
-            <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
-                    <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                </svg>
-            </button>
-            <button class="settings-trigger-btn mobile-settings-btn-toggle" title="open configuration settings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-            </button>
-        </div>
-
-        <div class="touch-zone" id="touchZone"></div>
-        <div class="container">
-            <div id="scramble">generating official scramble...</div>
-            <div class="timer-wrapper">
-                <div id="timer">0.00</div>
-                <div id="variance" class="hidden"></div>
-            </div>
-            <div class="metrics-display-line" id="centerMetricsLine"></div>
-            
-            <div class="cube-visualization" id="cubeDisplay">
-                <div class="face face-u" id="face-U"></div>
-                <div class="face face-l" id="face-L"></div>
-                <div class="face face-f" id="face-F"></div>
-                <div class="face face-r" id="face-R"></div>
-                <div class="face face-b" id="face-B"></div>
-                <div class="face face-d" id="face-D"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Area -->
-    <div class="sidebar">
-        <div class="sidebar-left-col">
-            <div class="menu-header">
-                <div class="session-container">
-                    <select class="session-select" id="sessionSelect"></select>
-                </div>
-                
-                <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
-                        <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                </button>
-
-                <button class="settings-trigger-btn sidebar-settings-btn-toggle" title="open configuration settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                </button>
-
-                <button class="layout-btn" id="layoutToggleBtn" title="toggle sidebar position">
-                    <svg viewBox="0 0 24 24">
-                        <rect x="3" y="3" width="18" height="18" rx="2" />
-                        <line x1="9" y1="3" x2="9" y2="21" />
-                        <path d="M17 10l-3 2 3 2" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="stats-section">
-                <div class="stat-row">
-                    <span>best:</span>
-                    <span id="bestTime">-</span>
-                </div>
-                <div class="stat-row">
-                    <span>ao5:</span>
-                    <span id="ao5">-</span>
-                </div>
-                <div class="stat-row">
-                    <span>ao12:</span>
-                    <span id="ao12">-</span>
-                </div>
-            </div>
+    <div class="sidebar-container">
+        <div class="history-pane-header">
+            <span>solves ledger</span>
+            <button class="action-btn-link" id="exportBtn">export</button>
         </div>
         
-        <div class="sidebar-right-col">
-            <div class="history-header">
-                <div class="history-title">solves</div>
-                <button class="clear-btn" id="clearBtn">clear</button>
+        <div class="history-pane-scrollable-area" id="historyList">
             </div>
-            <ul class="history-list" id="historyList"></ul>
+
+        <div class="sidebar-utility-footer-dock">
+            <button class="dock-action-trigger sidebar-theme-btn-toggle">theme</button>
+            <button class="dock-action-trigger sidebar-settings-btn-toggle">settings</button>
         </div>
     </div>
 
-    <!-- Edit Solve Modal Overlay Frame -->
-    <div class="modal-overlay" id="editModal">
-        <div class="modal-card">
-            <button class="modal-x-close-btn" id="modalCloseBtn">[x]</button>
-            <div class="modal-title" id="modalTitle">edit solve #0</div>
-            <div class="modal-scramble-display" id="modalScrambleDisplay">no scramble data</div>
-            <div class="modal-time-display" id="modalTimeDisplay">0.00</div>
-            <div class="modal-options">
-                <button class="option-btn" id="modPlusTwoBtn">+2 seconds</button>
-                <button class="option-btn" id="modDnfBtn">did not finish (dnf)</button>
-                <button class="option-btn delete-btn" id="modDeleteBtn">
-                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                    delete solve
+    <div class="workspace-panel">
+        
+        <div class="desktop-header-controls">
+            <div class="session-selector-group">
+                <select id="sessionSelect" class="custom-select-element">
+                    </select>
+                <button class="action-btn-link" id="clearBtn">clear</button>
+            </div>
+            <button class="action-btn-link" id="layoutToggleBtn">toggle layout</button>
+        </div>
+
+        <div class="scramble-box-container" id="scramble">
+            </div>
+
+        <div class="timer-numeric-wrapper">
+            <div id="timer">0.00</div>
+            <div id="variance" class="variance-flag-line hidden"></div>
+            <div id="centerMetricsLine" class="metrics-snapshot-row"></div>
+            <div id="cubeDisplay" class="cube-preview-placeholder hidden">cube view placeholder</div>
+        </div>
+
+        <div class="mobile-touch-gesture-layer" id="touchZone"></div>
+
+        <div class="workspace-footer-stats">
+            <div class="stat-output-cell">
+                <span class="label">best</span>
+                <span class="val" id="bestTime">--</span>
+            </div>
+            <div class="stat-output-cell">
+                <span class="label">ao5</span>
+                <span class="val" id="ao5">--</span>
+            </div>
+            <div class="stat-output-cell">
+                <span class="label">ao12</span>
+                <span class="val" id="ao12">--</span>
+            </div>
+            <div class="footer-utility-actions-cluster">
+                <button class="action-btn-link mobile-theme-btn-toggle hidden">theme</button>
+                <button class="action-btn-link mobile-settings-btn-toggle hidden">settings</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay-backdrop" id="editModal">
+        <div class="modal-dialog-box">
+            <h3 id="modalTitle">inspect solve</h3>
+            <div class="modal-scramble-context" id="modalScrambleDisplay"></div>
+            <div class="modal-prominent-metric" id="modalTimeDisplay">0.00</div>
+            <div class="modal-actions-grid">
+                <button id="modPlusTwoBtn">+2</button>
+                <button id="modDnfBtn">dnf</button>
+                <button id="modDeleteBtn">delete</button>
+            </div>
+            <button class="modal-close-trigger-btn" id="modalCloseBtn">close</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay-backdrop" id="settingsModal">
+        <div class="modal-dialog-box">
+            <h3>options configuration</h3>
+            
+            <div class="settings-list-scroller">
+                <div class="setting-control-row">
+                    <div class="setting-meta-details">
+                        <span class="title">total sessions</span>
+                        <span class="desc">configure accessible allocation pools</span>
+                    </div>
+                    <div class="step-adjuster-cluster">
+                        <button id="sessionDecBtn">-</button>
+                        <span class="step-val-display" id="sessionCountDisplay">5</span>
+                        <button id="sessionIncBtn">+</button>
+                    </div>
+                </div>
+
+                <div class="setting-control-row">
+                    <div class="setting-meta-details">
+                        <span class="title">scramble display</span>
+                        <span class="desc">render generation records sequence</span>
+                    </div>
+                    <div class="toggle-switch-widget" id="scrambleToggleBtn" role="checkbox" aria-checked="true"></div>
+                </div>
+
+                <div class="setting-control-row">
+                    <div class="setting-meta-details">
+                        <span class="title">visual cube overlay</span>
+                        <span class="desc">display track state tracking canvas orientation</span>
+                    </div>
+                    <div class="toggle-switch-widget" id="cubeToggleBtn" role="checkbox" aria-checked="true"></div>
+                </div>
+
+                <div class="setting-control-row">
+                    <div class="setting-meta-details">
+                        <span class="title">sub-timer context stats</span>
+                        <span class="desc">render moving metrics string below numeric display</span>
+                    </div>
+                    <div class="toggle-switch-widget" id="metricsToggleBtn" role="checkbox" aria-checked="true"></div>
+                </div>
+
+                <div class="setting-control-row">
+                    <div class="setting-meta-details">
+                        <span class="title">hide timer during solve</span>
+                        <span class="desc">blanks out the numeric display engine during active trials</span>
+                    </div>
+                    <div class="toggle-switch-widget" id="hideTimerToggleBtn" role="checkbox" aria-checked="false"></div>
+                </div>
+
+                <div class="setting-control-row">
+                    <div class="setting-meta-details">
+                        <span class="title">sub-timer statistics metrics</span>
+                        <span class="desc">comma-separated list integers to compute live loops</span>
+                    </div>
+                    <input type="text" class="setting-text-input" id="metricsFormatInput" value="3, 5, 12">
+                </div>
+
+                <div class="setting-meta-details" style="margin-top:0.25rem;">
+                    <span class="title">rename allocation profiles</span>
+                    <span class="desc">assign custom strings identifiers directly into configuration mappings</span>
+                </div>
+                <div class="session-rename-grid-grid" id="sessionRenameContainer">
+                    </div>
+            </div>
+
+            <button class="modal-close-trigger-btn" id="settingsModalCloseBtn">apply and close</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay-backdrop" id="themeModal">
+        <div class="modal-dialog-box">
+            <h3>select visual aesthetic</h3>
+            <div class="theme-swatches-grid">
+                <button class="theme-btn" data-theme-val="dark">
+                    <span>terminal-dark</span>
+                </button>
+                <button class="theme-btn" data-theme-val="light">
+                    <span>minimal-light</span>
+                </button>
+                <button class="theme-btn" data-theme-val="terminal-amber">
+                    <span>amber-console</span>
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- Theme Picker Selector Dialog Modal Overlay -->
-    <div class="modal-overlay" id="themeModal">
-        <div class="modal-card">
-            <button class="modal-x-close-btn" id="themeModalCloseBtn">[x]</button>
-            <div class="modal-title">select theme</div>
-            <div class="theme-grid">
-                <button class="theme-btn" data-theme-val="dark">dark</button>
-                <button class="theme-btn" data-theme-val="light">light</button>
-                <button class="theme-btn" data-theme-val="green">green</button>
-                <button class="theme-btn" data-theme-val="blue">blue</button>
-                <button class="theme-btn" data-theme-val="sakura">sakura</button>
-                <button class="theme-btn" data-theme-val="cyberpunk">cyberpunk</button>
-                <button class="theme-btn" data-theme-val="forest">forest</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Global Settings Dashboard Modal Overlay Layout Panel -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-card settings-card">
-            <button class="modal-x-close-btn" id="settingsModalCloseBtn">[x]</button>
-            <div class="modal-title">settings</div>
-            
-            <!-- Session Management Panel -->
-            <div class="settings-section-block">
-                <div class="settings-section-title">session manager</div>
-                <p class="settings-section-desc">add, remove, or customize profile labels for your workspace tracking sets.</p>
-                
-                <div class="session-count-row">
-                    <span class="session-count-label">total sessions</span>
-                    <button type="button" class="session-step-btn" id="sessionDecBtn">-</button>
-                    <span class="session-count-value" id="sessionCountDisplay">5</span>
-                    <button type="button" class="session-step-btn" id="sessionIncBtn">+</button>
-                </div>
-
-                <div class="session-rename-list" id="sessionRenameContainer">
-                    <!-- Dynamic Input Fields Rendered via JavaScript Module Initialization -->
-                </div>
-            </div>
-
-            <!-- Timer Preferences Area -->
-            <div class="settings-section-block">
-                <div class="settings-section-title">timer preferences</div>
-                <p class="settings-section-desc">customize display parameters and interface layout behaviors during active tracks.</p>
-                
-                <!-- Scramble Toggle -->
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">scramble display</div>
-                        <div class="settings-control-desc">show or hide the scramble algorithm sequence on the main panel</div>
-                    </div>
-                    <button type="button" class="toggle-switch is-active" id="scrambleToggleBtn" role="switch" aria-checked="true">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off text-muted">off</span>
-                    </button>
-                </div>
-
-                <!-- Cube Toggle -->
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">cube visualization</div>
-                        <div class="settings-control-desc">show or hide the 2d virtual cube state unfold layout diagram</div>
-                    </div>
-                    <button type="button" class="toggle-switch is-active" id="cubeToggleBtn" role="switch" aria-checked="true">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off text-muted">off</span>
-                    </button>
-                </div>
-
-                <!-- Center Metrics Panel Visibility Switch -->
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">solve metrics view</div>
-                        <div class="settings-control-desc">display customized average statistics under the running timer</div>
-                    </div>
-                    <button type="button" class="toggle-switch is-active" id="metricsToggleBtn" role="switch" aria-checked="true">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off text-muted">off</span>
-                    </button>
-                </div>
-
-                <!-- Center Metrics Custom Array Configurations Input Row -->
-                <div class="settings-row block-input-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">configure metrics trackers</div>
-                        <div class="settings-control-desc">comma-separated sizes to evaluate (e.g. 3, 5, 12, 50, 100)</div>
-                    </div>
-                    <input type="text" class="settings-text-input" id="metricsFormatInput" value="3, 5, 12" placeholder="3, 5, 12">
-                </div>
-            </div>
-
-            <!-- Data Management Section Area -->
-            <div class="settings-section-block">
-                <div class="settings-section-title">data management</div>
-                <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
-                <button class="option-btn" id="exportBtn" style="width: auto; padding: 8px 14px;">export active session (.txt)</button>
-            </div>
+            <button class="modal-close-trigger-btn" id="themeModalCloseBtn">close</button>
         </div>
     </div>
 
     <script>
-        // --- Native, Zero-Dependency 3x3 Scrambler Configuration ---
-        const MOVES = ['U', 'D', 'R', 'L', 'F', 'B'];
-        const MODIFIERS = ['', "'", '2'];
-
-        function generateNativeScramble(length = 20) {
-            let scramble = [];
-            let lastFace = '';
-            let secondLastFace = '';
-
-            for (let i = 0; i < length; i++) {
-                let face;
-                do {
-                    face = MOVES[Math.floor(Math.random() * MOVES.length)];
-                } while (
-                    face === lastFace || 
-                    (face === secondLastFace && areOppositeFaces(face, lastFace))
-                );
-
-                const mod = MODIFIERS[Math.floor(Math.random() * MODIFIERS.length)];
-                scramble.push(face + mod);
-                
-                secondLastFace = lastFace;
-                lastFace = face;
-            }
-            return scramble.join(' ');
-        }
-
-        function areOppositeFaces(f1, f2) {
-            return (
-                (f1 === 'U' && f2 === 'D') || (f1 === 'D' && f2 === 'U') ||
-                (f1 === 'R' && f2 === 'L') || (f1 === 'L' && f2 === 'R') ||
-                (f1 === 'F' && f2 === 'B') || (f1 === 'B' && f2 === 'F')
-            );
-        }
         // -----------------------------------------------------------
+        // Initial Dataset Structure Hydration Declarations Mapping Pools
+        // -----------------------------------------------------------
+        const sessionsData = {
+            session1: [],
+            session2: [],
+            session3: [],
+            session4: [],
+            session5: []
+        };
 
+        const sessionNamesMap = {
+            session1: "session 1",
+            session2: "session 2",
+            session3: "session 3",
+            session4: "session 4",
+            session5: "session 5"
+        };
+
+        // -----------------------------------------------------------
+        // Global Bindings, Core State Management Variables, and Settings Parameters
+        // -----------------------------------------------------------
         const timerDisplay = document.getElementById('timer');
         const varianceDisplay = document.getElementById('variance');
         const centerMetricsLine = document.getElementById('centerMetricsLine');
@@ -1356,7 +855,6 @@
         const clearBtn = document.getElementById('clearBtn');
         const layoutToggleBtn = document.getElementById('layoutToggleBtn');
         const touchZone = document.getElementById('touchZone');
-
         const editModal = document.getElementById('editModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalScrambleDisplay = document.getElementById('modalScrambleDisplay');
@@ -1365,7 +863,6 @@
         const modDnfBtn = document.getElementById('modDnfBtn');
         const modDeleteBtn = document.getElementById('modDeleteBtn');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
-        
         const themeModal = document.getElementById('themeModal');
         const themeModalCloseBtn = document.getElementById('themeModalCloseBtn');
         const themeButtons = document.querySelectorAll('.theme-btn');
@@ -1377,265 +874,76 @@
         const settingsModalCloseBtn = document.getElementById('settingsModalCloseBtn');
         const desktopSettingsBtn = document.querySelector('.sidebar-settings-btn-toggle');
         const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
-        const exportBtn = document.getElementById('exportBtn');
+        const sessionDecBtn = document.getElementById('sessionDecBtn');
+        const sessionIncBtn = document.getElementById('sessionIncBtn');
+        const sessionCountDisplay = document.getElementById('sessionCountDisplay');
+        const sessionRenameContainer = document.getElementById('sessionRenameContainer');
         const scrambleToggleBtn = document.getElementById('scrambleToggleBtn');
         const cubeToggleBtn = document.getElementById('cubeToggleBtn');
         const metricsToggleBtn = document.getElementById('metricsToggleBtn');
+        const hideTimerToggleBtn = document.getElementById('hideTimerToggleBtn');
         const metricsFormatInput = document.getElementById('metricsFormatInput');
 
-        // Session Manager Bindings
-        const sessionCountDisplay = document.getElementById('sessionCountDisplay');
-        const sessionDecBtn = document.getElementById('sessionDecBtn');
-        const sessionIncBtn = document.getElementById('sessionIncBtn');
-        const sessionRenameContainer = document.getElementById('sessionRenameContainer');
-
-        let state = 'idle'; 
-        let startTime = 0;
-        let elapsedTimerInterval = null;
-        let holdTimeout = null;
-        let editingIndex = null;
-        let lastGeneratedScramble = ''; 
-        
+        let state = 'idle'; // 'idle', 'holding', 'ready', 'running'
+        let startTime;
+        let elapsedTimerInterval;
+        let holdTimeout;
         let currentSession = 'session1';
         let totalSessionsCount = 5;
         let activeTheme = 'dark';
+        let editingIndex = null;
+        let lastGeneratedScramble = '';
+
         let showScramble = true;
         let showCube = true;
         let showMetrics = true;
+        let hideTimerDuringSolve = false;
         let configuredMetricsList = [3, 5, 12];
-        
-        const sessionsData = {};
-        const sessionNamesMap = {};
 
-        for (let i = 1; i <= 10; i++) {
-            sessionsData[`session${i}`] = [];
-            sessionNamesMap[`session${i}`] = `session ${i}`;
-        }
+        // Core state guard flag preventing short-press resets right after a stop action
+        let justStopped = false;
 
-        const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
-        let cubeState = {};
-
-        function displaySolveString(solveObj) {
-            if (!solveObj) return '-';
-            if (solveObj.dnf) return 'DNF';
-            
-            let displayVal = solveObj.rawTime;
-            if (solveObj.plusTwo) displayVal += 2;
-            
-            return formatTime(displayVal) + (solveObj.plusTwo ? ' (+2)' : '');
-        }
-
-        function formatTime(totalSeconds, includeSign = false) {
-            if (isNaN(totalSeconds) || totalSeconds === null) return '-';
-            
-            const absoluteSeconds = Math.abs(totalSeconds);
-            let formattedStr = '';
-
-            if (absoluteSeconds < 60) {
-                formattedStr = absoluteSeconds.toFixed(2);
-            } else {
-                const minutes = Math.floor(absoluteSeconds / 60);
-                const seconds = Math.floor(absoluteSeconds % 60);
-                const milliseconds = Math.floor((absoluteSeconds % 1) * 100);
-                
-                const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
-                const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
-                
-                formattedStr = `${minutes}:${paddedSeconds}.${paddedMs}`;
-            }
-
-            if (includeSign) {
-                return (totalSeconds >= 0 ? '+' : '-') + formattedStr;
-            }
-            return formattedStr;
-        }
-
-        function initCubeState() {
-            faces.forEach(f => {
-                cubeState[f] = Array(9).fill(f.toLowerCase());
-            });
-        }
-
-        const adjacentFaces = {
-            'U': { faces: ['B', 'R', 'F', 'L'], cycles: [[0,1,2], [0,1,2], [0,1,2], [0,1,2]] },
-            'D': { faces: ['F', 'R', 'B', 'L'], cycles: [[6,7,8], [6,7,8], [6,7,8], [6,7,8]] },
-            'L': { faces: ['U', 'F', 'D', 'B'], cycles: [[0,3,6], [0,3,6], [0,3,6], [8,5,2]] },
-            'R': { faces: ['U', 'B', 'D', 'F'], cycles: [[8,5,2], [0,3,6], [8,5,2], [8,5,2]] },
-            'F': { faces: ['U', 'R', 'D', 'L'], cycles: [[6,7,8], [0,3,6], [2,1,0], [8,5,2]] },
-            'B': { faces: ['U', 'L', 'D', 'R'], cycles: [[2,1,0], [0,3,6], [6,7,8], [8,5,2]] }
-        };
-
-        function rotateFaceClockwise(face) {
-            const temp = [...cubeState[face]];
-            cubeState[face][0] = temp[6]; cubeState[face][1] = temp[3]; cubeState[face][2] = temp[0];
-            cubeState[face][3] = temp[7];                             cubeState[face][5] = temp[1];
-            cubeState[face][6] = temp[8]; cubeState[face][7] = temp[5]; cubeState[face][8] = temp[2];
-        }
-
-        function applyMove(move) {
-            const face = move[0];
-            const modifier = move.slice(1);
-            const turns = modifier === '' ? 1 : modifier === "'" ? 3 : 2;
-
-            for (let t = 0; t < turns; t++) {
-                rotateFaceClockwise(face);
-                const adj = adjacentFaces[face];
-                const tempStickers = adj.cycles[3].map(idx => cubeState[adj.faces[3]][idx]);
-                
-                for (let i = 3; i > 0; i--) {
-                    for (let j = 0; j < 3; j++) {
-                        cubeState[adj.faces[i]][adj.cycles[i][j]] = cubeState[adj.faces[i-1]][adj.cycles[i-1][j]];
-                    }
+        function applyThemeSelection(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+            activeTheme = themeName;
+            themeButtons.forEach(btn => {
+                if (btn.getAttribute('data-theme-val') === themeName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
                 }
-                for (let j = 0; j < 3; j++) {
-                    cubeState[adj.faces[0]][adj.cycles[0][j]] = tempStickers[j];
-                }
-            }
-        }
-
-        function renderCubeUI() {
-            faces.forEach(f => {
-                const faceEl = document.getElementById(`face-${f}`);
-                if (!faceEl) return;
-                faceEl.innerHTML = '';
-                cubeState[f].forEach(colorCode => {
-                    const sticker = document.createElement('div');
-                    sticker.className = `sticker c-${colorCode}`;
-                    faceEl.appendChild(sticker);
-                });
             });
-        }
-
-        function generateScramble() {
-            lastGeneratedScramble = generateNativeScramble(20);
-            scrambleDisplay.textContent = lastGeneratedScramble;
-            
-            initCubeState();
-            const moves = lastGeneratedScramble.split(' ');
-            moves.forEach(move => {
-                if(move.trim() !== "") applyMove(move);
-            });
-            renderCubeUI();
-
-            applyViewPreferencesVisibility();
-        }
-
-        function normalizeSessionArray(arr) {
-            return arr.map(item => {
-                if (typeof item === 'number') {
-                    return { rawTime: item, plusTwo: false, dnf: false, scramble: 'historical solve' };
-                }
-                if (!item.scramble) {
-                    item.scramble = 'historical solve';
-                }
-                return item;
-            });
-        }
-
-        function applyViewPreferencesVisibility() {
-            if (showScramble && state !== 'running') {
-                scrambleDisplay.classList.remove('hidden', 'scramble-hidden');
-            } else {
-                scrambleDisplay.classList.add('scramble-hidden');
-            }
-
-            if (showCube && state !== 'running') {
-                cubeDisplay.classList.remove('hidden', 'cube-hidden');
-            } else {
-                cubeDisplay.classList.add('cube-hidden');
-            }
-
-            if (showMetrics && state !== 'running') {
-                centerMetricsLine.classList.remove('metrics-hidden');
-            } else {
-                centerMetricsLine.classList.add('metrics-hidden');
-            }
-        }
-
-        function syncDropdownMenuOptions() {
-            const currentSelectedValue = sessionSelect.value || currentSession;
-            sessionSelect.innerHTML = '';
-            
-            for (let i = 1; i <= totalSessionsCount; i++) {
-                const opt = document.createElement('option');
-                opt.value = `session${i}`;
-                opt.textContent = sessionNamesMap[`session${i}`] || `session ${i}`;
-                sessionSelect.appendChild(opt);
-            }
-
-            const sessionNum = parseInt(currentSelectedValue.replace('session', ''), 10);
-            if (sessionNum <= totalSessionsCount) {
-                sessionSelect.value = currentSelectedValue;
-                currentSession = currentSelectedValue;
-            } else {
-                sessionSelect.value = 'session1';
-                currentSession = 'session1';
-            }
-        }
-
-        function buildSessionManagerControls() {
-            sessionCountDisplay.textContent = totalSessionsCount;
-            sessionRenameContainer.innerHTML = '';
-
-            for (let i = 1; i <= totalSessionsCount; i++) {
-                const row = document.createElement('div');
-                row.className = 'session-rename-item';
-
-                const marker = document.createElement('span');
-                marker.textContent = `s${i}:`;
-
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'session-name-input';
-                input.value = sessionNamesMap[`session${i}`] || `session ${i}`;
-                input.placeholder = `session ${i}`;
-                input.maxLength = 24;
-
-                input.addEventListener('input', (e) => {
-                    const cleanedText = e.target.value.trim().toLowerCase() || `session ${i}`;
-                    sessionNamesMap[`session${i}`] = cleanedText;
-                    saveData();
-                    syncDropdownMenuOptions();
-                });
-
-                row.appendChild(marker);
-                row.appendChild(input);
-                sessionRenameContainer.appendChild(row);
-            }
         }
 
         function loadData() {
             const savedSessions = localStorage.getItem('cube_timer_sessions');
             const savedNames = localStorage.getItem('cube_timer_session_names');
-            const savedCount = localStorage.getItem('cube_timer_total_sessions');
+            const savedTotal = localStorage.getItem('cube_timer_total_sessions');
             const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
             const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
-            const savedTheme = localStorage.getItem('cube_timer_theme');
+            const savedTheme = localStorage.getItem('cube_timer_active_theme');
             const savedShowScramble = localStorage.getItem('cube_timer_show_scramble');
             const savedShowCube = localStorage.getItem('cube_timer_show_cube');
             const savedShowMetrics = localStorage.getItem('cube_timer_show_metrics');
+            const savedHideTimer = localStorage.getItem('cube_timer_hide_timer_during_solve');
             const savedMetricsList = localStorage.getItem('cube_timer_metrics_list');
-            
+
             if (savedSessions) {
                 const parsed = JSON.parse(savedSessions);
                 Object.keys(parsed).forEach(k => {
-                    if (sessionsData[k]) sessionsData[k] = normalizeSessionArray(parsed[k]);
+                    sessionsData[k] = normalizeSessionArray(parsed[k]);
                 });
             }
-
-            if (savedCount) {
-                totalSessionsCount = Math.max(1, Math.min(10, parseInt(savedCount, 10)));
+            if (savedTotal) {
+                totalSessionsCount = parseInt(savedTotal, 10);
             }
-
             if (savedNames) {
                 const parsedNames = JSON.parse(savedNames);
                 Object.keys(parsedNames).forEach(k => {
                     if (k in sessionNamesMap) sessionNamesMap[k] = parsedNames[k];
                 });
             }
-
             syncDropdownMenuOptions();
-
             if (savedCurrentSession && sessionsData[savedCurrentSession]) {
                 const targetNum = parseInt(savedCurrentSession.replace('session', ''), 10);
                 if (targetNum <= totalSessionsCount) {
@@ -1643,7 +951,6 @@
                     sessionSelect.value = currentSession;
                 }
             }
-            
             if (savedLayoutOrientation) {
                 document.body.className = savedLayoutOrientation;
             }
@@ -1651,22 +958,22 @@
                 activeTheme = savedTheme;
             }
             applyThemeSelection(activeTheme);
-            
             if (savedShowScramble !== null) {
                 showScramble = savedShowScramble === 'true';
             }
             setToggleSwitchState(scrambleToggleBtn, showScramble);
-
             if (savedShowCube !== null) {
                 showCube = savedShowCube === 'true';
             }
             setToggleSwitchState(cubeToggleBtn, showCube);
-
             if (savedShowMetrics !== null) {
                 showMetrics = savedShowMetrics === 'true';
             }
             setToggleSwitchState(metricsToggleBtn, showMetrics);
-
+            if (savedHideTimer !== null) {
+                hideTimerDuringSolve = savedHideTimer === 'true';
+            }
+            setToggleSwitchState(hideTimerToggleBtn, hideTimerDuringSolve);
             if (savedMetricsList !== null) {
                 try {
                     configuredMetricsList = JSON.parse(savedMetricsList);
@@ -1675,7 +982,6 @@
                 }
             }
             metricsFormatInput.value = configuredMetricsList.join(', ');
-            
             buildSessionManagerControls();
             updateHistoryUI();
             updateStatsUI();
@@ -1692,7 +998,9 @@
             localStorage.setItem('cube_timer_show_scramble', showScramble);
             localStorage.setItem('cube_timer_show_cube', showCube);
             localStorage.setItem('cube_timer_show_metrics', showMetrics);
+            localStorage.setItem('cube_timer_hide_timer_during_solve', hideTimerDuringSolve);
             localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
+            localStorage.setItem('cube_timer_active_theme', activeTheme);
         }
 
         function setToggleSwitchState(btnElement, isActive) {
@@ -1711,17 +1019,23 @@
             cubeDisplay.classList.add('hidden');
             centerMetricsLine.classList.add('metrics-hidden');
             varianceDisplay.className = 'hidden';
-            startTime = performance.now();
             
+            if (hideTimerDuringSolve) {
+                timerDisplay.classList.add('hidden-solve');
+            }
+            
+            startTime = performance.now();
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
 
         function updateTimer() {
             if (state !== 'running') return;
-            
             const now = performance.now();
             const difference = (now - startTime) / 1000;
-            timerDisplay.textContent = formatTime(difference);
+            
+            if (!hideTimerDuringSolve) {
+                timerDisplay.textContent = formatTime(difference);
+            }
             
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
@@ -1729,10 +1043,10 @@
         function stopTimer() {
             state = 'idle';
             cancelAnimationFrame(elapsedTimerInterval);
+            timerDisplay.classList.remove('hidden-solve');
             
             const finalTime = (performance.now() - startTime) / 1000;
             timerDisplay.textContent = formatTime(finalTime);
-            
             saveSolve(finalTime);
             generateScramble();
         }
@@ -1745,7 +1059,7 @@
                 rawTime: time,
                 plusTwo: false,
                 dnf: false,
-                scramble: lastGeneratedScramble || 'unknown scramble'
+                scramble: lastGeneratedScramble
             });
             saveData();
             updateHistoryUI();
@@ -1754,423 +1068,71 @@
             updateVarianceUI();
         }
 
-        function getEffectiveTime(solveObj) {
-            if (!solveObj || solveObj.dnf) return null;
-            return solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
-        }
-
-        function updateVarianceUI() {
-            const activeTimes = sessionsData[currentSession] || [];
-            varianceDisplay.className = 'hidden';
-            varianceDisplay.textContent = '';
-
-            if (activeTimes.length < 2) return;
-
-            const currentEff = getEffectiveTime(activeTimes[activeTimes.length - 1]);
-            const previousEff = getEffectiveTime(activeTimes[activeTimes.length - 2]);
-
-            if (currentEff === null || previousEff === null) return;
-
-            const diff = currentEff - previousEff;
-            varianceDisplay.textContent = `(${formatTime(diff, true)})`;
-
-            if (diff > 0) {
-                varianceDisplay.className = 'plus';
-            } else if (diff < 0) {
-                varianceDisplay.className = 'minus';
-            } else {
-                varianceDisplay.className = '';
+        function triggerStartSequence() {
+            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
+            
+            if (state === 'running') {
+                stopTimer();
+                justStopped = true; 
+            } else if (state === 'idle') {
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+                justStopped = false; 
+                state = 'holding';
+                timerDisplay.className = 'holding';
+                timerDisplay.textContent = '0.00';
+                varianceDisplay.className = 'hidden';
+                holdTimeout = setTimeout(() => {
+                    state = 'ready';
+                    timerDisplay.className = 'ready';
+                }, 500);
             }
         }
 
-        function updateHistoryUI() {
-            historyList.innerHTML = '';
-            const activeTimes = sessionsData[currentSession] || [];
+        function triggerReleaseSequence() {
+            clearTimeout(holdTimeout);
             
-            for (let i = activeTimes.length - 1; i >= 0; i--) {
-                const solve = activeTimes[i];
-                const li = document.createElement('li');
-                li.className = 'history-item';
-                
-                const dataDiv = document.createElement('div');
-                dataDiv.className = 'history-data';
-                dataDiv.innerHTML = `
-                    <span class="history-index">#${i + 1}</span>
-                    <span>${displaySolveString(solve)}</span>
-                `;
-                
-                const editBtn = document.createElement('button');
-                editBtn.className = 'edit-time-btn';
-                editBtn.title = 'edit solve states';
-                editBtn.setAttribute('data-index', i);
-                editBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="12" cy="5" r="1"></circle>
-                        <circle cx="12" cy="19" r="1"></circle>
-                    </svg>
-                `;
-                
-                editBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openEditModal(i);
-                });
-
-                li.appendChild(dataDiv);
-                li.appendChild(editBtn);
-                historyList.appendChild(li);
+            if (justStopped) {
+                justStopped = false;
+                return;
             }
 
-            const spacer1 = document.createElement('li');
-            spacer1.className = 'history-item blank-spacer';
-            historyList.appendChild(spacer1);
-
-            const spacer2 = document.createElement('li');
-            spacer2.className = 'history-item blank-spacer';
-            historyList.appendChild(spacer2);
-        }
-
-        function openEditModal(index) {
-            editingIndex = index;
-            const solve = sessionsData[currentSession][index];
-            if (!solve) return;
-
-            modalTitle.textContent = `edit solve #${index + 1}`;
-            modalScrambleDisplay.textContent = solve.scramble || 'no scramble data available';
-            modalTimeDisplay.textContent = displaySolveString(solve);
-
-            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
-            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
-
-            editModal.classList.add('open');
-        }
-
-        function closeEditModal() {
-            editModal.classList.remove('open');
-            editingIndex = null;
-        }
-
-        modPlusTwoBtn.addEventListener('click', () => {
-            if (editingIndex === null) return;
-            const solve = sessionsData[currentSession][editingIndex];
-            solve.plusTwo = !solve.plusTwo;
-            
-            if (solve.plusTwo) solve.dnf = false; 
-
-            saveData();
-            modalTimeDisplay.textContent = displaySolveString(solve);
-            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
-            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
-            
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-        });
-
-        modDnfBtn.addEventListener('click', () => {
-            if (editingIndex === null) return;
-            const solve = sessionsData[currentSession][editingIndex];
-            solve.dnf = !solve.dnf;
-            
-            if (solve.dnf) solve.plusTwo = false;
-
-            saveData();
-            modalTimeDisplay.textContent = displaySolveString(solve);
-            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
-            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
-            
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-        });
-
-        modDeleteBtn.addEventListener('click', () => {
-            if (editingIndex === null) return;
-            if (confirm(`delete solve #${editingIndex + 1} permanently?`)) {
-                sessionsData[currentSession].splice(editingIndex, 1);
-                saveData();
-                closeEditModal();
+            if (state === 'ready') {
+                timerDisplay.className = '';
+                startTimer();
+            } else if (state === 'holding') {
+                state = 'idle';
+                timerDisplay.className = '';
                 
-                updateHistoryUI();
-                updateStatsUI();
-                updateCenterMetricsDisplay();
+                const activeTimes = sessionsData[currentSession] || [];
+                if (activeTimes.length > 0) {
+                    timerDisplay.textContent = displaySolveString(activeTimes[activeTimes.length - 1]);
+                } else {
+                    timerDisplay.textContent = '0.00';
+                }
+                
                 updateVarianceUI();
             }
-        });
-
-        modalCloseBtn.addEventListener('click', closeEditModal);
-        editModal.addEventListener('click', (e) => {
-            if (e.target === editModal) closeEditModal();
-        });
-
-        function openThemeModal() {
-            themeButtons.forEach(btn => {
-                if (btn.getAttribute('data-theme-val') === activeTheme) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            themeModal.classList.add('open');
         }
-
-        function closeThemeModal() {
-            themeModal.classList.remove('open');
-        }
-
-        function applyThemeSelection(themeValue) {
-            activeTheme = themeValue;
-            document.body.setAttribute('data-theme', themeValue);
-            localStorage.setItem('cube_timer_theme', themeValue);
-        }
-
-        desktopThemeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openThemeModal();
-        });
-
-        mobileThemeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openThemeModal();
-        });
-
-        themeModalCloseBtn.addEventListener('click', closeThemeModal);
-        themeModal.addEventListener('click', (e) => {
-            if (e.target === themeModal) closeThemeModal();
-        });
-
-        themeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTheme = button.getAttribute('data-theme-val');
-                applyThemeSelection(targetTheme);
-                closeThemeModal();
-            });
-        });
-
-        function openSettingsModal() {
-            buildSessionManagerControls();
-            metricsFormatInput.value = configuredMetricsList.join(', ');
-            settingsModal.classList.add('open');
-        }
-
-        function closeSettingsModal() {
-            settingsModal.classList.remove('open');
-        }
-
-        desktopSettingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openSettingsModal();
-        });
-
-        mobileSettingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openSettingsModal();
-        });
-
-        settingsModalCloseBtn.addEventListener('click', closeSettingsModal);
-        settingsModal.addEventListener('click', (e) => {
-            if (e.target === settingsModal) closeSettingsModal();
-        });
-
-        sessionDecBtn.addEventListener('click', () => {
-            if (totalSessionsCount <= 1) return;
-            totalSessionsCount--;
-            saveData();
-            syncDropdownMenuOptions();
-            buildSessionManagerControls();
-            updateHistoryUI();
-            updateStatsUI();
-            updateCenterMetricsDisplay();
-            updateVarianceUI();
-        });
-
-        sessionIncBtn.addEventListener('click', () => {
-            if (totalSessionsCount >= 10) return;
-            totalSessionsCount++;
-            saveData();
-            syncDropdownMenuOptions();
-            buildSessionManagerControls();
-        });
-
-        scrambleToggleBtn.addEventListener('click', () => {
-            showScramble = !showScramble;
-            setToggleSwitchState(scrambleToggleBtn, showScramble);
-            saveData();
-            applyViewPreferencesVisibility();
-        });
-
-        cubeToggleBtn.addEventListener('click', () => {
-            showCube = !showCube;
-            setToggleSwitchState(cubeToggleBtn, showCube);
-            saveData();
-            applyViewPreferencesVisibility();
-        });
-
-        metricsToggleBtn.addEventListener('click', () => {
-            showMetrics = !showMetrics;
-            setToggleSwitchState(metricsToggleBtn, showMetrics);
-            saveData();
-            applyViewPreferencesVisibility();
-        });
-
-        metricsFormatInput.addEventListener('input', (e) => {
-            const rawValue = e.target.value;
-            const parsedArray = rawValue.split(',')
-                                         .map(val => parseInt(val.trim(), 10))
-                                         .filter(val => !isNaN(val) && val > 0);
-            
-            configuredMetricsList = parsedArray;
-            saveData();
-            updateCenterMetricsDisplay();
-        });
-
-        function calculateBestTime() {
-            const activeTimes = sessionsData[currentSession] || [];
-            const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
-            
-            if (validTimes.length === 0) return '-';
-            const best = Math.min(...validTimes);
-            return formatTime(best);
-        }
-
-        function calculateAverageOf(n) {
-            const activeTimes = sessionsData[currentSession] || [];
-            if (activeTimes.length < n) return '-';
-            
-            const recentSolves = activeTimes.slice(-n);
-            const dnfCount = recentSolves.filter(s => s.dnf).length;
-
-            // Handle Mean Calculation rules for sizes under 5 steps natively
-            if (n < 5) {
-                if (dnfCount > 0) return 'DNF';
-                const totalSum = recentSolves.reduce((acc, curr) => acc + (curr.rawTime + (curr.plusTwo ? 2 : 0)), 0);
-                return formatTime(totalSum / n);
-            }
-
-            // Standard Average of X framework execution rules (trimmed metric calculations)
-            if (dnfCount > 1) return 'DNF';
-
-            const sorted = [];
-            recentSolves.forEach(s => {
-                if (s.dnf) {
-                    sorted.push(Infinity);
-                } else {
-                    sorted.push(s.rawTime + (s.plusTwo ? 2 : 0));
-                }
-            });
-
-            sorted.sort((a, b) => a - b);
-            sorted.pop();
-            sorted.shift();
-            
-            if (sorted.includes(Infinity)) return 'DNF';
-            
-            const sum = sorted.reduce((acc, curr) => acc + curr, 0);
-            return formatTime(sum / sorted.length);
-        }
-
-        function updateCenterMetricsDisplay() {
-            centerMetricsLine.innerHTML = '';
-            if (configuredMetricsList.length === 0) {
-                centerMetricsLine.textContent = '-';
-                return;
-            }
-
-            configuredMetricsList.forEach(size => {
-                const metricLabel = size < 5 ? `mo${size}` : `ao${size}`;
-                const evaluatedValue = calculateAverageOf(size);
-                
-                const itemWrapper = document.createElement('div');
-                itemWrapper.innerHTML = `<span>${metricLabel}:</span> <strong>${evaluatedValue}</strong>`;
-                centerMetricsLine.appendChild(itemWrapper);
-            });
-        }
-
-        function updateStatsUI() {
-            bestTimeDisplay.textContent = calculateBestTime();
-            ao5Display.textContent = calculateAverageOf(5);
-            ao12Display.textContent = calculateAverageOf(12);
-        }
-
-        // Add a global variable right above your functions to track if we just stopped the timer
-let justStopped = false;
-
-function triggerStartSequence() {
-    if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
-    
-    if (state === 'running') {
-        stopTimer();
-        justStopped = true; // Mark that this press was only used to stop the timer
-    } else if (state === 'idle') {
-        if (document.activeElement) {
-            document.activeElement.blur();
-        }
-        justStopped = false; // Reset flag since we are starting a fresh attempt
-        state = 'holding';
-        timerDisplay.className = 'holding';
-        timerDisplay.textContent = '0.00';
-        varianceDisplay.className = 'hidden';
-        holdTimeout = setTimeout(() => {
-            state = 'ready';
-            timerDisplay.className = 'ready';
-        }, 500);
-    }
-}
-
-function triggerReleaseSequence() {
-    clearTimeout(holdTimeout);
-    
-    // If this release was from stopping the timer, consume the event and do nothing else
-    if (justStopped) {
-        justStopped = false;
-        return;
-    }
-
-    if (state === 'ready') {
-        timerDisplay.className = '';
-        startTimer();
-    } else if (state === 'holding') {
-        state = 'idle';
-        timerDisplay.className = '';
-        
-        // Restore the last solve time to the display instead of leaving it blank or at 0.00
-        const activeTimes = sessionsData[currentSession] || [];
-        if (activeTimes.length > 0) {
-            timerDisplay.textContent = displaySolveString(activeTimes[activeTimes.length - 1]);
-        }
-        
-        updateVarianceUI();
-    }
-}
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if (editModal.classList.contains('open')) closeEditModal();
-                if (themeModal.classList.contains('open')) closeThemeModal();
-                if (settingsModal.classList.contains('open')) closeSettingsModal();
-                return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                triggerStartSequence();
             }
-            if (e.key !== ' ' || e.repeat) return;
-            triggerStartSequence();
         });
 
         window.addEventListener('keyup', (e) => {
-            if (e.key !== ' ') return;
-            triggerReleaseSequence();
-        });
-
-        layoutToggleBtn.addEventListener('click', () => {
-            if (document.body.classList.contains('sidebar-left')) {
-                document.body.className = 'sidebar-right';
-                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-right');
-            } else {
-                document.body.className = 'sidebar-left';
-                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-left');
+            if (e.code === 'Space') {
+                e.preventDefault();
+                triggerReleaseSequence();
             }
         });
 
+        // -----------------------------------------------------------
+        // Mobile Screen Layout Tap Touch Controls Execution Blocks
+        // -----------------------------------------------------------
         touchZone.addEventListener('touchstart', (e) => {
             e.preventDefault();
             triggerStartSequence();
@@ -2181,41 +1143,529 @@ function triggerReleaseSequence() {
             triggerReleaseSequence();
         }, { passive: false });
 
-        sessionSelect.addEventListener('change', (e) => {
-            currentSession = e.target.value;
-            saveData();
+        // -----------------------------------------------------------
+        // Core Numeric Formatters Handling Conversion
+        // -----------------------------------------------------------
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds === Infinity) return '--';
+            if (seconds >= 60) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                const ms = Math.floor((seconds % 1) * 100);
+                return `${mins}:${secs.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
+            }
+            return seconds.toFixed(2);
+        }
+
+        function displaySolveString(solveObj) {
+            if (!solveObj) return '--';
+            if (solveObj.dnf) return 'dnf';
+            const netVal = solveObj.rawTime + (solveObj.plusTwo ? 2.0 : 0.0);
+            return formatTime(netVal) + (solveObj.plusTwo ? ' (+2)' : '');
+        }
+
+        function normalizeSessionArray(arr) {
+            if (!Array.isArray(arr)) return [];
+            return arr.map(item => {
+                if (typeof item === 'number') {
+                    return { rawTime: item, plusTwo: false, dnf: false, scramble: '' };
+                }
+                return {
+                    rawTime: typeof item.rawTime === 'number' ? item.rawTime : (typeof item.time === 'number' ? item.time : 0),
+                    plusTwo: !!item.plusTwo,
+                    dnf: !!item.dnf,
+                    scramble: item.scramble || ''
+                };
+            });
+        }
+
+        // -----------------------------------------------------------
+        // Random Scramble Generator Math Array Engine
+        // -----------------------------------------------------------
+        function generateScramble() {
+            if (!showScramble) {
+                scrambleDisplay.classList.add('hidden');
+                cubeDisplay.classList.add('hidden');
+                lastGeneratedScramble = '';
+                return;
+            }
+            
+            const moves = ["r", "l", "u", "d", "f", "b"];
+            const modifiers = ["", "'", "2"];
+            const steps = [];
+            let lastAxis = -1;
+
+            for (let i = 0; i < 20; i++) {
+                let currentAxis;
+                do {
+                    currentAxis = Math.floor(Math.random() * moves.length);
+                } while (currentAxis === lastAxis || (lastAxis !== -1 && Math.floor(currentAxis / 2) === Math.floor(lastAxis / 2) && i > 1 && Math.floor(steps[steps.length - 2].axis / 2) === Math.floor(currentAxis / 2)));
+                
+                const modifier = modifiers[Math.floor(Math.random() * modifiers.length)];
+                steps.push({ move: moves[currentAxis].toUpperCase(), mod: modifier, axis: currentAxis });
+                lastAxis = currentAxis;
+            }
+
+            lastGeneratedScramble = steps.map(s => s.move + s.mod).join(" ");
+            scrambleDisplay.textContent = lastGeneratedScramble;
+            scrambleDisplay.classList.remove('hidden');
+            
+            if (showCube) {
+                cubeDisplay.classList.remove('hidden');
+            } else {
+                cubeDisplay.classList.add('hidden');
+            }
+        }
+
+        // -----------------------------------------------------------
+        // UI Layout Render Generators
+        // -----------------------------------------------------------
+        function updateHistoryUI() {
+            historyList.innerHTML = '';
+            const activeTimes = sessionsData[currentSession] || [];
+            
+            if (activeTimes.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.padding = '1rem';
+                emptyMsg.style.color = 'var(--dim-color)';
+                emptyMsg.style.fontSize = '0.8rem';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.textContent = 'no solves recorded';
+                historyList.appendChild(emptyMsg);
+                return;
+            }
+
+            // Loop in reverse chronological order
+            for (let i = activeTimes.length - 1; i >= 0; i--) {
+                const row = document.createElement('div');
+                row.className = 'history-item-row';
+                row.setAttribute('data-index', i);
+                
+                const indexSpan = document.createElement('span');
+                indexSpan.className = 'index-marker';
+                indexSpan.textContent = `#${i + 1}`;
+                
+                const valSpan = document.createElement('span');
+                valSpan.className = 'solve-value-display';
+                valSpan.textContent = displaySolveString(activeTimes[i]);
+                
+                row.appendChild(indexSpan);
+                row.appendChild(valSpan);
+                
+                row.addEventListener('click', () => {
+                    openEditModal(i);
+                });
+                
+                historyList.appendChild(row);
+            }
+        }
+
+        function calculateAverageOf(solvesArray, subsetCount) {
+            if (solvesArray.length < subsetCount) return null;
+            const targetSubset = solvesArray.slice(-subsetCount);
+            
+            let dnfCount = 0;
+            const absoluteTimes = [];
+            
+            for (let i = 0; i < targetSubset.length; i++) {
+                if (targetSubset[i].dnf) {
+                    dnfCount++;
+                } else {
+                    absoluteTimes.push(targetSubset[i].rawTime + (targetSubset[i].plusTwo ? 2.0 : 0.0));
+                }
+            }
+            
+            if (dnfCount > 1) return 'dnf';
+            
+            if (dnfCount === 1) {
+                absoluteTimes.sort((a, b) => a - b);
+                absoluteTimes.shift(); // Remove fastest
+                let accumulation = 0;
+                for (let i = 0; i < absoluteTimes.length; i++) {
+                    accumulation += absoluteTimes[i];
+                }
+                return accumulation / (subsetCount - 2);
+            }
+            
+            absoluteTimes.sort((a, b) => a - b);
+            absoluteTimes.pop();   // Remove slowest
+            absoluteTimes.shift(); // Remove fastest
+            
+            let accumulation = 0;
+            for (let i = 0; i < absoluteTimes.length; i++) {
+                accumulation += absoluteTimes[i];
+            }
+            return accumulation / (subsetCount - 2);
+        }
+
+        function updateStatsUI() {
+            const activeTimes = sessionsData[currentSession] || [];
+            
+            // Calculate session absolute personal record best time
+            let bestTime = Infinity;
+            for (let i = 0; i < activeTimes.length; i++) {
+                if (!activeTimes[i].dnf) {
+                    const currentNetVal = activeTimes[i].rawTime + (activeTimes[i].plusTwo ? 2.0 : 0.0);
+                    if (currentNetVal < bestTime) {
+                        bestTime = currentNetVal;
+                    }
+                }
+            }
+            
+            bestTimeDisplay.textContent = (bestTime === Infinity) ? '--' : formatTime(bestTime);
+            
+            // Calculate Moving Metric Loops standard benchmarks
+            const computedAo5 = calculateAverageOf(activeTimes, 5);
+            if (computedAo5 === 'dnf') {
+                ao5Display.textContent = 'dnf';
+            } else {
+                ao5Display.textContent = computedAo5 ? formatTime(computedAo5) : '--';
+            }
+            
+            const computedAo12 = calculateAverageOf(activeTimes, 12);
+            if (computedAo12 === 'dnf') {
+                ao12Display.textContent = 'dnf';
+            } else {
+                ao12Display.textContent = computedAo12 ? formatTime(computedAo12) : '--';
+            }
+        }
+
+        function updateCenterMetricsDisplay() {
+            if (!showMetrics) {
+                centerMetricsLine.classList.add('metrics-hidden');
+                return;
+            }
+            
+            const activeTimes = sessionsData[currentSession] || [];
+            if (activeTimes.length === 0) {
+                centerMetricsLine.classList.add('metrics-hidden');
+                return;
+            }
+
+            const outStrings = [];
+            configuredMetricsList.forEach(num => {
+                const calculatedAvg = calculateAverageOf(activeTimes, num);
+                if (calculatedAvg === 'dnf') {
+                    outStrings.push(`ao${num}: dnf`);
+                } else if (calculatedAvg !== null) {
+                    outStrings.push(`ao${num}: ${formatTime(calculatedAvg)}`);
+                }
+            });
+
+            if (outStrings.length > 0) {
+                centerMetricsLine.textContent = outStrings.join(' | ');
+                if (state !== 'running') {
+                    centerMetricsLine.classList.remove('metrics-hidden');
+                }
+            } else {
+                centerMetricsLine.classList.add('metrics-hidden');
+            }
+        }
+
+        function updateVarianceUI() {
+            const activeTimes = sessionsData[currentSession] || [];
+            if (activeTimes.length < 2 || state === 'running') {
+                varianceDisplay.className = 'hidden';
+                return;
+            }
+
+            const latestSolve = activeTimes[activeTimes.length - 1];
+            const priorSolve = activeTimes[activeTimes.length - 2];
+
+            if (latestSolve.dnf || priorSolve.dnf) {
+                varianceDisplay.className = 'hidden';
+                return;
+            }
+
+            const currentVal = latestSolve.rawTime + (latestSolve.plusTwo ? 2.0 : 0.0);
+            const priorVal = priorSolve.rawTime + (priorSolve.plusTwo ? 2.0 : 0.0);
+            const delta = currentVal - priorVal;
+
+            if (delta > 0) {
+                varianceDisplay.textContent = `+${delta.toFixed(2)}`;
+                varianceDisplay.className = 'variance-flag-line plus';
+            } else if (delta < 0) {
+                varianceDisplay.textContent = `${delta.toFixed(2)}`; // Negative sign automatically included
+                varianceDisplay.className = 'variance-flag-line minus';
+            } else {
+                varianceDisplay.textContent = '0.00';
+                varianceDisplay.className = 'variance-flag-line';
+            }
+        }
+
+        function syncDropdownMenuOptions() {
+            sessionSelect.innerHTML = '';
+            for (let i = 1; i <= totalSessionsCount; i++) {
+                const optKey = `session${i}`;
+                const opt = document.createElement('option');
+                opt.value = optKey;
+                opt.textContent = sessionNamesMap[optKey] || `session ${i}`;
+                sessionSelect.appendChild(opt);
+            }
+        }
+
+        function buildSessionManagerControls() {
+            sessionRenameContainer.innerHTML = '';
+            for (let i = 1; i <= totalSessionsCount; i++) {
+                const optKey = `session${i}`;
+                
+                const row = document.createElement('div');
+                row.className = 'session-rename-row-item';
+                
+                const label = document.createElement('span');
+                label.textContent = `profile #${i}`;
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = sessionNamesMap[optKey] || `session ${i}`;
+                input.addEventListener('change', (e) => {
+                    sessionNamesMap[optKey] = e.target.value.trim().toLowerCase() || `session ${i}`;
+                    saveData();
+                    syncDropdownMenuOptions();
+                    sessionSelect.value = currentSession;
+                });
+                
+                row.appendChild(label);
+                row.appendChild(input);
+                sessionRenameContainer.appendChild(row);
+            }
+        }
+
+        // -----------------------------------------------------------
+        // Modal State Engine Mechanics
+        // -----------------------------------------------------------
+        function openEditModal(index) {
+            const activeTimes = sessionsData[currentSession] || [];
+            if (!activeTimes[index]) return;
+            
+            editingIndex = index;
+            const item = activeTimes[index];
+            
+            modalTitle.textContent = `inspect solve #${index + 1}`;
+            modalScrambleDisplay.textContent = item.scramble ? `scramble: ${item.scramble}` : 'no scramble data';
+            modalTimeDisplay.textContent = displaySolveString(item);
+            
+            if (item.plusTwo) modPlusTwoBtn.classList.add('active');
+            else modPlusTwoBtn.classList.remove('active');
+            
+            if (item.dnf) modDnfBtn.classList.add('active');
+            else modDnfBtn.classList.remove('active');
+            
+            editModal.classList.add('open');
+        }
+
+        function closeEditModal() {
+            editModal.classList.remove('open');
+            editingIndex = null;
             updateHistoryUI();
             updateStatsUI();
             updateCenterMetricsDisplay();
             updateVarianceUI();
-            timerDisplay.textContent = '0.00';
-            generateScramble();
+        }
+
+        // -----------------------------------------------------------
+        // Interface Action Triggers Configuration
+        // -----------------------------------------------------------
+        sessionSelect.addEventListener('change', (e) => {
+            currentSession = e.target.value;
+            saveData();
+            
+            const activeTimes = sessionsData[currentSession] || [];
+            if (activeTimes.length > 0) {
+                timerDisplay.textContent = displaySolveString(activeTimes[activeTimes.length - 1]);
+            } else {
+                timerDisplay.textContent = '0.00';
+            }
+            
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
         });
 
         clearBtn.addEventListener('click', () => {
-            const labelText = sessionSelect.options[sessionSelect.selectedIndex].text;
-            if (confirm(`clear all solves for ${labelText}?`)) {
+            if (confirm(`clear all records inside ${sessionNamesMap[currentSession]}?`)) {
                 sessionsData[currentSession] = [];
                 saveData();
+                timerDisplay.textContent = '0.00';
                 updateHistoryUI();
                 updateStatsUI();
                 updateCenterMetricsDisplay();
                 updateVarianceUI();
-                timerDisplay.textContent = '0.00';
-                generateScramble();
             }
         });
 
-        exportBtn.addEventListener('click', () => {
+        layoutToggleBtn.addEventListener('click', () => {
+            if (document.body.className === 'layout-sidebar') {
+                document.body.className = 'layout-stacked';
+            } else {
+                document.body.className = 'layout-sidebar';
+            }
+            localStorage.setItem('cube_timer_layout_orientation', document.body.className);
+        });
+
+        // Edit Modal Operations Modifiers Actions Click Handlers
+        modPlusTwoBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
             const activeTimes = sessionsData[currentSession] || [];
+            const item = activeTimes[editingIndex];
             
+            item.plusTwo = !item.plusTwo;
+            if (item.plusTwo) item.dnf = false; // mutually exclusive safety clear
+            
+            saveData();
+            modPlusTwoBtn.classList.toggle('active', item.plusTwo);
+            modDnfBtn.classList.remove('active');
+            modalTimeDisplay.textContent = displaySolveString(item);
+            
+            // If editing the last entry, live-refresh the central workspace timer text
+            if (editingIndex === activeTimes.length - 1) {
+                timerDisplay.textContent = displaySolveString(item);
+            }
+        });
+
+        modDnfBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            const activeTimes = sessionsData[currentSession] || [];
+            const item = activeTimes[editingIndex];
+            
+            item.dnf = !item.dnf;
+            if (item.dnf) item.plusTwo = false; // mutually exclusive safety clear
+            
+            saveData();
+            modDnfBtn.classList.toggle('active', item.dnf);
+            modPlusTwoBtn.classList.remove('active');
+            modalTimeDisplay.textContent = displaySolveString(item);
+            
+            if (editingIndex === activeTimes.length - 1) {
+                timerDisplay.textContent = displaySolveString(item);
+            }
+        });
+
+        modDeleteBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            if (confirm('permanently wipe out this single logged execution entry?')) {
+                const activeTimes = sessionsData[currentSession] || [];
+                activeTimes.splice(editingIndex, 1);
+                saveData();
+                
+                if (activeTimes.length > 0) {
+                    timerDisplay.textContent = displaySolveString(activeTimes[activeTimes.length - 1]);
+                } else {
+                    timerDisplay.textContent = '0.00';
+                }
+                
+                closeEditModal();
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', closeEditModal);
+
+        // Options Configuration Toggle Logic Triggers Click Handlers
+        desktopSettingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
+        mobileSettingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
+        
+        settingsModalCloseBtn.addEventListener('click', () => {
+            // Process sub-timer statistics custom string modifications format input field loop array
+            const tokens = metricsFormatInput.value.split(',');
+            const validatedIntegers = [];
+            
+            tokens.forEach(t => {
+                const parsedInt = parseInt(t.trim(), 10);
+                if (!isNaN(parsedInt) && parsedInt > 0) {
+                    validatedIntegers.push(parsedInt);
+                }
+            });
+
+            if (validatedIntegers.length > 0) {
+                configuredMetricsList = validatedIntegers.sort((a, b) => a - b);
+            } else {
+                configuredMetricsList = [3, 5, 12];
+            }
+            metricsFormatInput.value = configuredMetricsList.join(', ');
+
+            saveData();
+            settingsModal.classList.remove('open');
+            updateCenterMetricsDisplay();
+            generateScramble();
+        });
+
+        sessionDecBtn.addEventListener('click', () => {
+            if (totalSessionsCount <= 1) return;
+            totalSessionsCount--;
+            sessionCountDisplay.textContent = totalSessionsCount;
+            
+            // Adjust currentSession pointer fallback if target deleted out of boundaries array length
+            const numericId = parseInt(currentSession.replace('session', ''), 10);
+            if (numericId > totalSessionsCount) {
+                currentSession = `session${totalSessionsCount}`;
+            }
+            
+            syncDropdownMenuOptions();
+            sessionSelect.value = currentSession;
+            buildSessionManagerControls();
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+        });
+
+        sessionIncBtn.addEventListener('click', () => {
+            if (totalSessionsCount >= 20) return; // arbitrary max pooling boundary safeguard
+            totalSessionsCount++;
+            sessionCountDisplay.textContent = totalSessionsCount;
+            
+            const nextKey = `session${totalSessionsCount}`;
+            if (!sessionsData[nextKey]) sessionsData[nextKey] = [];
+            if (!sessionNamesMap[nextKey]) sessionNamesMap[nextKey] = `session ${totalSessionsCount}`;
+            
+            syncDropdownMenuOptions();
+            sessionSelect.value = currentSession;
+            buildSessionManagerControls();
+        });
+
+        scrambleToggleBtn.addEventListener('click', () => {
+            showScramble = !showScramble;
+            setToggleSwitchState(scrambleToggleBtn, showScramble);
+        });
+
+        cubeToggleBtn.addEventListener('click', () => {
+            showCube = !showCube;
+            setToggleSwitchState(cubeToggleBtn, showCube);
+        });
+
+        metricsToggleBtn.addEventListener('click', () => {
+            showMetrics = !showMetrics;
+            setToggleSwitchState(metricsToggleBtn, showMetrics);
+        });
+
+        hideTimerToggleBtn.addEventListener('click', () => {
+            hideTimerDuringSolve = !hideTimerDuringSolve;
+            setToggleSwitchState(hideTimerToggleBtn, hideTimerDuringSolve);
+        });
+
+        // Theme Customization Pickers UI Event Wiring
+        desktopThemeBtn.addEventListener('click', () => themeModal.classList.add('open'));
+        mobileThemeBtn.addEventListener('click', () => themeModal.classList.add('open'));
+        themeModalCloseBtn.addEventListener('click', () => themeModal.classList.remove('open'));
+
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetThemeVal = btn.getAttribute('data-theme-val');
+                applyThemeSelection(targetThemeVal);
+                saveData();
+            });
+        });
+
+        // Flat Ledger Export Parsing Generation Actions Handling Processing Loop Block
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const activeTimes = sessionsData[currentSession] || [];
             if (activeTimes.length === 0) {
-                alert('there are no solves in this session to export.');
+                alert('the current session ledger is completely empty');
                 return;
             }
 
-            const sessionLabel = sessionSelect.options[sessionSelect.selectedIndex].text;
-            
+            const sessionLabel = sessionNamesMap[currentSession] || currentSession;
             let fileContent = `========================================\n`;
             fileContent += `  cube timer export - ${sessionLabel.toLowerCase()}\n`;
             fileContent += `========================================\n\n`;
