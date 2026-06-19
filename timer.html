@@ -1745,7 +1745,7 @@
             varianceDisplay.className = 'hidden';
             startTime = performance.now();
     
-        // if setting is disabled, show an indicator instead of the time
+            // if setting is disabled, show an indicator instead of the time
             if (!showTimerDuringSolve) {
                 timerDisplay.textContent = '...';
             }
@@ -1764,6 +1764,17 @@
             }
     
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
+        }
+
+        function stopTimer() {
+            state = 'idle';
+            cancelAnimationFrame(elapsedTimerInterval);
+    
+            const finalTime = (performance.now() - startTime) / 1000;
+            timerDisplay.textContent = formatTime(finalTime);
+    
+            saveSolve(finalTime);
+            generateScramble();
         }
         
         function saveSolve(time) {
