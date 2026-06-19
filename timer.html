@@ -1109,9 +1109,7 @@
                 </svg>
             </button>
         </div>
-        
         <div class="touch-zone" id="touchZone"></div>
-        
         <div class="container">
             <div id="scramble">generating official scramble...</div>
             <div class="timer-wrapper">
@@ -1119,7 +1117,6 @@
                 <div id="variance" class="hidden"></div>
             </div>
             <div class="metrics-display-line" id="centerMetricsLine"></div>
-            
             <div class="cube-visualization" id="cubeDisplay">
                 <div class="face face-u" id="face-U"></div>
                 <div class="face face-l" id="face-L"></div>
@@ -1157,7 +1154,6 @@
                     </svg>
                 </button>
             </div>
-            
             <div class="stats-section">
                 <div class="stat-row">
                     <span>best:</span>
@@ -1173,7 +1169,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="sidebar-right-col">
             <div class="history-header">
                 <div class="history-title">solves</div>
@@ -1193,12 +1188,7 @@
                 <button class="option-btn" id="modPlusTwoBtn">+2 seconds</button>
                 <button class="option-btn" id="modDnfBtn">did not finish (dnf)</button>
                 <button class="option-btn delete-btn" id="modDeleteBtn">
-                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                    </svg>
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                     delete solve
                 </button>
             </div>
@@ -1224,890 +1214,1034 @@
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card settings-card">
             <button class="modal-x-close-btn" id="settingsModalCloseBtn">[x]</button>
-            <div class="modal-title">global configurations</div>
+            <div class="modal-title">configuration settings</div>
             
             <div class="settings-section-block">
-                <div class="settings-section-title">global options</div>
-                <div class="settings-section-desc">configure general interface and timer display adjustments</div>
-                
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">hide scenery while solving</div>
-                        <div class="settings-control-desc">hides the scrambles, virtual cubes, and visual tracking metrics when running</div>
-                    </div>
-                    <button class="toggle-switch" id="hideElementsToggle">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off">off</span>
-                    </button>
-                </div>
-
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">hide time while solving</div>
-                        <div class="settings-control-desc">hides the live clock numbers during an active solve to remove distraction</div>
-                    </div>
-                    <button class="toggle-switch" id="hideTimeToggle">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off">off</span>
-                    </button>
-                </div>
-
-                <div class="settings-row">
-                    <div class="settings-label-group">
-                        <div class="settings-control-title">wca inspection countdown</div>
-                        <div class="settings-control-desc">initiates a 15-second inspection warning countdown voice phase before activation</div>
-                    </div>
-                    <button class="toggle-switch" id="inspectionToggle">
-                        <span class="sw-on">on</span>
-                        <span class="sw-off">off</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="settings-section-block">
-                <div class="settings-section-title">session tracking partitions</div>
-                <div class="settings-section-desc">add, clear, or rename active local workspace partitions mapped below (max 30)</div>
+                <div class="settings-section-title">session management</div>
+                <p class="settings-section-desc">configure tracking environments and custom descriptors</p>
                 
                 <div class="session-count-row">
-                    <div class="session-count-label">total tracking profiles</div>
+                    <span class="session-count-label">total profiles:</span>
                     <button class="session-step-btn" id="decSessionsBtn">-</button>
-                    <div class="session-count-value" id="sessionCountDisplay">10</div>
+                    <span class="session-count-value" id="sessionCountValue">3</span>
                     <button class="session-step-btn" id="incSessionsBtn">+</button>
                 </div>
-
+                
                 <div class="session-rename-list" id="sessionRenameContainer"></div>
             </div>
 
             <div class="settings-section-block">
-                <div class="settings-section-title">custom profile configurations backup</div>
-                <div class="settings-section-desc">export current data structures safely or clear local memory parameters</div>
+                <div class="settings-section-title">interface configuration</div>
+                <p class="settings-section-desc">toggle layout systems and contextual component views</p>
                 
-                <button class="option-btn" id="exportTimesDataBtn" style="width: 100%; justify-content: flex-start; margin-bottom: 8px;">
-                    <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                    export current session data (.txt)
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <span class="settings-control-title">hide details running</span>
+                        <span class="settings-control-desc">clears overlay text from main viewport during solve</span>
+                    </div>
+                    <button class="toggle-switch" id="toggleHideRunning">
+                        <span class="sw-on">on</span><span class="sw-off">off</span>
+                    </button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <span class="settings-control-title">render virtual cube</span>
+                        <span class="settings-control-desc">projects structural puzzle maps from scramble arrays</span>
+                    </div>
+                    <button class="toggle-switch" id="toggleShowCube">
+                        <span class="sw-on">on</span><span class="sw-off">off</span>
+                    </button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <span class="settings-control-title">render scramble line</span>
+                        <span class="settings-control-desc">displays active wca alphanumeric target sequence</span>
+                    </div>
+                    <button class="toggle-switch" id="toggleShowScramble">
+                        <span class="sw-on">on</span><span class="sw-off">off</span>
+                    </button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <span class="settings-control-title">render metrics tracking</span>
+                        <span class="settings-control-desc">displays live stats anchor within workspace</span>
+                    </div>
+                    <button class="toggle-switch" id="toggleShowLiveMetrics">
+                        <span class="sw-on">on</span><span class="sw-off">off</span>
+                    </button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <span class="settings-control-title">inspection phase countdown</span>
+                        <span class="settings-control-desc">enforces 15s pre-solve check before timer initialization</span>
+                    </div>
+                    <button class="toggle-switch" id="toggleUseInspection">
+                        <span class="sw-on">on</span><span class="sw-off">off</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-section-block">
+                <div class="settings-section-title">data transmission exports</div>
+                <p class="settings-section-desc">export session logs or push to file storage structures</p>
+                <button class="option-btn" id="exportSessionTxtBtn" style="width:100%;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    export raw session log (.txt)
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        /* Tracking Global Variables Definitions Area */
-        let state = "idle"; 
-        let startTime = 0;
-        let timerInterval = null;
-        let inspectionTimeout = null;
-        let inspectionInterval = null;
-        let isInspectionPhase = false;
-        let inspectionTimeLeft = 15;
-        let spacePressedTime = 0;
-        let activeEditIndex = null;
-
-        // Session variables
+        // State Vectors and Tracking Definitions
         let currentSessionIdx = 0;
-        let totalSessionsCount = 10;
-        let sessionsData = {};
-        let sessionNames = {};
+        let activeModifierIndex = null;
+        let activeScrambleData = "";
+        let globalSessions = [];
 
-        // Settings variables
-        let hideElementsDuringSolve = false;
-        let hideTimeDuringSolve = false;
-        let useWcaInspection = false;
-        let activeSidebarLayout = "sidebar-left"; 
+        // Application Global Constants Configuration Definition Maps
+        const DEFAULT_SESSION_COUNT = 3;
+        const DEFAULT_SESSION_LABELS = ["session 1", "session 2", "session 3"];
 
-        // Sound Synthesis Settings Context
-        let audioCtx = null;
-
-        // Scramble Properties Setup Definitions Mapping Values
-        const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
-        const modifiers = ['', "'", '2'];
-
-        // Initial Base Cube Definition Setup Schema Object
-        const baseCubeState = {
-            U: Array(9).fill('c-u'),
-            D: Array(9).fill('c-d'),
-            L: Array(9).fill('c-l'),
-            R: Array(9).fill('c-r'),
-            F: Array(9).fill('c-f'),
-            B: Array(9).fill('c-b')
+        let appSettings = {
+            theme: "dark",
+            sidebarPosition: "left",
+            hideRunning: true,
+            showCube: true,
+            showScramble: true,
+            showLiveMetrics: true,
+            useInspection: false,
+            sessionCount: DEFAULT_SESSION_COUNT,
+            sessionNames: [...DEFAULT_SESSION_LABELS]
         };
-        let virtualCube = JSON.parse(JSON.stringify(baseCubeState));
-        let activeScrambleString = "";
 
-        // Elements Selections Targets References
-        const timerDisplay = document.getElementById('timer');
-        const varianceDisplay = document.getElementById('variance');
-        const scrambleDisplay = document.getElementById('scramble');
-        const historyList = document.getElementById('historyList');
-        const touchZone = document.getElementById('touchZone');
-        
-        const bestTimeDisplay = document.getElementById('bestTime');
-        const ao5Display = document.getElementById('ao5');
-        const ao12Display = document.getElementById('ao12');
-        const centerMetricsLine = document.getElementById('centerMetricsLine');
-        const cubeDisplay = document.getElementById('cubeDisplay');
-        const sessionSelect = document.getElementById('sessionSelect');
+        // UI View Port Elements Bind Map Referencing
+        const elTimer = document.getElementById('timer');
+        const elScramble = document.getElementById('scramble');
+        const elVariance = document.getElementById('variance');
+        const elHistoryList = document.getElementById('historyList');
+        const elSessionSelect = document.getElementById('sessionSelect');
+        const elTouchZone = document.getElementById('touchZone');
+        const elCenterMetricsLine = document.getElementById('centerMetricsLine');
+        const elCubeDisplay = document.getElementById('cubeDisplay');
 
-        // Modals Selections Definitions
-        const editModal = document.getElementById('editModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalScrambleDisplay = document.getElementById('modalScrambleDisplay');
-        const modalTimeDisplay = document.getElementById('modalTimeDisplay');
-        const modalCloseBtn = document.getElementById('modalCloseBtn');
-        
-        const modPlusTwoBtn = document.getElementById('modPlusTwoBtn');
-        const modDnfBtn = document.getElementById('modDnfBtn');
-        const modDeleteBtn = document.getElementById('modDeleteBtn');
-        const clearBtn = document.getElementById('clearBtn');
+        const elBestTime = document.getElementById('bestTime');
+        const elAo5 = document.getElementById('ao5');
+        const elAo12 = document.getElementById('ao12');
+        const elClearBtn = document.getElementById('clearBtn');
+        const elLayoutToggleBtn = document.getElementById('layoutToggleBtn');
 
-        const themeModal = document.getElementById('themeModal');
-        const themeModalCloseBtn = document.getElementById('themeModalCloseBtn');
-        const settingsModal = document.getElementById('settingsModal');
-        const settingsModalCloseBtn = document.getElementById('settingsModalCloseBtn');
+        // Modal Frame Interlock Objects Referencing
+        const modEditOverlay = document.getElementById('editModal');
+        const modEditTitle = document.getElementById('modalTitle');
+        const modEditScramble = document.getElementById('modalScrambleDisplay');
+        const modEditTimeDisplay = document.getElementById('modalTimeDisplay');
+        const modEditClose = document.getElementById('modalCloseBtn');
+        const modEditPlusTwo = document.getElementById('modPlusTwoBtn');
+        const modEditDnf = document.getElementById('modDnfBtn');
+        const modEditDelete = document.getElementById('modDeleteBtn');
 
-        // Settings Elements selectors
-        const hideElementsToggle = document.getElementById('hideElementsToggle');
-        const hideTimeToggle = document.getElementById('hideTimeToggle');
-        const inspectionToggle = document.getElementById('inspectionToggle');
-        const sessionCountDisplay = document.getElementById('sessionCountDisplay');
-        const decSessionsBtn = document.getElementById('decSessionsBtn');
-        const incSessionsBtn = document.getElementById('incSessionsBtn');
-        const sessionRenameContainer = document.getElementById('sessionRenameContainer');
-        const layoutToggleBtn = document.getElementById('layoutToggleBtn');
-        const exportTimesDataBtn = document.getElementById('exportTimesDataBtn');
+        const modThemeOverlay = document.getElementById('themeModal');
+        const modThemeClose = document.getElementById('themeModalCloseBtn');
+        const modSettingsOverlay = document.getElementById('settingsModal');
+        const modSettingsClose = document.getElementById('settingsModalCloseBtn');
 
-        // Universal Toggle Triggers Event Catch hooks
-        const sidebarThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
-        const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
-        const sidebarSettingsBtn = document.querySelector('.sidebar-settings-btn-toggle');
-        const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
+        // Settings Dynamic Control DOM Target References
+        const btnDecSessions = document.getElementById('incSessionsBtn');
+        const btnIncSessions = document.getElementById('decSessionsBtn');
+        const txtSessionCountVal = document.getElementById('sessionCountValue');
+        const containerSessionRename = document.getElementById('sessionRenameContainer');
+        const btnExportSessionTxt = document.getElementById('exportSessionTxtBtn');
 
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const tgHideRunning = document.getElementById('toggleHideRunning');
+        const tgShowCube = document.getElementById('toggleShowCube');
+        const tgShowScramble = document.getElementById('toggleShowScramble');
+        const tgShowLiveMetrics = document.getElementById('toggleShowLiveMetrics');
+        const tgUseInspection = document.getElementById('toggleUseInspection');
+
+        // Execution Clock Timers Tracking Registers
+        let timerInterval = null;
+        let inspectionInterval = null;
+        let holdTimeout = null;
+        let stateTimerRun = "idle"; // state values: idle, holding, ready, inspection, tracking
+        let timeStartStamp = 0;
+        let timeAccumulatedValue = 0;
+        let isTouchInterlockingActive = false;
+        let timeInspectionDeadline = 15;
+
+        // Scramble Generation Matrices Constants Maps Definitions
+        const cubeMoves = ["U", "D", "R", "L", "F", "B"];
+        const cubeModifiers = ["", "'", "2"];
+
+        function initEmptySessionArray(targetSize) {
+            const arr = [];
+            for (let i = 0; i < targetSize; i++) {
+                arr.push([]);
             }
+            return arr;
         }
 
-        function playInspectionBeep(frequency, duration) {
-            if (!audioCtx) return;
-            try {
-                const osc = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = frequency;
-                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
-                osc.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration);
-            } catch (e) {
-                console.log("audio error context caught:", e);
-            }
-        }
-
-        /* Data Storage Load Initialization Engine Engine Routine */
         function loadData() {
-            const storedSessionsCount = localStorage.getItem('totalSessionsCount');
-            if (storedSessionsCount) totalSessionsCount = parseInt(storedSessionsCount, 10);
-            
-            const storedSessionIdx = localStorage.getItem('currentSessionIdx');
-            if (storedSessionIdx) currentSessionIdx = parseInt(storedSessionIdx, 10);
-
-            const storedNames = localStorage.getItem('sessionNames');
-            if (storedNames) {
-                sessionNames = JSON.parse(storedNames);
-            } else {
-                sessionNames = {};
-            }
-
-            const storedLayout = localStorage.getItem('activeSidebarLayout');
-            if (storedLayout) {
-                activeSidebarLayout = storedLayout;
-            } else {
-                activeSidebarLayout = "sidebar-left";
-            }
-            document.body.className = activeSidebarLayout;
-
-            const storedHideElements = localStorage.getItem('hideElementsDuringSolve');
-            if (storedHideElements) {
-                hideElementsDuringSolve = (storedHideElements === 'true');
-            }
-            if (hideElementsDuringSolve) hideElementsToggle.classList.add('is-active');
-
-            const storedHideTime = localStorage.getItem('hideTimeDuringSolve');
-            if (storedHideTime) {
-                hideTimeDuringSolve = (storedHideTime === 'true');
-            }
-            if (hideTimeDuringSolve) hideTimeToggle.classList.add('is-active');
-
-            const storedInspection = localStorage.getItem('useWcaInspection');
-            if (storedInspection) {
-                useWcaInspection = (storedInspection === 'true');
-            }
-            if (useWcaInspection) inspectionToggle.classList.add('is-active');
-
-            const storedTheme = localStorage.getItem('appTheme') || 'dark';
-            document.body.setAttribute('data-theme', storedTheme);
-            document.querySelectorAll('.theme-btn').forEach(b => {
-                if (b.getAttribute('data-theme-val') === storedTheme) b.classList.add('active');
-                else b.classList.remove('active');
-            });
-
-            sessionsData = {};
-            for (let i = 0; i < 30; i++) {
-                const data = localStorage.getItem(`session_data_${i}`);
-                if (data) {
-                    sessionsData[i] = JSON.parse(data);
-                } else {
-                    sessionsData[i] = [];
+            try {
+                const storedSettings = localStorage.getItem('cube_timer_settings_v3');
+                if (storedSettings) {
+                    const parsed = JSON.parse(storedSettings);
+                    appSettings = { ...appSettings, ...parsed };
+                    
+                    // Maintain synchronization checks for length boundary limits
+                    if (!appSettings.sessionNames || appSettings.sessionNames.length !== appSettings.sessionCount) {
+                        appSettings.sessionNames = [];
+                        for (let i = 0; i < appSettings.sessionCount; i++) {
+                            appSettings.sessionNames.push(`session ${i + 1}`);
+                        }
+                    }
                 }
+
+                const storedSolves = localStorage.getItem('cube_timer_solves_v3');
+                if (storedSolves) {
+                    globalSessions = JSON.parse(storedSolves);
+                }
+
+                // If profiles don't align with session parameters, expand array gracefully
+                if (!Array.isArray(globalSessions) || globalSessions.length < appSettings.sessionCount) {
+                    const delta = appSettings.sessionCount - (Array.isArray(globalSessions) ? globalSessions.length : 0);
+                    if (!Array.isArray(globalSessions)) globalSessions = [];
+                    for (let d = 0; d < delta; d++) {
+                        globalSessions.push([]);
+                    }
+                }
+            } catch (err) {
+                console.warn("Storage profile reads faulted. Initializing memory cache fallback vectors.", err);
+                globalSessions = initEmptySessionArray(appSettings.sessionCount);
             }
 
-            sessionCountDisplay.textContent = totalSessionsCount;
-            buildSessionDropdown();
-            buildSettingsSessionList();
-            renderHistory();
+            applySettingsStateToUi();
+            rebuildSessionSelectorOptions();
+            refreshWorkspaceDataDisplays();
         }
 
         function saveData() {
-            localStorage.setItem('totalSessionsCount', totalSessionsCount);
-            localStorage.setItem('currentSessionIdx', currentSessionIdx);
-            localStorage.setItem('sessionNames', JSON.stringify(sessionNames));
-            localStorage.setItem('hideElementsDuringSolve', hideElementsDuringSolve);
-            localStorage.setItem('hideTimeDuringSolve', hideTimeDuringSolve);
-            localStorage.setItem('useWcaInspection', useWcaInspection);
-            localStorage.setItem('activeSidebarLayout', activeSidebarLayout);
-            localStorage.setItem(`session_data_${currentSessionIdx}`, JSON.stringify(sessionsData[currentSessionIdx]));
+            try {
+                localStorage.setItem('cube_timer_settings_v3', JSON.stringify(appSettings));
+                localStorage.setItem('cube_timer_solves_v3', JSON.stringify(globalSessions));
+            } catch (err) {
+                console.error("Storage transactions pipeline failure.", err);
+            }
         }
 
-        function buildSessionDropdown() {
-            sessionSelect.innerHTML = '';
-            for (let i = 0; i < totalSessionsCount; i++) {
+        function generateWcaScrambleSequence() {
+            const sequence = [];
+            let lastMoveIndex = -1;
+            let secondToLastMoveIndex = -1;
+
+            for (let i = 0; i < 20; i++) {
+                let currentMoveIdx;
+                while (true) {
+                    currentMoveIdx = Math.floor(Math.random() * cubeMoves.length);
+                    
+                    // Check against filtering out instant counter-rotations
+                    if (currentMoveIdx !== lastMoveIndex) {
+                        // Prevent index oscillation tracking locks (e.g., R L R)
+                        if (!((currentMoveIdx === secondToLastMoveIndex) && 
+                              (Math.floor(currentMoveIdx / 2) === Math.floor(lastMoveIndex / 2)))) {
+                            break;
+                        }
+                    }
+                }
+
+                const selectedMove = cubeMoves[currentMoveIdx];
+                const selectedModifier = cubeModifiers[Math.floor(Math.random() * cubeModifiers.length)];
+                sequence.push(selectedMove + selectedModifier);
+
+                secondToLastMoveIndex = lastMoveIndex;
+                lastMoveIndex = currentMoveIdx;
+            }
+
+            activeScrambleData = sequence.join(" ");
+            elScramble.innerText = activeScrambleData.toLowerCase();
+            
+            // Pass generated sequence directly down to graphics layout pipeline
+            calculateCubeStickerMapState(sequence);
+        }
+
+        // Simulative Color Mapping Vector Tracking System Array Map
+        function calculateCubeStickerMapState(movesArray) {
+            // Initial reference grid map state allocation arrays setup
+            const faces = {
+                'U': Array(9).fill('c-u'),
+                'D': Array(9).fill('c-d'),
+                'F': Array(9).fill('c-f'),
+                'B': Array(9).fill('c-b'),
+                'L': Array(9).fill('c-l'),
+                'R': Array(9).fill('c-r')
+            };
+
+            const rotationCycles = {
+                'U': { face: [0,1,2,5,8,7,6,3], border: [['B',0,1,2], ['R',0,1,2], ['F',0,1,2], ['L',0,1,2]] },
+                'D': { face: [0,1,2,5,8,7,6,3], border: [['F',6,7,8], ['R',6,7,8], ['B',6,7,8], ['L',6,7,8]] },
+                'F': { face: [0,1,2,5,8,7,6,3], border: [['U',6,7,8], ['R',0,3,6], ['D',2,1,0], ['L',8,5,2]] },
+                'B': { face: [0,1,2,5,8,7,6,3], border: [['U',2,1,0], ['L',0,3,6], ['D',6,7,8], ['R',8,5,2]] },
+                'L': { face: [0,1,2,5,8,7,6,3], border: [['U',0,3,6], ['F',0,3,6], ['D',0,3,6], ['B',8,5,2]] },
+                'R': { face: [0,1,2,5,8,7,6,3], border: [['U',8,5,2], ['B',0,3,6], ['D',8,5,2], ['F',8,5,2]] }
+            };
+
+            function performFaceIndexShift(faceKey, isClockwise) {
+                const mapIndices = rotationCycles[faceKey].face;
+                const tempStickers = mapIndices.map(idx => faces[faceKey][idx]);
+                if (isClockwise) {
+                    // Pull back elements by 2 positions around perimeter rings
+                    faces[faceKey][mapIndices[2]] = tempStickers[0];
+                    faces[faceKey][mapIndices[3]] = tempStickers[1];
+                    faces[faceKey][mapIndices[4]] = tempStickers[2];
+                    faces[faceKey][mapIndices[5]] = tempStickers[3];
+                    faces[faceKey][mapIndices[6]] = tempStickers[4];
+                    faces[faceKey][mapIndices[7]] = tempStickers[5];
+                    faces[faceKey][mapIndices[0]] = tempStickers[6];
+                    faces[faceKey][mapIndices[1]] = tempStickers[7];
+                } else {
+                    faces[faceKey][mapIndices[6]] = tempStickers[0];
+                    faces[faceKey][mapIndices[7]] = tempStickers[1];
+                    faces[faceKey][mapIndices[0]] = tempStickers[2];
+                    faces[faceKey][mapIndices[1]] = tempStickers[3];
+                    faces[faceKey][mapIndices[2]] = tempStickers[4];
+                    faces[faceKey][mapIndices[3]] = tempStickers[5];
+                    faces[faceKey][mapIndices[4]] = tempStickers[6];
+                    faces[faceKey][mapIndices[5]] = tempStickers[7];
+                }
+            }
+
+            function performPerimeterRingShift(faceKey, count) {
+                const borderCfg = rotationCycles[faceKey].border;
+                for (let step = 0; step < count; step++) {
+                    const tempElements = [
+                        faces[borderCfg[3][0]][borderCfg[3][1]],
+                        faces[borderCfg[3][0]][borderCfg[3][2]],
+                        faces[borderCfg[3][0]][borderCfg[3][3]]
+                    ];
+
+                    for (let linkIdx = 3; linkIdx > 0; linkIdx--) {
+                        faces[borderCfg[linkIdx][0]][borderCfg[linkIdx][1]] = faces[borderCfg[linkIdx-1][0]][borderCfg[linkIdx-1][1]];
+                        faces[borderCfg[linkIdx][0]][borderCfg[linkIdx-2]] = faces[borderCfg[linkIdx-1][0]][borderCfg[linkIdx-1][2]];
+                        faces[borderCfg[linkIdx][0]][borderCfg[linkIdx-3]] = faces[borderCfg[linkIdx-1][0]][borderCfg[linkIdx-1][3]];
+                    }
+
+                    faces[borderCfg[0][0]][borderCfg[0][1]] = tempElements[0];
+                    faces[borderCfg[0][0]][borderCfg[0][2]] = tempElements[1];
+                    faces[borderCfg[0][0]][borderCfg[0][3]] = tempElements[2];
+                }
+            }
+
+            // Execute the step sequences
+            movesArray.forEach(moveToken => {
+                if (!moveToken) return;
+                const baseFace = moveToken.charAt(0);
+                const modType = moveToken.length > 1 ? moveToken.charAt(1) : "";
+
+                let iterations = 1;
+                let isCw = true;
+                if (modType === "2") { iterations = 2; }
+                else if (modType === "'") { isCw = false; }
+
+                for (let iter = 0; iter < iterations; iter++) {
+                    performFaceIndexShift(baseFace, isCw);
+                }
+
+                // Perimeter boundary loops tracking execution mapping shifts
+                if (baseFace === 'U') {
+                    const shiftCount = isCw ? 1 : 3;
+                    for (let s = 0; s < shiftCount; s++) {
+                        const temp = [faces['B'][0], faces['B'][1], faces['B'][2]];
+                        faces['B'][0] = faces['L'][0]; faces['B'][1] = faces['L'][1]; faces['B'][2] = faces['L'][2];
+                        faces['L'][0] = faces['F'][0]; faces['L'][1] = faces['F'][1]; faces['L'][2] = faces['F'][2];
+                        faces['F'][0] = faces['R'][0]; faces['F'][1] = faces['R'][1]; faces['F'][2] = faces['R'][2];
+                        faces['R'][0] = temp[0]; faces['R'][1] = temp[1]; faces['R'][2] = temp[2];
+                    }
+                } else if (baseFace === 'D') {
+                    const shiftCount = isCw ? 1 : 3;
+                    for (let s = 0; s < shiftCount; s++) {
+                        const temp = [faces['F'][6], faces['F'][7], faces['F'][8]];
+                        faces['F'][6] = faces['L'][6]; faces['F'][7] = faces['L'][7]; faces['F'][8] = faces['L'][8];
+                        faces['L'][6] = faces['B'][6]; faces['L'][7] = faces['B'][7]; faces['L'][8] = faces['B'][8];
+                        faces['B'][6] = faces['R'][6]; faces['B'][7] = faces['R'][7]; faces['B'][8] = faces['R'][8];
+                        faces['R'][6] = temp[0]; faces['R'][7] = temp[1]; faces['R'][8] = temp[2];
+                    }
+                } else if (baseFace === 'L') {
+                    const shiftCount = isCw ? 1 : 3;
+                    for (let s = 0; s < shiftCount; s++) {
+                        const temp = [faces['U'][0], faces['U'][3], faces['U'][6]];
+                        faces['U'][0] = faces['B'][8]; faces['U'][3] = faces['B'][5]; faces['U'][6] = faces['B'][2];
+                        faces['B'][8] = faces['D'][0]; faces['B'][5] = faces['D'][3]; faces['B'][2] = faces['D'][6];
+                        faces['D'][0] = faces['F'][0]; faces['D'][3] = faces['F'][3]; faces['D'][6] = faces['F'][6];
+                        faces['F'][0] = temp[0]; faces['F'][3] = temp[3]; faces['F'][6] = temp[2];
+                    }
+                } else if (baseFace === 'R') {
+                    const shiftCount = isCw ? 1 : 3;
+                    for (let s = 0; s < shiftCount; s++) {
+                        const temp = [faces['U'][8], faces['U'][5], faces['U'][2]];
+                        faces['U'][8] = faces['F'][8]; faces['U'][5] = faces['F'][5]; faces['U'][2] = faces['F'][2];
+                        faces['F'][8] = faces['D'][8]; faces['F'][5] = faces['D'][5]; faces['F'][2] = faces['D'][2];
+                        faces['D'][8] = faces['B'][0]; faces['D'][5] = faces['B'][3]; faces['D'][2] = faces['B'][6];
+                        faces['B'][0] = temp[0]; faces['B'][3] = temp[1]; faces['B'][6] = temp[2];
+                    }
+                } else if (baseFace === 'F') {
+                    const shiftCount = isCw ? 1 : 3;
+                    for (let s = 0; s < shiftCount; s++) {
+                        const temp = [faces['U'][6], faces['U'][7], faces['U'][8]];
+                        faces['U'][6] = faces['L'][8]; faces['U'][7] = faces['L'][5]; faces['U'][8] = faces['L'][2];
+                        faces['L'][8] = faces['D'][2]; faces['L'][5] = faces['D'][1]; faces['L'][2] = faces['D'][0];
+                        faces['D'][2] = faces['R'][0]; faces['D'][1] = faces['R'][3]; faces['D'][0] = faces['R'][6];
+                        faces['R'][0] = temp[0]; faces['R'][3] = temp[1]; faces['R'][6] = temp[2];
+                    }
+                } else if (baseFace === 'B') {
+                    const shiftCount = isCw ? 1 : 3;
+                    for (let s = 0; s < shiftCount; s++) {
+                        const temp = [faces['U'][2], faces['U'][1], faces['U'][0]];
+                        faces['U'][2] = faces['R'][8]; faces['U'][1] = faces['R'][5]; faces['U'][0] = faces['R'][2];
+                        faces['R'][8] = faces['D'][6]; faces['R'][5] = faces['D'][7]; faces['R'][2] = faces['D'][8];
+                        faces['D'][6] = faces['L'][0]; faces['D'][7] = faces['L'][3]; faces['D'][8] = faces['L'][6];
+                        faces['L'][0] = temp[0]; faces['L'][3] = temp[1]; faces['L'][6] = temp[2];
+                    }
+                }
+            });
+
+            // Projection mappings pipeline loop to output actual layout blocks
+            Object.keys(faces).forEach(key => {
+                const targetDomNode = document.getElementById(`face-${key}`);
+                if (!targetDomNode) return;
+                
+                targetDomNode.innerHTML = "";
+                faces[key].forEach(colorClass => {
+                    const node = document.createElement('div');
+                    node.className = `sticker ${colorClass}`;
+                    targetDomNode.appendChild(node);
+                });
+            });
+        }
+
+        function buildSessionSelectorOptions() {
+            elSessionSelect.innerHTML = "";
+            for (let i = 0; i < appSettings.sessionCount; i++) {
                 const opt = document.createElement('option');
                 opt.value = i;
-                const labelName = sessionNames[i] || `session ${i + 1}`;
-                opt.textContent = labelName.toLowerCase();
-                if (i === currentSessionIdx) opt.selected = true;
-                sessionSelect.appendChild(opt);
+                opt.selected = (i === currentSessionIdx);
+                opt.innerText = appSettings.sessionNames[i] ? appSettings.sessionNames[i].toLowerCase() : `session ${i + 1}`;
+                elSessionSelect.appendChild(opt);
             }
         }
 
-        function buildSettingsSessionList() {
-            sessionRenameContainer.innerHTML = '';
-            for (let i = 0; i < totalSessionsCount; i++) {
-                const row = document.createElement('div');
-                row.className = 'session-rename-item';
-                
-                const span = document.createElement('span');
-                span.textContent = `#${i + 1}`;
-                
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'session-name-input';
-                input.value = sessionNames[i] || `session ${i + 1}`;
-                input.placeholder = `session ${i + 1}`;
-                
-                input.addEventListener('input', (e) => {
-                    sessionNames[i] = e.target.value;
-                    saveData();
-                    buildSessionDropdown();
-                });
+        function calculateMetricsAverages(solvesList, windowSize) {
+            // Trim tracking arrays down parsing out modifiers like did not finish (dnf) statuses
+            const activeRange = [...solvesList].reverse();
+            if (activeRange.length < windowSize) return null;
 
-                row.appendChild(span);
-                row.appendChild(input);
-                sessionRenameContainer.appendChild(row);
-            }
-        }
+            const targetSet = activeRange.slice(0, windowSize);
+            let dnfCounter = 0;
+            const absoluteTimes = [];
 
-        /* 3x3 Virtual Scramble Engine Generation and Scramble Parsing Logics Layer */
-        function generateScramble() {
-            const length = 20;
-            let moves = [];
-            let lastFace = '';
-            let secondLastFace = '';
-
-            while (moves.length < length) {
-                let face = faces[Math.floor(Math.random() * faces.length)];
-                if (face !== lastFace && !(face === secondLastFace && isOppositeFace(face, lastFace))) {
-                    let mod = modifiers[Math.floor(Math.random() * modifiers.length)];
-                    moves.push(face + mod);
-                    secondLastFace = lastFace;
-                    lastFace = face;
-                }
-            }
-            activeScrambleString = moves.join(' ');
-            scrambleDisplay.textContent = activeScrambleString.toLowerCase();
-            resetCubeVisualizerState();
-            applyScrambleToVisualizer(activeScrambleString);
-            drawCubeLayoutGraphics();
-        }
-
-        function isOppositeFace(f1, f2) {
-            return (f1 === 'U' && f2 === 'D') || (f1 === 'D' && f2 === 'U') ||
-                   (f1 === 'L' && f2 === 'R') || (f1 === 'R' && f2 === 'L') ||
-                   (f1 === 'F' && f2 === 'B') || (f1 === 'B' && f2 === 'F');
-        }
-
-        function resetCubeVisualizerState() {
-            virtualCube = JSON.parse(JSON.stringify(baseCubeState));
-        }
-
-        function rotateFaceClockwise(face) {
-            const temp = [...virtualCube[face]];
-            virtualCube[face][0] = temp[6]; virtualCube[face][1] = temp[3]; virtualCube[face][2] = temp[0];
-            virtualCube[face][3] = temp[7];                                 virtualCube[face][4] = temp[4]; virtualCube[face][5] = temp[1];
-            virtualCube[face][6] = temp[8]; virtualCube[face][7] = temp[5]; virtualCube[face][8] = temp[2];
-        }
-
-        function applyMoveMechanics(move) {
-            const f = move[0];
-            const isPrime = move.includes("'");
-            const isTwo = move.includes("2");
-            const iterations = isTwo ? 2 : (isPrime ? 3 : 1);
-
-            for (let i = 0; i < iterations; i++) {
-                rotateFaceClockwise(f);
-                let temp = [];
-                if (f === 'U') {
-                    temp = [virtualCube.F[0], virtualCube.F[1], virtualCube.F[2]];
-                    virtualCube.F[0] = virtualCube.R[0]; virtualCube.F[1] = virtualCube.R[1]; virtualCube.F[2] = virtualCube.R[2];
-                    virtualCube.R[0] = virtualCube.B[0]; virtualCube.R[1] = virtualCube.B[1]; virtualCube.R[2] = virtualCube.B[2];
-                    virtualCube.B[0] = virtualCube.L[0]; virtualCube.B[1] = virtualCube.L[1]; virtualCube.B[2] = virtualCube.L[2];
-                    virtualCube.L[0] = temp[0];          virtualCube.L[1] = temp[1];          virtualCube.L[2] = temp[2];
-                } else if (f === 'D') {
-                    temp = [virtualCube.F[6], virtualCube.F[7], virtualCube.F[8]];
-                    virtualCube.F[6] = virtualCube.L[6]; virtualCube.F[7] = virtualCube.L[7]; virtualCube.F[8] = virtualCube.L[8];
-                    virtualCube.L[6] = virtualCube.B[6]; virtualCube.L[7] = virtualCube.B[7]; virtualCube.L[8] = virtualCube.B[8];
-                    virtualCube.B[6] = virtualCube.R[6]; virtualCube.B[7] = virtualCube.R[7]; virtualCube.B[8] = virtualCube.R[8];
-                    virtualCube.R[6] = temp[0];          virtualCube.R[7] = temp[1];          virtualCube.R[8] = temp[2];
-                } else if (f === 'R') {
-                    temp = [virtualCube.U[2], virtualCube.U[5], virtualCube.U[8]];
-                    virtualCube.U[2] = virtualCube.F[2]; virtualCube.U[5] = virtualCube.F[5]; virtualCube.U[8] = virtualCube.F[8];
-                    virtualCube.F[2] = virtualCube.D[2]; virtualCube.F[5] = virtualCube.D[5]; virtualCube.F[8] = virtualCube.D[8];
-                    virtualCube.D[2] = virtualCube.B[6]; virtualCube.D[5] = virtualCube.B[3]; virtualCube.D[8] = virtualCube.B[0];
-                    virtualCube.B[6] = virtualCube.U[2]; virtualCube.B[3] = virtualCube.U[5]; virtualCube.B[0] = virtualCube.U[8];
-                } else if (f === 'L') {
-                    temp = [virtualCube.U[0], virtualCube.U[3], virtualCube.U[7]]; 
-                    temp = [virtualCube.U[0], virtualCube.U[3], virtualCube.U[6]];
-                    virtualCube.U[0] = virtualCube.B[8]; virtualCube.U[3] = virtualCube.B[5]; virtualCube.U[6] = virtualCube.B[2];
-                    virtualCube.B[8] = virtualCube.D[0]; virtualCube.B[5] = virtualCube.D[3]; virtualCube.B[2] = virtualCube.D[6];
-                    virtualCube.D[0] = virtualCube.F[0]; virtualCube.D[3] = virtualCube.F[3]; virtualCube.D[6] = virtualCube.F[6];
-                    virtualCube.F[0] = temp[0];          virtualCube.F[3] = temp[1];          virtualCube.F[6] = temp[2];
-                } else if (f === 'F') {
-                    temp = [virtualCube.U[6], virtualCube.U[7], virtualCube.U[8]];
-                    virtualCube.U[6] = virtualCube.L[8]; virtualCube.U[7] = virtualCube.L[5]; virtualCube.U[8] = virtualCube.L[2];
-                    virtualCube.L[8] = virtualCube.D[2]; virtualCube.L[5] = virtualCube.D[1]; virtualCube.L[2] = virtualCube.D[0];
-                    virtualCube.D[2] = virtualCube.R[0]; virtualCube.D[1] = virtualCube.R[3]; virtualCube.D[0] = virtualCube.R[6];
-                    virtualCube.R[0] = temp[0];          virtualCube.R[3] = temp[1];          virtualCube.R[6] = temp[2];
-                } else if (f === 'B') {
-                    temp = [virtualCube.U[0], virtualCube.U[1], virtualCube.U[2]];
-                    virtualCube.U[0] = virtualCube.R[2]; virtualCube.U[1] = virtualCube.R[5]; virtualCube.U[2] = virtualCube.R[8];
-                    virtualCube.R[2] = virtualCube.D[8]; virtualCube.R[5] = virtualCube.D[7]; virtualCube.R[8] = virtualCube.D[6];
-                    virtualCube.D[8] = virtualCube.L[6]; virtualCube.D[7] = virtualCube.L[3]; virtualCube.D[6] = virtualCube.L[0];
-                    virtualCube.L[6] = temp[0];          virtualCube.L[3] = temp[1];          virtualCube.L[0] = temp[2];
-                }
-            }
-        }
-
-        function applyScrambleToVisualizer(scrambleText) {
-            if (!scrambleText) return;
-            const moves = scrambleText.split(' ');
-            moves.forEach(m => {
-                if (m) applyMoveMechanics(m);
-            });
-        }
-
-        function drawCubeLayoutGraphics() {
-            ['U', 'D', 'L', 'R', 'F', 'B'].forEach(faceKey => {
-                const container = document.getElementById(`face-${faceKey}`);
-                if (!container) return;
-                container.innerHTML = '';
-                virtualCube[faceKey].forEach(colorClass => {
-                    const sticker = document.createElement('div');
-                    sticker.className = `sticker ${colorClass}`;
-                    container.appendChild(sticker);
-                });
-            });
-        }
-
-        /* Statistical Calculation Operations Algorithms (AO5, AO12, Deviation Vectors) */
-        function calculateSessionAverages() {
-            const solves = sessionsData[currentSessionIdx] || [];
-            const activeTimes = solves.filter(s => !s.dnf);
-            
-            if (activeTimes.length === 0) {
-                bestTimeDisplay.textContent = "-";
-                ao5Display.textContent = "-";
-                ao12Display.textContent = "-";
-                centerMetricsLine.innerHTML = '';
-                return;
-            }
-
-            const parsedTimesList = solves.map(s => {
-                if (s.dnf) return Infinity;
-                return s.rawTime + (s.plusTwo ? 2 : 0);
-            });
-
-            // Best single calculation
-            let bestSingle = Infinity;
-            solves.forEach(s => {
-                if (!s.dnf) {
-                    const t = s.rawTime + (s.plusTwo ? 2 : 0);
-                    if (t < bestSingle) bestSingle = t;
-                }
-            });
-            bestTimeDisplay.textContent = bestSingle === Infinity ? "-" : bestSingle.toFixed(2);
-
-            // Calculation engine routines for Ao5 / Ao12
-            ao5Display.textContent = getTrimmedAverage(parsedTimesList, 5);
-            ao12Display.textContent = getTrimmedAverage(parsedTimesList, 12);
-
-            // Center metric lines generation mapping session bounds
-            const count = solves.length;
-            const sessionSum = activeTimes.reduce((acc, curr) => acc + (curr.rawTime + (curr.plusTwo ? 2 : 0)), 0);
-            const sessionMean = count > 0 ? (sessionSum / activeTimes.length) : 0;
-            
-            centerMetricsLine.innerHTML = `<div>solves: <strong>${count}</strong> | mean: <strong>${sessionMean ? sessionMean.toFixed(2) : '-'}</strong></div>`;
-        }
-
-        function getTrimmedAverage(timesList, size) {
-            if (timesList.length < size) return "-";
-            const segment = timesList.slice(-size);
-            
-            // count infinity limits
-            const infCount = segment.filter(v => v === Infinity).length;
-            if (infCount > 1) return "dnf";
-
-            segment.sort((a, b) => a - b);
-            // remove heads and tails elements
-            segment.pop();
-            segment.shift();
-
-            const sum = segment.reduce((acc, curr) => acc + curr, 0);
-            return (sum / segment.length).toFixed(2);
-        }
-
-        /* History Listing Interface Rendering Engine Layer */
-        function renderHistory() {
-            historyList.innerHTML = '';
-            const solves = sessionsData[currentSessionIdx] || [];
-            
-            if (solves.length === 0) {
-                const emptySpacer = document.createElement('li');
-                emptySpacer.className = 'history-item blank-spacer';
-                historyList.appendChild(emptySpacer);
-                calculateSessionAverages();
-                return;
-            }
-
-            // Draw list items tracking inverse sequence arrays mapping bottom scroll positions
-            solves.forEach((solve, idx) => {
-                const li = document.createElement('li');
-                li.className = 'history-item';
-                
-                const dataWrapper = document.createElement('div');
-                dataWrapper.className = 'history-data';
-                
-                const indexSpan = document.createElement('span');
-                indexSpan.className = 'history-index';
-                indexSpan.textContent = `${idx + 1}.`;
-                
-                const timeSpan = document.createElement('span');
-                let displayVal = "";
-                if (solve.dnf) {
-                    displayVal = "dnf";
+            targetSet.forEach(item => {
+                if (item.dnf) {
+                    dnfCounter++;
                 } else {
-                    const totalValue = solve.rawTime + (solve.plusTwo ? 2 : 0);
-                    displayVal = totalValue.toFixed(2) + (solve.plusTwo ? "+" : "");
+                    const rawScore = Number(item.rawTime);
+                    const parsedScore = rawScore + (item.plusTwo ? 2.0 : 0);
+                    absoluteTimes.push(parsedScore);
                 }
-                timeSpan.textContent = displayVal;
-
-                dataWrapper.appendChild(indexSpan);
-                dataWrapper.appendChild(timeSpan);
-
-                const editBtn = document.createElement('button');
-                editBtn.className = 'edit-time-btn';
-                editBtn.title = "adjust solve parameters";
-                editBtn.innerHTML = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`;
-                
-                editBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openEditSolveModal(idx);
-                });
-
-                li.appendChild(dataWrapper);
-                li.appendChild(editBtn);
-                historyList.insertBefore(li, historyList.firstChild);
             });
 
-            calculateSessionAverages();
+            // Under official rulesets, a subset containing more than 1 dnf drops average bounds entirely
+            if (dnfCounter > 1) return "DNF";
+
+            // If an element contains exactly 1 dnf status, it automatically occupies the upper value slot
+            if (dnfCounter === 1) {
+                absoluteTimes.sort((a, b) => a - b);
+                // Drop lowest score boundary down safely
+                absoluteTimes.shift();
+                
+                let sum = 0;
+                absoluteTimes.forEach(val => sum += val);
+                return (sum / absoluteTimes.length);
+            }
+
+            // Normal numeric filtering drop boundaries upper/lower tracks safely
+            absoluteTimes.sort((a, b) => a - b);
+            absoluteTimes.pop();
+            absoluteTimes.shift();
+
+            let totalSum = 0;
+            absoluteTimes.forEach(val => totalSum += val);
+            return (totalSum / absoluteTimes.length);
         }
 
-        /* Modal Interactivity Operation and Interfacing Functions */
-        function openEditSolveModal(index) {
-            const solves = sessionsData[currentSessionIdx] || [];
-            const solve = solves[index];
-            if (!solve) return;
-
-            activeEditIndex = index;
-            modalTitle.textContent = `edit solve #${index + 1}`;
-            modalScrambleDisplay.textContent = (solve.scramble || "n/a").toLowerCase();
-            modalTimeDisplay.textContent = solve.rawTime.toFixed(2);
-
-            // Match structural configurations elements state configurations loops
-            if (solve.plusTwo) modPlusTwoBtn.classList.add('active-modifier');
-            else modPlusTwoBtn.classList.remove('active-modifier');
-
-            if (solve.dnf) modDnfBtn.classList.add('active-modifier');
-            else modDnfBtn.classList.remove('active-modifier');
-
-            editModal.classList.add('open');
+        function lookupBestSingleSolve(solvesList) {
+            let optimalValue = Infinity;
+            solvesList.forEach(item => {
+                if (!item.dnf) {
+                    const computed = Number(item.rawTime) + (item.plusTwo ? 2.0 : 0);
+                    if (computed < optimalValue) optimalValue = computed;
+                }
+            });
+            return optimalValue === Infinity ? null : optimalValue;
         }
 
-        function closeEditSolveModal() {
-            editModal.classList.remove('open');
-            activeEditIndex = null;
+        function formatSolveDisplayOutput(timeInSeconds) {
+            if (timeInSeconds === "DNF") return "dnf";
+            if (timeInSeconds === null || isNaN(timeInSeconds)) return "-";
+            
+            if (timeInSeconds >= 60) {
+                const totalMinutes = Math.floor(timeInSeconds / 60);
+                const residualSeconds = timeInSeconds % 60;
+                return `${totalMinutes}:${residualSeconds.toFixed(2).padStart(5, '0')}`;
+            }
+            return timeInSeconds.toFixed(2);
         }
 
-        /* Timer Core Intervals State Controllers Loop and Events Routines */
-        function startInspectionTrackerChain() {
-            isInspectionPhase = true;
-            inspectionTimeLeft = 15;
-            state = "inspection";
-            timerDisplay.textContent = inspectionTimeLeft;
-            timerDisplay.className = "holding"; // Amber color initialization tracking step
+        function refreshWorkspaceDataDisplays() {
+            const currentRecordList = globalSessions[currentSessionIdx] || [];
 
-            initAudio();
+            // Metrics computations
+            const recordBest = lookupBestSingleSolve(currentRecordList);
+            const scoreAo5 = calculateMetricsAverages(currentRecordList, 5);
+            const scoreAo12 = calculateMetricsAverages(currentRecordList, 12);
+
+            elBestTime.innerText = recordBest ? formatSolveDisplayOutput(recordBest) : "-";
+            elAo5.innerText = typeof scoreAo5 === "string" ? "dnf" : (scoreAo5 ? scoreAo5.toFixed(2) : "-");
+            elAo12.innerText = typeof scoreAo12 === "string" ? "dnf" : (scoreAo12 ? scoreAo12.toFixed(2) : "-");
+
+            // Update live metadata center line anchor status
+            let inlineText = `profile: <strong>${(appSettings.sessionNames[currentSessionIdx] || '').toLowerCase()}</strong>`;
+            inlineText += ` &nbsp;|&nbsp; total solves: <strong>${currentRecordList.length}</strong>`;
+            
+            if (currentRecordList.length > 0) {
+                const recentItem = currentRecordList[currentRecordList.length - 1];
+                let displayRecent = "";
+                if (recentItem.dnf) displayRecent = "dnf";
+                else {
+                    const finalVal = recentItem.rawTime + (recentItem.plusTwo ? 2 : 0);
+                    displayRecent = finalVal.toFixed(2) + (recentItem.plusTwo ? ' (+2)' : '');
+                }
+                inlineText += ` &nbsp;|&nbsp; latest: <strong>${displayRecent}</strong>`;
+            }
+            elCenterMetricsLine.innerHTML = inlineText;
+
+            // Render scrolling solve element view lists
+            elHistoryList.innerHTML = "";
+            
+            if (currentRecordList.length === 0) {
+                const blankSpacerNode = document.createElement('li');
+                blankSpacerNode.className = "history-item blank-spacer";
+                elHistoryList.appendChild(blankSpacerNode);
+            } else {
+                // Reverse iterative structural processing down records stacking timelines vertically
+                for (let i = currentRecordList.length - 1; i >= 0; i--) {
+                    const solveEntry = currentRecordList[i];
+                    const listItemNode = document.createElement('li');
+                    listItemNode.className = "history-item";
+
+                    const wrapperDataNode = document.createElement('div');
+                    wrapperDataNode.className = "history-data";
+
+                    const indexLabelNode = document.createElement('span');
+                    indexLabelNode.className = "history-index";
+                    indexLabelNode.innerText = `#${i + 1}`;
+
+                    const coreValueNode = document.createElement('span');
+                    if (solveEntry.dnf) {
+                        coreValueNode.innerText = "dnf";
+                        coreValueNode.style.color = "var(--dim-color)";
+                    } else {
+                        const calculatedScore = solveEntry.rawTime + (solveEntry.plusTwo ? 2.0 : 0);
+                        coreValueNode.innerText = calculatedScore.toFixed(2) + (solveEntry.plusTwo ? "+" : "");
+                    }
+
+                    wrapperDataNode.appendChild(indexLabelNode);
+                    wrapperDataNode.appendChild(coreValueNode);
+
+                    const actionEditBtnNode = document.createElement('button');
+                    actionEditBtnNode.className = "edit-time-btn";
+                    actionEditBtnNode.title = "modify solve status parameters";
+                    actionEditBtnNode.innerHTML = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>`;
+                    
+                    actionEditBtnNode.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        triggerModalsManagementFlow("edit", i);
+                    });
+
+                    listItemNode.appendChild(wrapperDataNode);
+                    listItemNode.appendChild(actionEditBtnNode);
+                    elHistoryList.appendChild(listItemNode);
+                }
+            }
+
+            // Calculate current solve variation markers against previous runs structural indices
+            if (currentRecordList.length >= 2 && stateTimerRun === "idle") {
+                const traceIdx = currentRecordList.length - 1;
+                const headNode = currentRecordList[traceIdx];
+                const tailNode = currentRecordList[traceIdx - 1];
+
+                if (!headNode.dnf && !tailNode.dnf) {
+                    const valHead = headNode.rawTime + (headNode.plusTwo ? 2.0 : 0);
+                    const valTail = tailNode.rawTime + (tailNode.plusTwo ? 2.0 : 0);
+                    const structuralDelta = valHead - valTail;
+
+                    if (structuralDelta > 0) {
+                        elVariance.innerText = `+${structuralDelta.toFixed(2)}`;
+                        elVariance.className = "plus";
+                    } else if (structuralDelta < 0) {
+                        elVariance.innerText = `${structuralDelta.toFixed(2)}`;
+                        elVariance.className = "minus";
+                    } else {
+                        elVariance.innerText = "0.00";
+                        elVariance.className = "hidden";
+                    }
+                } else {
+                    elVariance.className = "hidden";
+                }
+            } else if (stateTimerRun === "idle") {
+                elVariance.className = "hidden";
+            }
+        }
+
+        function triggerModalsManagementFlow(typeId, referenceIndex = null) {
+            if (typeId === "edit" && referenceIndex !== null) {
+                activeModifierIndex = referenceIndex;
+                const activeRecordList = globalSessions[currentSessionIdx] || [];
+                const targetObject = activeRecordList[referenceIndex];
+
+                if (!targetObject) return;
+
+                modEditTitle.innerText = `edit solve #${referenceIndex + 1}`;
+                modEditScramble.innerText = targetObject.scramble ? targetObject.scramble.toLowerCase() : "no scramble log metadata";
+                modEditTimeDisplay.innerText = targetObject.dnf ? "dnf" : targetObject.rawTime.toFixed(2);
+
+                if (targetObject.plusTwo) modEditPlusTwo.classList.add('active-modifier');
+                else modEditPlusTwo.classList.remove('active-modifier');
+
+                if (targetObject.dnf) modEditDnf.classList.add('active-modifier');
+                else modEditDnf.classList.remove('active-modifier');
+
+                modEditOverlay.classList.add('open');
+            } else if (typeId === "theme") {
+                // Style elements check loops
+                const alternativeThemeBtns = modThemeOverlay.querySelectorAll('.theme-btn');
+                alternativeThemeBtns.forEach(node => {
+                    if (node.getAttribute('data-theme-val') === appSettings.theme) {
+                        node.classList.add('active');
+                    } else {
+                        node.classList.remove('active');
+                    }
+                });
+                modThemeOverlay.classList.add('open');
+            } else if (typeId === "settings") {
+                rebuildSettingsRenamingInterfaceGrid();
+                syncSettingsToggleLayoutSwitches();
+                modSettingsOverlay.classList.add('open');
+            } else if (typeId === "close_all") {
+                modEditOverlay.classList.remove('open');
+                modThemeOverlay.classList.remove('open');
+                modSettingsOverlay.classList.remove('open');
+                activeModifierIndex = null;
+            }
+        }
+
+        function applySettingsStateToUi() {
+            document.body.setAttribute('data-theme', appSettings.theme);
+            
+            if (appSettings.sidebarPosition === "right") {
+                document.body.className = "sidebar-right";
+            } else {
+                document.body.className = "sidebar-left";
+            }
+
+            // Sync visual structural classes
+            if (appSettings.showCube) elCubeDisplay.classList.remove('cube-hidden');
+            else elCubeDisplay.classList.add('cube-hidden');
+
+            if (appSettings.showScramble) elScramble.classList.remove('scramble-hidden');
+            else elScramble.classList.add('scramble-hidden');
+
+            if (appSettings.showLiveMetrics) elCenterMetricsLine.classList.remove('metrics-hidden');
+            else elCenterMetricsLine.classList.add('metrics-hidden');
+        }
+
+        function syncSettingsToggleLayoutSwitches() {
+            txtSessionCountVal.innerText = appSettings.sessionCount;
+
+            function processSwitchNodeClass(targetNode, flagValue) {
+                if (flagValue) targetNode.classList.add('is-active');
+                else targetNode.classList.remove('is-active');
+            }
+
+            processSwitchNodeClass(tgHideRunning, appSettings.hideRunning);
+            processSwitchNodeClass(tgShowCube, appSettings.showCube);
+            processSwitchNodeClass(tgShowScramble, appSettings.showScramble);
+            processSwitchNodeClass(tgShowLiveMetrics, appSettings.showLiveMetrics);
+            processSwitchNodeClass(tgUseInspection, appSettings.useInspection);
+        }
+
+        function rebuildSettingsRenamingInterfaceGrid() {
+            containerSessionRename.innerHTML = "";
+            for (let i = 0; i < appSettings.sessionCount; i++) {
+                const wrapperRowNode = document.createElement('div');
+                wrapperRowNode.className = "session-rename-item";
+
+                const labelSpanNode = document.createElement('span');
+                labelSpanNode.innerText = `s${i + 1}:`;
+
+                const nameInputNode = document.createElement('input');
+                nameInputNode.type = "text";
+                nameInputNode.className = "session-name-input";
+                nameInputNode.value = appSettings.sessionNames[i] || `session ${i + 1}`;
+                nameInputNode.placeholder = `rename profile...`;
+
+                nameInputNode.addEventListener('change', (e) => {
+                    const cleanedVal = e.target.value.trim().toLowerCase();
+                    appSettings.sessionNames[i] = cleanedVal || `session ${i + 1}`;
+                    saveData();
+                    buildSessionSelectorOptions();
+                    refreshWorkspaceDataDisplays();
+                });
+
+                wrapperRowNode.appendChild(labelSpanNode);
+                wrapperRowNode.appendChild(nameInputNode);
+                containerSessionRename.appendChild(wrapperRowNode);
+            }
+        }
+
+        // Timer Execution State Automation Pipeline
+        function handleWorkspacePressedTrigger() {
+            if (stateTimerRun === "idle") {
+                stateTimerRun = "holding";
+                elTimer.className = "holding";
+                elTimer.innerText = "0.00";
+                
+                // Clear active structural delta readouts immediately upon touch action sequence
+                elVariance.className = "hidden-run";
+
+                holdTimeout = setTimeout(() => {
+                    stateTimerRun = "ready";
+                    elTimer.className = "ready";
+                }, 500);
+            } else if (stateTimerRun === "tracking" || stateTimerRun === "inspection") {
+                terminateTimingTrackingRunSequence();
+            }
+        }
+
+        function handleWorkspaceReleasedTrigger() {
+            clearTimeout(holdTimeout);
+
+            if (stateTimerRun === "holding") {
+                stateTimerRun = "idle";
+                elTimer.className = "";
+                refreshWorkspaceDataDisplays();
+            } else if (stateTimerRun === "ready") {
+                if (appSettings.useInspection) {
+                    executeInspectionPhaseCountdownLoop();
+                } else {
+                    executeTimingTrackingRunSequence();
+                }
+            }
+        }
+
+        function executeInspectionPhaseCountdownLoop() {
+            stateTimerRun = "inspection";
+            elTimer.className = "holding"; // Maintain separate color tracking map bounds
+            timeInspectionDeadline = 15;
+            elTimer.innerText = timeInspectionDeadline;
+
+            // Manage interface visual hiding elements matching global options rulesets
+            if (appSettings.hideRunning) {
+                elScramble.classList.add('hidden');
+                elCubeDisplay.classList.add('hidden');
+                elCenterMetricsLine.classList.add('hidden');
+            }
 
             inspectionInterval = setInterval(() => {
-                inspectionTimeLeft--;
-                if (inspectionTimeLeft > 0) {
-                    timerDisplay.textContent = inspectionTimeLeft;
-                    if (inspectionTimeLeft === 7) {
-                        // voice alerts triggers simulation context tone loops
-                        playInspectionBeep(640, 0.2);
-                    } else if (inspectionTimeLeft === 3) {
-                        playInspectionBeep(880, 0.2);
-                    }
-                } else if (inspectionTimeLeft === 0) {
-                    timerDisplay.textContent = "+2";
-                    playInspectionBeep(440, 0.4);
-                } else if (inspectionTimeLeft < -2) {
-                    // DNF Threshold Exceeded bounds tracking 17 seconds total
-                    clearInterval(inspectionInterval);
-                    concludeSolveInstance(0, true, false);
+                timeInspectionDeadline--;
+                if (timeInspectionDeadline > 0) {
+                    elTimer.innerText = timeInspectionDeadline;
+                } else if (timeInspectionDeadline === 0) {
+                    elTimer.innerText = "dnf";
+                } else {
+                    // Beyond inspection timeout limits rulesets trigger penalty caps automatically
+                    elTimer.innerText = "dnf";
                 }
             }, 1000);
         }
 
-        function clearInspectionTimers() {
+        function executeTimingTrackingRunSequence() {
             if (inspectionInterval) clearInterval(inspectionInterval);
-            if (inspectionTimeout) clearTimeout(inspectionTimeout);
-            inspectionInterval = null;
-            inspectionTimeout = null;
-            isInspectionPhase = false;
-        }
-
-        function updateRunningTimerDisplay() {
-            const elapsed = (Date.now() - startTime) / 1000;
-            if (hideTimeDuringSolve) {
-                timerDisplay.innerText = "solve";
-            } else {
-                timerDisplay.innerText = elapsed.toFixed(2);
-            }
-        }
-
-        function startSolveInstance() {
-            clearInspectionTimers();
-            state = "running";
-            startTime = Date.now();
-            timerDisplay.className = "";
             
-            if (hideElementsDuringSolve) {
-                scrambleDisplay.classList.add('scramble-hidden');
-                cubeDisplay.classList.add('cube-hidden');
-                centerMetricsLine.classList.add('metrics-hidden');
-                varianceDisplay.classList.add('hidden-run');
+            stateTimerRun = "tracking";
+            elTimer.className = "";
+            timeStartStamp = performance.now();
+
+            if (appSettings.hideRunning) {
+                elScramble.classList.add('hidden');
+                elCubeDisplay.classList.add('hidden');
+                elCenterMetricsLine.classList.add('hidden');
             }
+            elVariance.className = "hidden-run";
 
-            timerInterval = setInterval(updateRunningTimerDisplay, 10);
-        }
-
-        function concludeSolveInstance(forcedTime = 0, forcedDnf = false, forcedPlusTwo = false) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-
-            scrambleDisplay.classList.remove('scramble-hidden');
-            cubeDisplay.classList.remove('cube-hidden');
-            centerMetricsLine.classList.remove('metrics-hidden');
-            varianceDisplay.classList.remove('hidden-run');
-
-            let finalDuration = forcedTime || ((Date.now() - startTime) / 1000);
-            let isDnf = forcedDnf;
-            let isPlusTwo = forcedPlusTwo;
-
-            if (isInspectionPhase) {
-                if (inspectionTimeLeft === 0 || inspectionTimeLeft === -1 || inspectionTimeLeft === -2) {
-                    isPlusTwo = true;
-                }
-            }
-
-            state = "idle";
-
-            // Render absolute outputs strings numbers displays
-            if (isDnf) {
-                timerDisplay.textContent = "dnf";
-            } else {
-                const compoundTime = finalDuration + (isPlusTwo ? 2 : 0);
-                timerDisplay.textContent = compoundTime.toFixed(2);
-            }
-            timerDisplay.className = "";
-
-            // Push tracking item into structural sequence arrays tracking sets
-            if (!forcedTime && finalDuration === 0 && isDnf) {
-                // inspection timer ran past threshold limits limit boundary
-            }
-
-            const currentSolveObject = {
-                rawTime: finalDuration,
-                plusTwo: isPlusTwo,
-                dnf: isDnf,
-                scramble: activeScrambleString,
-                timestamp: Date.now()
-            };
-
-            // Calculate historical deviation element boundaries profiles mapping
-            evaluateHistoricalVariance(currentSolveObject);
-
-            sessionsData[currentSessionIdx].push(currentSolveObject);
-            saveData();
-            renderHistory();
-            generateScramble();
-            clearInspectionTimers();
-        }
-
-        function evaluateHistoricalVariance(solveObj) {
-            const list = sessionsData[currentSessionIdx] || [];
-            const activeTimes = list.filter(s => !s.dnf);
-            if (activeTimes.length === 0 || solveObj.dnf) {
-                varianceDisplay.className = "hidden";
-                return;
-            }
-
-            const currentTotalValue = solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
-            
-            // Pull trailing solve context value mapping index reference elements
-            const previousSolve = list[list.length - 1];
-            if (!previousSolve || previousSolve.dnf) {
-                varianceDisplay.className = "hidden";
-                return;
-            }
-
-            const previousTotalValue = previousSolve.rawTime + (previousSolve.plusTwo ? 2 : 0);
-            const delta = currentTotalValue - previousTotalValue;
-
-            if (delta > 0) {
-                varianceDisplay.textContent = `+${delta.toFixed(2)}`;
-                varianceDisplay.className = "plus";
-            } else if (delta < 0) {
-                varianceDisplay.textContent = `${delta.toFixed(2)}`;
-                varianceDisplay.className = "minus";
-            } else {
-                varianceDisplay.textContent = `0.00`;
-                varianceDisplay.className = "";
-            }
-        }
-
-        /* Handlers Event Listeners Interception Hooks Keypresses Inputs Layer */
-        function processTriggerInputDown() {
-            if (state === "idle") {
-                state = "holding";
-                timerDisplay.className = "holding";
-                spacePressedTime = Date.now();
-            } else if (state === "inspection") {
-                state = "holding";
-                timerDisplay.className = "holding";
-                spacePressedTime = Date.now();
-            } else if (state === "running") {
-                concludeSolveInstance();
-            }
-        }
-
-        function processTriggerInputUp() {
-            if (state === "holding") {
-                const holdDuration = Date.now() - spacePressedTime;
-                if (holdDuration >= 450) {
-                    timerDisplay.className = "ready";
-                    if (useWcaInspection && !isInspectionPhase) {
-                        startInspectionTrackerChain();
-                    } else {
-                        startSolveInstance();
-                    }
+            timerInterval = setInterval(() => {
+                const currentDelta = (performance.now() - timeStartStamp) / 1000;
+                
+                if (currentDelta >= 60) {
+                    const min = Math.floor(currentDelta / 60);
+                    const sec = currentDelta % 60;
+                    elTimer.innerText = `${min}:${sec.toFixed(2).padStart(5, '0')}`;
                 } else {
-                    // abort initialization criteria sets loop back tracks
-                    if (isInspectionPhase) {
-                        state = "inspection";
-                        timerDisplay.className = "holding";
-                        timerDisplay.textContent = inspectionTimeLeft;
-                    } else {
-                        state = "idle";
-                        timerDisplay.className = "";
-                        timerDisplay.textContent = "0.00";
-                    }
+                    elTimer.innerText = currentDelta.toFixed(2);
                 }
-            }
+            }, 10);
         }
 
-        // Spacebar input triggers catch hooks tracking context bindings
-        window.addEventListener('keydown', (e) => {
-            if (e.code === "Space") {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
-                e.preventDefault();
-                processTriggerInputDown();
-            }
-        });
+        function terminateTimingTrackingRunSequence() {
+            if (stateTimerRun === "tracking") {
+                clearInterval(timerInterval);
+                timeAccumulatedValue = (performance.now() - timeStartStamp) / 1000;
 
-        window.addEventListener('keyup', (e) => {
-            if (e.code === "Space") {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
-                e.preventDefault();
-                processTriggerInputUp();
-            }
-        });
+                // Push new baseline resolve structural map records object tracking parameters down
+                const solveObject = {
+                    rawTime: Number(timeAccumulatedValue.toFixed(2)),
+                    scramble: activeScrambleData,
+                    plusTwo: false,
+                    dnf: false,
+                    timestamp: Date.now()
+                };
 
-        // Touch surface interaction monitors mapping mobile executions
-        touchZone.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            processTriggerInputDown();
-        }, { passive: false });
-
-        touchZone.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            processTriggerInputUp();
-        }, { passive: false });
-
-        /* UI Dialog Toggles and Config Modifiers Hooks Events Layout Mapping */
-        modalCloseBtn.addEventListener('click', closeEditSolveModal);
-        
-        modPlusTwoBtn.addEventListener('click', () => {
-            if (activeEditIndex === null) return;
-            const solve = sessionsData[currentSessionIdx][activeEditIndex];
-            solve.plusTwo = !solve.plusTwo;
-            if (solve.plusTwo) solve.dnf = false; // logic safety override parameters
-            saveData();
-            renderHistory();
-            openEditSolveModal(activeEditIndex);
-        });
-
-        modDnfBtn.addEventListener('click', () => {
-            if (activeEditIndex === null) return;
-            const solve = sessionsData[currentSessionIdx][activeEditIndex];
-            solve.dnf = !solve.dnf;
-            if (solve.dnf) solve.plusTwo = false; // logic safety override parameters
-            saveData();
-            renderHistory();
-            openEditSolveModal(activeEditIndex);
-        });
-
-        modDeleteBtn.addEventListener('click', () => {
-            if (activeEditIndex === null) return;
-            sessionsData[currentSessionIdx].splice(activeEditIndex, 1);
-            saveData();
-            renderHistory();
-            closeEditSolveModal();
-        });
-
-        clearBtn.addEventListener('click', () => {
-            if (confirm("clear all tracking entries saved in this session profile partition?")) {
-                sessionsData[currentSessionIdx] = [];
+                globalSessions[currentSessionIdx].push(solveObject);
                 saveData();
-                renderHistory();
-            }
-        });
-
-        sessionSelect.addEventListener('change', (e) => {
-            currentSessionIdx = parseInt(e.target.value, 10);
-            saveData();
-            renderHistory();
-            generateScramble();
-        });
-
-        // Toggle visibility triggers modal logic maps
-        function bindModalTogglePair(triggers, modalCard) {
-            triggers.forEach(t => {
-                if(t) t.addEventListener('click', () => modalCard.classList.add('open'));
-            });
-        }
-
-        bindModalTogglePair([sidebarThemeBtn, mobileThemeBtn], themeModal);
-        bindModalTogglePair([sidebarSettingsBtn, mobileSettingsBtn], settingsModal);
-
-        themeModalCloseBtn.addEventListener('click', () => themeModal.classList.remove('open'));
-        settingsModalCloseBtn.addEventListener('click', () => settingsModal.classList.remove('open'));
-
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const nextTheme = btn.getAttribute('data-theme-val');
-                document.body.setAttribute('data-theme', nextTheme);
-                localStorage.setItem('appTheme', nextTheme);
-            });
-        });
-
-        // Config Controls Interaction Triggers Updates Hooks
-        hideElementsToggle.addEventListener('click', () => {
-            hideElementsDuringSolve = !hideElementsDuringSolve;
-            hideElementsToggle.classList.toggle('is-active', hideElementsDuringSolve);
-            saveData();
-        });
-
-        hideTimeToggle.addEventListener('click', () => {
-            hideTimeDuringSolve = !hideTimeDuringSolve;
-            hideTimeToggle.classList.toggle('is-active', hideTimeDuringSolve);
-            saveData();
-        });
-
-        inspectionToggle.addEventListener('click', () => {
-            useWcaInspection = !useWcaInspection;
-            inspectionToggle.classList.toggle('is-active', useWcaInspection);
-            saveData();
-        });
-
-        incSessionsBtn.addEventListener('click', () => {
-            if (totalSessionsCount < 30) {
-                totalSessionsCount++;
-                saveData();
-                loadData();
-            }
-        });
-
-        decSessionsBtn.addEventListener('click', () => {
-            if (totalSessionsCount > 1) {
-                if (currentSessionIdx >= totalSessionsCount - 1) {
-                    currentSessionIdx = totalSessionsCount - 2;
+            } else if (stateTimerRun === "inspection") {
+                clearInterval(inspectionInterval);
+                
+                // If standard inspection gets interrupted by alternate user touches code enforces penalty statuses
+                const solveObject = {
+                    rawTime: 0.00,
+                    scramble: activeScrambleData,
+                    plusTwo: false,
+                    dnf: (timeInspectionDeadline <= 0),
+                    timestamp: Date.now()
+                };
+                
+                if (timeInspectionDeadline > 0) {
+                    // Natural entry transition bypassing countdowns tracking execution structures directly
+                    stateTimerRun = "idle";
+                    executeTimingTrackingRunSequence();
+                    return;
                 }
-                totalSessionsCount--;
+
+                globalSessions[currentSessionIdx].push(solveObject);
                 saveData();
-                loadData();
             }
-        });
 
-        layoutToggleBtn.addEventListener('click', () => {
-            activeSidebarLayout = (activeSidebarLayout === "sidebar-left") ? "sidebar-right" : "sidebar-left";
-            document.body.className = activeSidebarLayout;
-            saveData();
-        });
-
-        // Export metrics formatting raw structures
-        exportTimesDataBtn.addEventListener('click', () => {
-            const activeTimes = sessionsData[currentSessionIdx] || [];
-            const sessionLabel = sessionNames[currentSessionIdx] || `session ${currentSessionIdx + 1}`;
+            stateTimerRun = "idle";
             
+            // Re-render baseline elements configuration classes matching system states
+            elScramble.classList.remove('hidden');
+            elCubeDisplay.classList.remove('hidden');
+            elCenterMetricsLine.classList.remove('hidden');
+
+            generateWcaScrambleSequence();
+            refreshWorkspaceDataDisplays();
+        }
+
+        // Global Event Hook Wiring Operations System Configuration
+        window.addEventListener('keydown', (event) => {
+            if (event.key === ' ' || event.code === 'Space') {
+                event.preventDefault();
+
+                // Structural check verifying focus constraints before locking key hooks
+                if (document.activeElement && 
+                    (document.activeElement.tagName === 'INPUT' || 
+                     document.activeElement.tagName === 'SELECT' || 
+                     document.activeElement.tagName === 'BUTTON')) {
+                    return;
+                }
+
+                // Verify that structural modifications models layers are not interlocking active inputs
+                if (modEditOverlay.classList.contains('open') || 
+                    modThemeOverlay.classList.contains('open') || 
+                    modSettingsOverlay.classList.contains('open')) {
+                    return;
+                }
+
+                if (!isTouchInterlockingActive) {
+                    handleWorkspacePressedTrigger();
+                }
+            }
+        });
+
+        window.addEventListener('keyup', (event) => {
+            if (event.key === ' ' || event.code === 'Space') {
+                event.preventDefault();
+                if (!isTouchInterlockingActive) {
+                    handleWorkspaceReleasedTrigger();
+                }
+            }
+        });
+
+        // Direct Peripheral Mobile Touch Events Mapping Overrides Bind Loops
+        elTouchZone.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isTouchInterlockingActive = true;
+            handleWorkspacePressedTrigger();
+        }, { passive: false });
+
+        elTouchZone.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            handleWorkspaceReleasedTrigger();
+        }, { passive: false });
+
+        // Select Input Profile Target Action Mapping Sync Hooks
+        elSessionSelect.addEventListener('change', (e) => {
+            currentSessionIdx = parseInt(e.target.value);
+            refreshWorkspaceDataDisplays();
+        });
+
+        elClearBtn.addEventListener('click', () => {
+            const currentLabel = appSettings.sessionNames[currentSessionIdx] || `session ${currentSessionIdx + 1}`;
+            if (confirm(`wipe all recorded logs securely inside profile [${currentLabel.toLowerCase()}]?`)) {
+                globalSessions[currentSessionIdx] = [];
+                saveData();
+                refreshWorkspaceDataDisplays();
+            }
+        });
+
+        elLayoutToggleBtn.addEventListener('click', () => {
+            appSettings.sidebarPosition = (appSettings.sidebarPosition === "left") ? "right" : "left";
+            saveData();
+            applySettingsStateToUi();
+        });
+
+        // Wire modal trigger interface entry anchor buttons looping structural matches
+        document.querySelectorAll('.theme-trigger-btn').forEach(btn => {
+            btn.addEventListener('click', () => triggerModalsManagementFlow("theme"));
+        });
+
+        document.querySelectorAll('.settings-trigger-btn').forEach(btn => {
+            btn.addEventListener('click', () => triggerModalsManagementFlow("settings"));
+        });
+
+        // Modals inner action handlers
+        modEditClose.addEventListener('click', () => triggerModalsManagementFlow("close_all"));
+        modThemeClose.addEventListener('click', () => triggerModalsManagementFlow("close_all"));
+        modSettingsClose.addEventListener('click', () => triggerModalsManagementFlow("close_all"));
+
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                triggerModalsManagementFlow("close_all");
+            }
+        });
+
+        modEditPlusTwo.addEventListener('click', () => {
+            if (activeModifierIndex === null) return;
+            const targetEntry = globalSessions[currentSessionIdx][activeModifierIndex];
+            if (targetEntry) {
+                targetEntry.plusTwo = !targetEntry.plusTwo;
+                if (targetEntry.plusTwo) targetEntry.dnf = false; // Disallow dual validation tracking collisions
+                saveData();
+                triggerModalsManagementFlow("edit", activeModifierIndex);
+                refreshWorkspaceDataDisplays();
+            }
+        });
+
+        modEditDnf.addEventListener('click', () => {
+            if (activeModifierIndex === null) return;
+            const targetEntry = globalSessions[currentSessionIdx][activeModifierIndex];
+            if (targetEntry) {
+                targetEntry.dnf = !targetEntry.dnf;
+                if (targetEntry.dnf) targetEntry.plusTwo = false;
+                saveData();
+                triggerModalsManagementFlow("edit", activeModifierIndex);
+                refreshWorkspaceDataDisplays();
+            }
+        });
+
+        modEditDelete.addEventListener('click', () => {
+            if (activeModifierIndex === null) return;
+            if (confirm("permanently purge this solve record index track from system memory cache?")) {
+                globalSessions[currentSessionIdx].splice(activeModifierIndex, 1);
+                saveData();
+                triggerModalsManagementFlow("close_all");
+                refreshWorkspaceDataDisplays();
+            }
+        });
+
+        // Hook theme grids selection arrays configurations mapping adjustments
+        modThemeOverlay.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetThemeId = e.target.getAttribute('data-theme-val');
+                appSettings.theme = targetThemeId;
+                saveData();
+                applySettingsStateToUi();
+                triggerModalsManagementFlow("theme");
+            });
+        });
+
+        // Setup individual settings control interactions updates
+        function setupConfigurationSwitchTriggerHook(domNodeObject, internalSettingKey) {
+            domNodeObject.addEventListener('click', () => {
+                appSettings[internalSettingKey] = !appSettings[internalSettingKey];
+                saveData();
+                applySettingsStateToUi();
+                syncSettingsToggleLayoutSwitches();
+                refreshWorkspaceDataDisplays();
+            });
+        }
+
+        setupConfigurationSwitchTriggerHook(tgHideRunning, "hideRunning");
+        setupConfigurationSwitchTriggerHook(tgShowCube, "showCube");
+        setupConfigurationSwitchTriggerHook(tgShowScramble, "showScramble");
+        setupConfigurationSwitchTriggerHook(tgShowLiveMetrics, "showLiveMetrics");
+        setupConfigurationSwitchTriggerHook(tgUseInspection, "useInspection");
+
+        btnDecSessions.addEventListener('click', () => {
+            if (appSettings.sessionCount <= 1) return;
+            if (confirm("dropping session counts detaches references from upper logs. data structures remain cached until overwritten. accept?")) {
+                appSettings.sessionCount--;
+                // Handle alignment truncations safely
+                if (currentSessionIdx >= appSettings.sessionCount) {
+                    currentSessionIdx = appSettings.sessionCount - 1;
+                }
+                saveData();
+                buildSessionSelectorOptions();
+                rebuildSettingsRenamingInterfaceGrid();
+                syncSettingsToggleLayoutSwitches();
+                refreshWorkspaceDataDisplays();
+            }
+        });
+
+        btnIncSessions.addEventListener('click', () => {
+            if (appSettings.sessionCount >= 24) return; // Set an upper cap bounds matrix safety limits track
+            appSettings.sessionCount++;
+            
+            if (appSettings.sessionNames.length < appSettings.sessionCount) {
+                appSettings.sessionNames.push(`session ${appSettings.sessionCount}`);
+            }
+            if (globalSessions.length < appSettings.sessionCount) {
+                globalSessions.push([]);
+            }
+
+            saveData();
+            buildSessionSelectorOptions();
+            rebuildSettingsRenamingInterfaceGrid();
+            syncSettingsToggleLayoutSwitches();
+            refreshWorkspaceDataDisplays();
+        });
+
+        btnExportSessionTxt.addEventListener('click', () => {
+            const activeTimes = globalSessions[currentSessionIdx] || [];
+            const sessionLabel = appSettings.sessionNames[currentSessionIdx] || `session ${currentSessionIdx + 1}`;
+            
+            if (activeTimes.length === 0) {
+                alert("no tracking log indices found inside the current profile to trace.");
+                return;
+            }
+
             let fileContent = `========================================\n`;
             fileContent += `  cube timer export - ${sessionLabel.toLowerCase()}\n`;
             fileContent += `========================================\n\n`;
@@ -2140,8 +2274,9 @@
             URL.revokeObjectURL(blobUrl);
         });
 
+        // Fire Initialization Pipeline Sequences
         loadData();
-        generateScramble();
+        generateWcaScrambleSequence();
     </script>
 </body>
 </html>
