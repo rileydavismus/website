@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>timer</title>
+    <!-- Source Code Pro Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Theme Definitions Mapping Theme Variables into Global UI Selectors */
+        :root, body[data-theme="dark"] {
+            --bg-color: #0f0f11;
+            --text-color: #e2e8f0;
+            --ready-color: #22c55e;
+            --holding-color: #eab308;
+            --dim-color: #64748b;
+            --sidebar-bg: #141416;
+            --border-color: #1e1e24;
+            --variance-plus: #ef4444;
+            --variance-minus: #22c55e;
+            --modal-overlay-bg: rgba(0, 0, 0, 0.75);
+            --toggle-active-bg: rgba(34, 197, 94, 0.15);
+        }
+
+        body[data-theme="light"] {
+            --bg-color: #f8fafc;
+            --text-color: #0f172a;
+            --ready-color: #16a34a;
+            --holding-color: #d97706;
+            --dim-color: #64748b;
+            --sidebar-bg: #f1f5f9;
+            --border-color: #e2e8f0;
+            --variance-plus: #dc2626;
+            --variance-minus: #16a34a;
+            --modal-overlay-bg: rgba(15, 23, 42, 0.4);
+            --toggle-active-bg: rgba(22, 163, 74, 0.15);
+        }
+
+        body[data-theme="green"] {
+            --bg-color: #06100a;
+            --text-color: #a7f3d0;
+            --ready-color: #34d399;
+            --holding-color: #fbbf24;
+            --dim-color: #047857;
+            --sidebar-bg: #0b1a11;
+            --border-color: #112e1e;
+            --variance-plus: #f87171;
+            --variance-minus: #34d399;
+            --modal-overlay-bg: rgba(4, 16, 10, 0.8);
+            --toggle-active-bg: rgba(52, 211, 153, 0.2);
+        }
+
+        body[data-theme="blue"] {
+            --bg-color: #070f1e;
+            --text-color: #bfdbfe;
+            --ready-color: #60a5fa;
+            --holding-color: #fbbf24;
+            --dim-color: #1d4ed8;
+            --sidebar-bg: #0c172e;
+            --border-color: #162a54;
+            --variance-plus: #f87171;
+            --variance-minus: #60a5fa;
+            --modal-overlay-bg: rgba(7, 15, 30, 0.8);
+            --toggle-active-bg: rgba(96, 165, 250, 0.2);
+        }
+
+        body[data-theme="sakura"] {
+            --bg-color: #ffdce1;
+            --text-color: #3d1b20;
+            --ready-color: #557218;
+            --holding-color: #d35400;
+            --dim-color: #a46d75;
+            --sidebar-bg: #fcc2cb;
+            --border-color: #fca1ae;
+            --variance-plus: #c93b4c;
+            --variance-minus: #557218;
+            --modal-overlay-bg: rgba(61, 27, 32, 0.2);
+            --toggle-active-bg: rgba(85, 114, 24, 0.15);
+        }
+
+        body[data-theme="cyberpunk"] {
+            --bg-color: #0f0f13;
+            --text-color: #f7768e;
+            --ready-color: #ff007f;
+            --holding-color: #eab308;
+            --dim-color: #565f89;
+            --sidebar-bg: #16161e;
+            --border-color: #242436;
+            --variance-plus: #ffffff;
+            --variance-minus: #ff007f;
+            --modal-overlay-bg: rgba(15, 15, 19, 0.85);
+            --toggle-active-bg: rgba(255, 0, 127, 0.2);
+        }
+
+        body[data-theme="forest"] {
+            --bg-color: #1c261e;
+            --text-color: #e3ede4;
+            --ready-color: #8bb38e;
+            --holding-color: #e0aa60;
+            --dim-color: #697a6b;
+            --sidebar-bg: #141c16;
+            --border-color: #29382c;
+            --variance-plus: #f28f8f;
+            --variance-minus: #8bb38e;
+            --modal-overlay-bg: rgba(10, 15, 11, 0.85);
+            --toggle-active-bg: rgba(139, 179, 142, 0.2);
+        }
+
+        :root {
+            --cube-white: #f3f4f6;
+            --cube-yellow: #facc15;
+            --cube-green: #22c55e;
+            --cube-blue: #2563eb;
+            --cube-orange: #f97316;
+            --cube-red: #dc2626;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        body.sidebar-left {
+            flex-direction: row;
+        }
+        body.sidebar-left .sidebar {
+            border-right: 1px solid var(--border-color);
+            border-left: none;
+            order: 1;
+        }
+        body.sidebar-left .main-content {
+            order: 2;
+        }
+
+        body.sidebar-right {
+            flex-direction: row;
+        }
+        body.sidebar-right .sidebar {
+            border-left: 1px solid var(--border-color);
+            border-right: none;
+            order: 2;
+        }
+        body.sidebar-right .main-content {
+            order: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 10;
+            flex-shrink: 0;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sidebar-left-col, .sidebar-right-col {
+            display: contents;
+        }
+
+        .menu-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .session-container {
+            flex-grow: 1;
+            display: flex;
+        }
+
+        .session-select {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+            -webkit-appearance: none;
+            text-align: left;
+            text-indent: 4px;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .layout-btn, .theme-trigger-btn, .settings-trigger-btn {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            width: 38px;
+            height: 37px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .layout-btn svg, .theme-trigger-btn svg, .settings-trigger-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--text-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.2s ease, stroke 0.15s ease;
+        }
+
+        body.sidebar-right .layout-btn svg {
+            transform: scaleX(-1);
+        }
+
+        .mobile-controls-wrapper {
+            display: none;
+        }
+
+        .stats-section {
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--dim-color);
+            transition: color 0.15s ease;
+        }
+
+        .stat-row span:last-child {
+            color: var(--text-color);
+            transition: color 0.15s ease;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+            transition: border-color 0.15s ease;
+        }
+
+        .history-title {
+            font-size: 0.85rem;
+            color: var(--dim-color);
+            text-transform: lowercase;
+            letter-spacing: 1px;
+            transition: color 0.15s ease;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--dim-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            text-transform: lowercase;
+            transition: color 0.15s ease;
+        }
+
+        .clear-btn:hover {
+            color: #ef4444;
+        }
+
+        .history-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+            touch-action: pan-y;
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        body[data-theme="light"] .history-item, body[data-theme="sakura"] .history-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .history-item.blank-spacer {
+            border-bottom: none;
+            min-height: 1.5rem;
+        }
+
+        .history-data {
+            display: flex;
+            justify-content: space-between;
+            flex-grow: 1;
+            padding-right: 8px;
+        }
+
+        .history-index {
+            color: var(--dim-color);
+            transition: color 0.15s ease;
+        }
+
+        .edit-time-btn {
+            background: none;
+            border: none;
+            color: var(--dim-color);
+            cursor: pointer;
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            pointer-events: auto;
+            transition: color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .edit-time-btn:hover {
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        body[data-theme="light"] .edit-time-btn:hover, body[data-theme="sakura"] .edit-time-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .edit-time-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-overlay-bg);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            width: 340px;
+            max-width: 90vw;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-card.settings-card {
+            width: 460px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-card.settings-card::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-card.settings-card::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+
+        .modal-x-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: 1px solid transparent;
+            color: var(--dim-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            outline: none;
+            transition: color 0.1s ease, border-color 0.1s ease, background-color 0.1s ease;
+        }
+
+        .modal-x-close-btn:hover {
+            color: var(--text-color);
+            border-color: var(--border-color);
+            background-color: var(--bg-color);
+        }
+
+        .modal-title {
+            font-size: 0.95rem;
+            color: var(--dim-color);
+            margin-top: 0;
+            margin-bottom: 14px;
+            text-transform: lowercase;
+            letter-spacing: 0.5px;
+            transition: color 0.15s ease;
+            padding-right: 30px;
+        }
+
+        .settings-card .modal-title, #themeModal .modal-title {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .modal-scramble-display {
+            font-size: 0.8rem;
+            color: var(--dim-color);
+            line-height: 1.4;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            word-break: break-word;
+            text-align: center;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .modal-time-display {
+            font-size: 2.25rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            line-height: 1;
+            text-align: center;
+            transition: color 0.15s ease;
+        }
+
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .option-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 10px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: lowercase;
+            transition: all 0.1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .option-btn:hover {
+            border-color: var(--text-color);
+        }
+
+        .option-btn.active-modifier {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-color: #eab308;
+            color: #eab308;
+        }
+
+        .option-btn.delete-btn {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+            margin-top: 4px;
+        }
+
+        .option-btn.delete-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        .settings-section-block {
+            margin-bottom: 24px;
+        }
+
+        .settings-section-title {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            text-transform: lowercase;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .settings-section-desc {
+            font-size: 0.78rem;
+            color: var(--dim-color);
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+            text-transform: lowercase;
+        }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .settings-row.block-input-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .settings-label-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding-right: 12px;
+        }
+
+        .settings-control-title {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            text-transform: lowercase;
+        }
+
+        .settings-control-desc {
+            font-size: 0.72rem;
+            color: var(--dim-color);
+            text-transform: lowercase;
+        }
+
+        .session-count-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .session-count-label {
+            font-size: 0.85rem;
+            flex-grow: 1;
+            text-transform: lowercase;
+        }
+
+        .session-count-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .session-step-btn {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            padding: 0;
+            transition: border-color 0.1s ease, color 0.1s ease;
+        }
+
+        .session-step-btn:hover {
+            border-color: var(--text-color);
+        }
+
+        .session-rename-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 4px;
+            background-color: var(--bg-color);
+        }
+        .session-rename-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .session-rename-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+
+        .session-rename-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-rename-item span {
+            font-size: 0.75rem;
+            color: var(--dim-color);
+            min-width: 24px;
+        }
+
+        .session-name-input, .settings-text-input {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.8rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            flex-grow: 1;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease;
+        }
+
+        .settings-text-input {
+            width: 100%;
+        }
+
+        .session-name-input:focus, .settings-text-input:focus {
+            border-color: var(--ready-color);
+        }
+
+        .toggle-switch {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--dim-color);
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.75rem;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            gap: 6px;
+            outline: none;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: background-color 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+        }
+
+        .toggle-switch:hover {
+            border-color: var(--text-color);
+        }
+
+        .toggle-switch .sw-on { display: none; color: var(--ready-color); font-weight: 500; }
+        .toggle-switch .sw-off { display: inline; }
+
+        .toggle-switch.is-active {
+            background-color: var(--toggle-active-bg);
+            border-color: var(--ready-color);
+            color: var(--text-color);
+        }
+
+        .toggle-switch.is-active .sw-on { display: inline; }
+        .toggle-switch.is-active .sw-off { display: none; }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .theme-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-transform: lowercase;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--text-color);
+        }
+
+        .theme-btn.active {
+            border-color: var(--ready-color);
+            background-color: rgba(34, 197, 94, 0.05);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 24px 20px;
+            box-sizing: border-box;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 1100px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            gap: 20px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        #scramble {
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: var(--text-color);
+            line-height: 1.4;
+            margin: 0;
+            min-height: auto;
+            max-width: 1000px;
+            word-spacing: 6px;
+            transition: opacity 0.1s ease, color 0.15s ease;
+        }
+
+        .timer-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 0;
+            min-height: auto;
+            padding: 15px 0;
+        }
+
+        #timer {
+            font-size: 8.25rem;
+            font-weight: 300;
+            letter-spacing: -3px;
+            line-height: 1;
+            transition: color 0.1s ease;
+        }
+
+        #variance {
+            font-size: 1.875rem;
+            font-weight: 400;
+            margin-top: 0.75rem;
+            min-height: 2.2rem;
+            line-height: 1;
+            transition: opacity 0.1s ease;
+        }
+
+        #variance.plus {
+            color: var(--variance-plus);
+        }
+
+        #variance.minus {
+            color: var(--variance-minus);
+        }
+
+        #variance.hidden {
+            opacity: 0;
+        }
+
+        #timer.holding {
+            color: var(--holding-color);
+        }
+
+        #timer.ready {
+            color: var(--ready-color);
+        }
+
+        .metrics-display-line {
+            font-size: 1.15rem;
+            color: var(--dim-color);
+            letter-spacing: 0.5px;
+            text-transform: lowercase;
+            margin-bottom: 5px;
+            min-height: 1.5rem;
+            transition: color 0.15s ease;
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .metrics-display-line span {
+            color: var(--dim-color);
+        }
+
+        .metrics-display-line strong {
+            font-weight: 400;
+            color: var(--text-color);
+        }
+
+        .cube-visualization {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 11px;
+            width: 309.38px;
+            height: 232px;
+            transition: opacity 0.1s ease;
+            flex-shrink: 0;
+            margin-bottom: 0;
+        }
+
+        #scramble.hidden, #variance.hidden-run, .cube-visualization.hidden, #scramble.scramble-hidden, .cube-visualization.cube-hidden, .metrics-display-line.metrics-hidden {
+            display: none !important;
+            opacity: 0 !important;
+        }
+
+        .face {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 1.5px;
+            background-color: #18181b;
+            border: 1.5px solid #18181b;
+            border-radius: 4px;
+        }
+
+        .face-u { grid-column: 2; grid-row: 1; }
+        .face-l { grid-column: 1; grid-row: 2; }
+        .face-f { grid-column: 2; grid-row: 2; }
+        .face-r { grid-column: 3; grid-row: 2; }
+        .face-b { grid-column: 4; grid-row: 2; }
+        .face-d { grid-column: 2; grid-row: 3; }
+
+        .sticker {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .c-u { background-color: var(--cube-white); }
+        .c-d { background-color: var(--cube-yellow); }
+        .c-f { background-color: var(--cube-green); }
+        .c-b { background-color: var(--cube-blue); }
+        .c-l { background-color: var(--cube-orange); }
+        .c-r { background-color: var(--cube-red); }
+
+        .touch-zone {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        @media (min-width: 601px) {
+            .layout-btn {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body, body.sidebar-left, body.sidebar-right {
+                flex-direction: column !important;
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            .main-content {
+                height: 0;
+                flex-grow: 1;
+                width: 100%;
+                order: 1 !important;
+                padding: 20px 12px 0px 12px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+            }
+            
+            .mobile-controls-wrapper {
+                display: flex;
+                gap: 8px;
+                position: absolute;
+                top: 14px;
+                right: 14px;
+                z-index: 5;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 220px;
+                border-left: none !important;
+                border-right: none !important;
+                border-top: 1px solid var(--border-color);
+                padding: 14px 12px;
+                box-sizing: border-box;
+                order: 2 !important;
+                display: flex;
+                flex-direction: row !important;
+                gap: 16px;
+                flex-shrink: 0;
+            }
+            
+            .sidebar-left-col {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                width: 52%;
+                min-height: 0;
+                flex-shrink: 0;
+            }
+            
+            .sidebar-right-col {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                width: 48%;
+                border-left: 1px solid rgba(255, 255, 255, 0.05);
+                padding-left: 14px;
+                min-height: 0;
+                box-sizing: border-box;
+            }
+            body[data-theme="light"] .sidebar-right-col, body[data-theme="sakura"] .sidebar-right-col {
+                border-left: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .sidebar .theme-trigger-btn, 
+            .sidebar .settings-trigger-btn,
+            .sidebar .layout-btn {
+                display: none !important;
+            }
+            
+            .menu-header {
+                margin-bottom: 0.75rem;
+            }
+            .session-select {
+                padding: 8px 6px;
+                font-size: 0.95rem;
+            }
+            .stats-section {
+                margin-bottom: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .stat-row {
+                margin-bottom: 0;
+                font-size: 0.95rem;
+            }
+            .history-header {
+                margin-bottom: 0.4rem;
+                padding-bottom: 4px;
+                width: 100%;
+            }
+            .history-title {
+                font-size: 0.9rem;
+            }
+            .clear-btn {
+                font-size: 0.8rem;
+                padding: 0px 4px;
+            }
+            .history-list {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                flex-grow: 1;
+                min-height: 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+                box-sizing: border-box;
+            }
+            .history-item {
+                padding: 5px 0;
+                font-size: 0.95rem;
+            }
+            
+            .container {
+                max-width: 100%;
+                justify-content: center;
+                height: auto;
+                gap: 6px;
+            }
+            
+            .timer-wrapper {
+                margin-bottom: 0;
+                min-height: auto;
+                flex-grow: 0;
+                padding: 2px 0;
+            }
+            
+            #timer {
+                font-size: 4.5rem;
+            }
+            
+            #variance {
+                font-size: 1.15rem;
+                margin-top: 0.1rem;
+                min-height: 1.25rem;
+            }
+            
+            #scramble {
+                font-size: 1.1rem;
+                margin: 0;
+                min-height: auto;
+                max-width: 100%;
+                line-height: 1.3;
+                padding: 0 10px;
+            }
+            
+            .metrics-display-line {
+                font-size: 0.85rem;
+                margin-bottom: 0;
+                gap: 8px;
+            }
+            
+            .cube-visualization {
+                width: 130px;
+                height: 98px;
+                gap: 3px;
+                margin-bottom: 0;
+                margin-top: 2px;
+            }
+            
+            .face {
+                gap: 1px;
+                border: 1px solid #18181b;
+                border-radius: 3px;
+            }
+            .sticker {
+                border-radius: 1px;
+            }
+        }
+    </style>
+</head>
+<body class="sidebar-left" data-theme="dark">
+
+    <!-- Main Workspace Area (The Touch Zone) -->
+    <div class="main-content">
+        <div class="mobile-controls-wrapper">
+            <button class="theme-trigger-btn mobile-theme-btn-toggle" title="select UI layout theme">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
+                    <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </button>
+            <button class="settings-trigger-btn mobile-settings-btn-toggle" title="open configuration settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+
+        <div class="touch-zone" id="touchZone"></div>
+        <div class="container">
+            <div id="scramble">generating official scramble...</div>
+            <div class="timer-wrapper">
+                <div id="timer">0.00</div>
+                <div id="variance" class="hidden"></div>
+            </div>
+            <div class="metrics-display-line" id="centerMetricsLine"></div>
+            
+            <div class="cube-visualization" id="cubeDisplay">
+                <div class="face face-u" id="face-U"></div>
+                <div class="face face-l" id="face-L"></div>
+                <div class="face face-f" id="face-F"></div>
+                <div class="face face-r" id="face-R"></div>
+                <div class="face face-b" id="face-B"></div>
+                <div class="face face-d" id="face-D"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Area -->
+    <div class="sidebar">
+        <div class="sidebar-left-col">
+            <div class="menu-header">
+                <div class="session-container">
+                    <select class="session-select" id="sessionSelect"></select>
+                </div>
+                
+                <button class="theme-trigger-btn sidebar-theme-btn-toggle" title="select UI layout theme">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2V22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z" fill="currentColor"/>
+                        <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22V2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+
+                <button class="settings-trigger-btn sidebar-settings-btn-toggle" title="open configuration settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+
+                <button class="layout-btn" id="layoutToggleBtn" title="toggle sidebar position">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <line x1="9" y1="3" x2="9" y2="21" />
+                        <path d="M17 10l-3 2 3 2" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-row">
+                    <span>best:</span>
+                    <span id="bestTime">-</span>
+                </div>
+                <div class="stat-row">
+                    <span>ao5:</span>
+                    <span id="ao5">-</span>
+                </div>
+                <div class="stat-row">
+                    <span>ao12:</span>
+                    <span id="ao12">-</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-right-col">
+            <div class="history-header">
+                <div class="history-title">solves</div>
+                <button class="clear-btn" id="clearBtn">clear</button>
+            </div>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
+    </div>
+
+    <!-- Edit Solve Modal Overlay Frame -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-card">
+            <button class="modal-x-close-btn" id="modalCloseBtn">[x]</button>
+            <div class="modal-title" id="modalTitle">edit solve #0</div>
+            <div class="modal-scramble-display" id="modalScrambleDisplay">no scramble data</div>
+            <div class="modal-time-display" id="modalTimeDisplay">0.00</div>
+            <div class="modal-options">
+                <button class="option-btn" id="modPlusTwoBtn">+2 seconds</button>
+                <button class="option-btn" id="modDnfBtn">did not finish (dnf)</button>
+                <button class="option-btn delete-btn" id="modDeleteBtn">
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    delete solve
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Picker Selector Dialog Modal Overlay -->
+    <div class="modal-overlay" id="themeModal">
+        <div class="modal-card">
+            <button class="modal-x-close-btn" id="themeModalCloseBtn">[x]</button>
+            <div class="modal-title">select theme</div>
+            <div class="theme-grid">
+                <button class="theme-btn" data-theme-val="dark">dark</button>
+                <button class="theme-btn" data-theme-val="light">light</button>
+                <button class="theme-btn" data-theme-val="green">green</button>
+                <button class="theme-btn" data-theme-val="blue">blue</button>
+                <button class="theme-btn" data-theme-val="sakura">sakura</button>
+                <button class="theme-btn" data-theme-val="cyberpunk">cyberpunk</button>
+                <button class="theme-btn" data-theme-val="forest">forest</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Settings Dashboard Modal Overlay Layout Panel -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card settings-card">
+            <button class="modal-x-close-btn" id="settingsModalCloseBtn">[x]</button>
+            <div class="modal-title">settings</div>
+            
+            <!-- Session Management Panel -->
+            <div class="settings-section-block">
+                <div class="settings-section-title">session manager</div>
+                <p class="settings-section-desc">add, remove, or customize profile labels for your workspace tracking sets.</p>
+                
+                <div class="session-count-row">
+                    <span class="session-count-label">total sessions</span>
+                    <button type="button" class="session-step-btn" id="sessionDecBtn">-</button>
+                    <span class="session-count-value" id="sessionCountDisplay">5</span>
+                    <button type="button" class="session-step-btn" id="sessionIncBtn">+</button>
+                </div>
+
+                <div class="session-rename-list" id="sessionRenameContainer">
+                    <!-- Dynamic Input Fields Rendered via JavaScript Module Initialization -->
+                </div>
+            </div>
+
+            <!-- Timer Preferences Area -->
+            <div class="settings-section-block">
+                <div class="settings-section-title">timer preferences</div>
+                <p class="settings-section-desc">customize display parameters and interface layout behaviors during active tracks.</p>
+                
+                <!-- Scramble Toggle -->
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">scramble display</div>
+                        <div class="settings-control-desc">show or hide the scramble algorithm sequence on the main panel</div>
+                    </div>
+                    <button type="button" class="toggle-switch is-active" id="scrambleToggleBtn" role="switch" aria-checked="true">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                    </button>
+                </div>
+
+                <!-- Cube Toggle -->
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">cube visualization</div>
+                        <div class="settings-control-desc">show or hide the 2d virtual cube state unfold layout diagram</div>
+                    </div>
+                    <button type="button" class="toggle-switch is-active" id="cubeToggleBtn" role="switch" aria-checked="true">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                    </button>
+                </div>
+
+                <!-- Center Metrics Panel Visibility Switch -->
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">solve metrics view</div>
+                        <div class="settings-control-desc">display customized average statistics under the running timer</div>
+                    </div>
+                    <button type="button" class="toggle-switch is-active" id="metricsToggleBtn" role="switch" aria-checked="true">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                    </button>
+                </div>
+
+                <!-- Center Metrics Custom Array Configurations Input Row -->
+                <div class="settings-row block-input-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">configure metrics trackers</div>
+                        <div class="settings-control-desc">comma-separated sizes to evaluate (e.g. 3, 5, 12, 50, 100)</div>
+                    </div>
+                    <input type="text" class="settings-text-input" id="metricsFormatInput" value="3, 5, 12" placeholder="3, 5, 12">
+                </div>
+            </div>
+
+            <!-- Data Management Section Area -->
+            <div class="settings-section-block">
+                <div class="settings-section-title">data management</div>
+                <p class="settings-section-desc">export your current session history data matrix into structural plain text logs.</p>
+                <button class="option-btn" id="exportBtn" style="width: auto; padding: 8px 14px;">export active session (.txt)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Native, Zero-Dependency 3x3 Scrambler Configuration ---
+        const MOVES = ['U', 'D', 'R', 'L', 'F', 'B'];
+        const MODIFIERS = ['', "'", '2'];
+
+        function generateNativeScramble(length = 20) {
+            let scramble = [];
+            let lastFace = '';
+            let secondLastFace = '';
+
+            for (let i = 0; i < length; i++) {
+                let face;
+                do {
+                    face = MOVES[Math.floor(Math.random() * MOVES.length)];
+                } while (
+                    face === lastFace || 
+                    (face === secondLastFace && areOppositeFaces(face, lastFace))
+                );
+
+                const mod = MODIFIERS[Math.floor(Math.random() * MODIFIERS.length)];
+                scramble.push(face + mod);
+                
+                secondLastFace = lastFace;
+                lastFace = face;
+            }
+            return scramble.join(' ');
+        }
+
+        function areOppositeFaces(f1, f2) {
+            return (
+                (f1 === 'U' && f2 === 'D') || (f1 === 'D' && f2 === 'U') ||
+                (f1 === 'R' && f2 === 'L') || (f1 === 'L' && f2 === 'R') ||
+                (f1 === 'F' && f2 === 'B') || (f1 === 'B' && f2 === 'F')
+            );
+        }
+        // -----------------------------------------------------------
+
+        const timerDisplay = document.getElementById('timer');
+        const varianceDisplay = document.getElementById('variance');
+        const centerMetricsLine = document.getElementById('centerMetricsLine');
+        const scrambleDisplay = document.getElementById('scramble');
+        const cubeDisplay = document.getElementById('cubeDisplay');
+        const historyList = document.getElementById('historyList');
+        const bestTimeDisplay = document.getElementById('bestTime');
+        const ao5Display = document.getElementById('ao5');
+        const ao12Display = document.getElementById('ao12');
+        const sessionSelect = document.getElementById('sessionSelect');
+        const clearBtn = document.getElementById('clearBtn');
+        const layoutToggleBtn = document.getElementById('layoutToggleBtn');
+        const touchZone = document.getElementById('touchZone');
+
+        const editModal = document.getElementById('editModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalScrambleDisplay = document.getElementById('modalScrambleDisplay');
+        const modalTimeDisplay = document.getElementById('modalTimeDisplay');
+        const modPlusTwoBtn = document.getElementById('modPlusTwoBtn');
+        const modDnfBtn = document.getElementById('modDnfBtn');
+        const modDeleteBtn = document.getElementById('modDeleteBtn');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        
+        const themeModal = document.getElementById('themeModal');
+        const themeModalCloseBtn = document.getElementById('themeModalCloseBtn');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const desktopThemeBtn = document.querySelector('.sidebar-theme-btn-toggle');
+        const mobileThemeBtn = document.querySelector('.mobile-theme-btn-toggle');
+
+        // Settings Elements Bindings
+        const settingsModal = document.getElementById('settingsModal');
+        const settingsModalCloseBtn = document.getElementById('settingsModalCloseBtn');
+        const desktopSettingsBtn = document.querySelector('.sidebar-settings-btn-toggle');
+        const mobileSettingsBtn = document.querySelector('.mobile-settings-btn-toggle');
+        const exportBtn = document.getElementById('exportBtn');
+        const scrambleToggleBtn = document.getElementById('scrambleToggleBtn');
+        const cubeToggleBtn = document.getElementById('cubeToggleBtn');
+        const metricsToggleBtn = document.getElementById('metricsToggleBtn');
+        const metricsFormatInput = document.getElementById('metricsFormatInput');
+
+        // Session Manager Bindings
+        const sessionCountDisplay = document.getElementById('sessionCountDisplay');
+        const sessionDecBtn = document.getElementById('sessionDecBtn');
+        const sessionIncBtn = document.getElementById('sessionIncBtn');
+        const sessionRenameContainer = document.getElementById('sessionRenameContainer');
+
+        let state = 'idle'; 
+        let startTime = 0;
+        let elapsedTimerInterval = null;
+        let holdTimeout = null;
+        let editingIndex = null;
+        let lastGeneratedScramble = ''; 
+        
+        let currentSession = 'session1';
+        let totalSessionsCount = 5;
+        let activeTheme = 'dark';
+        let showScramble = true;
+        let showCube = true;
+        let showMetrics = true;
+        let configuredMetricsList = [3, 5, 12];
+        
+        const sessionsData = {};
+        const sessionNamesMap = {};
+
+        for (let i = 1; i <= 10; i++) {
+            sessionsData[`session${i}`] = [];
+            sessionNamesMap[`session${i}`] = `session ${i}`;
+        }
+
+        const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
+        let cubeState = {};
+
+        function displaySolveString(solveObj) {
+            if (!solveObj) return '-';
+            if (solveObj.dnf) return 'DNF';
+            
+            let displayVal = solveObj.rawTime;
+            if (solveObj.plusTwo) displayVal += 2;
+            
+            return formatTime(displayVal) + (solveObj.plusTwo ? ' (+2)' : '');
+        }
+
+        function formatTime(totalSeconds, includeSign = false) {
+            if (isNaN(totalSeconds) || totalSeconds === null) return '-';
+            
+            const absoluteSeconds = Math.abs(totalSeconds);
+            let formattedStr = '';
+
+            if (absoluteSeconds < 60) {
+                formattedStr = absoluteSeconds.toFixed(2);
+            } else {
+                const minutes = Math.floor(absoluteSeconds / 60);
+                const seconds = Math.floor(absoluteSeconds % 60);
+                const milliseconds = Math.floor((absoluteSeconds % 1) * 100);
+                
+                const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
+                const paddedMs = milliseconds < 10 ? '0' + milliseconds : milliseconds;
+                
+                formattedStr = `${minutes}:${paddedSeconds}.${paddedMs}`;
+            }
+
+            if (includeSign) {
+                return (totalSeconds >= 0 ? '+' : '-') + formattedStr;
+            }
+            return formattedStr;
+        }
+
+        function initCubeState() {
+            faces.forEach(f => {
+                cubeState[f] = Array(9).fill(f.toLowerCase());
+            });
+        }
+
+        const adjacentFaces = {
+            'U': { faces: ['B', 'R', 'F', 'L'], cycles: [[0,1,2], [0,1,2], [0,1,2], [0,1,2]] },
+            'D': { faces: ['F', 'R', 'B', 'L'], cycles: [[6,7,8], [6,7,8], [6,7,8], [6,7,8]] },
+            'L': { faces: ['U', 'F', 'D', 'B'], cycles: [[0,3,6], [0,3,6], [0,3,6], [8,5,2]] },
+            'R': { faces: ['U', 'B', 'D', 'F'], cycles: [[8,5,2], [0,3,6], [8,5,2], [8,5,2]] },
+            'F': { faces: ['U', 'R', 'D', 'L'], cycles: [[6,7,8], [0,3,6], [2,1,0], [8,5,2]] },
+            'B': { faces: ['U', 'L', 'D', 'R'], cycles: [[2,1,0], [0,3,6], [6,7,8], [8,5,2]] }
+        };
+
+        function rotateFaceClockwise(face) {
+            const temp = [...cubeState[face]];
+            cubeState[face][0] = temp[6]; cubeState[face][1] = temp[3]; cubeState[face][2] = temp[0];
+            cubeState[face][3] = temp[7];                             cubeState[face][5] = temp[1];
+            cubeState[face][6] = temp[8]; cubeState[face][7] = temp[5]; cubeState[face][8] = temp[2];
+        }
+
+        function applyMove(move) {
+            const face = move[0];
+            const modifier = move.slice(1);
+            const turns = modifier === '' ? 1 : modifier === "'" ? 3 : 2;
+
+            for (let t = 0; t < turns; t++) {
+                rotateFaceClockwise(face);
+                const adj = adjacentFaces[face];
+                const tempStickers = adj.cycles[3].map(idx => cubeState[adj.faces[3]][idx]);
+                
+                for (let i = 3; i > 0; i--) {
+                    for (let j = 0; j < 3; j++) {
+                        cubeState[adj.faces[i]][adj.cycles[i][j]] = cubeState[adj.faces[i-1]][adj.cycles[i-1][j]];
+                    }
+                }
+                for (let j = 0; j < 3; j++) {
+                    cubeState[adj.faces[0]][adj.cycles[0][j]] = tempStickers[j];
+                }
+            }
+        }
+
+        function renderCubeUI() {
+            faces.forEach(f => {
+                const faceEl = document.getElementById(`face-${f}`);
+                if (!faceEl) return;
+                faceEl.innerHTML = '';
+                cubeState[f].forEach(colorCode => {
+                    const sticker = document.createElement('div');
+                    sticker.className = `sticker c-${colorCode}`;
+                    faceEl.appendChild(sticker);
+                });
+            });
+        }
+
+        function generateScramble() {
+            lastGeneratedScramble = generateNativeScramble(20);
+            scrambleDisplay.textContent = lastGeneratedScramble;
+            
+            initCubeState();
+            const moves = lastGeneratedScramble.split(' ');
+            moves.forEach(move => {
+                if(move.trim() !== "") applyMove(move);
+            });
+            renderCubeUI();
+
+            applyViewPreferencesVisibility();
+        }
+
+        function normalizeSessionArray(arr) {
+            return arr.map(item => {
+                if (typeof item === 'number') {
+                    return { rawTime: item, plusTwo: false, dnf: false, scramble: 'historical solve' };
+                }
+                if (!item.scramble) {
+                    item.scramble = 'historical solve';
+                }
+                return item;
+            });
+        }
+
+        function applyViewPreferencesVisibility() {
+            if (showScramble && state !== 'running') {
+                scrambleDisplay.classList.remove('hidden', 'scramble-hidden');
+            } else {
+                scrambleDisplay.classList.add('scramble-hidden');
+            }
+
+            if (showCube && state !== 'running') {
+                cubeDisplay.classList.remove('hidden', 'cube-hidden');
+            } else {
+                cubeDisplay.classList.add('cube-hidden');
+            }
+
+            if (showMetrics && state !== 'running') {
+                centerMetricsLine.classList.remove('metrics-hidden');
+            } else {
+                centerMetricsLine.classList.add('metrics-hidden');
+            }
+        }
+
+        function syncDropdownMenuOptions() {
+            const currentSelectedValue = sessionSelect.value || currentSession;
+            sessionSelect.innerHTML = '';
+            
+            for (let i = 1; i <= totalSessionsCount; i++) {
+                const opt = document.createElement('option');
+                opt.value = `session${i}`;
+                opt.textContent = sessionNamesMap[`session${i}`] || `session ${i}`;
+                sessionSelect.appendChild(opt);
+            }
+
+            const sessionNum = parseInt(currentSelectedValue.replace('session', ''), 10);
+            if (sessionNum <= totalSessionsCount) {
+                sessionSelect.value = currentSelectedValue;
+                currentSession = currentSelectedValue;
+            } else {
+                sessionSelect.value = 'session1';
+                currentSession = 'session1';
+            }
+        }
+
+        function buildSessionManagerControls() {
+            sessionCountDisplay.textContent = totalSessionsCount;
+            sessionRenameContainer.innerHTML = '';
+
+            for (let i = 1; i <= totalSessionsCount; i++) {
+                const row = document.createElement('div');
+                row.className = 'session-rename-item';
+
+                const marker = document.createElement('span');
+                marker.textContent = `s${i}:`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'session-name-input';
+                input.value = sessionNamesMap[`session${i}`] || `session ${i}`;
+                input.placeholder = `session ${i}`;
+                input.maxLength = 24;
+
+                input.addEventListener('input', (e) => {
+                    const cleanedText = e.target.value.trim().toLowerCase() || `session ${i}`;
+                    sessionNamesMap[`session${i}`] = cleanedText;
+                    saveData();
+                    syncDropdownMenuOptions();
+                });
+
+                row.appendChild(marker);
+                row.appendChild(input);
+                sessionRenameContainer.appendChild(row);
+            }
+        }
+
+        function loadData() {
+            const savedSessions = localStorage.getItem('cube_timer_sessions');
+            const savedNames = localStorage.getItem('cube_timer_session_names');
+            const savedCount = localStorage.getItem('cube_timer_total_sessions');
+            const savedCurrentSession = localStorage.getItem('cube_timer_active_session');
+            const savedLayoutOrientation = localStorage.getItem('cube_timer_layout_orientation');
+            const savedTheme = localStorage.getItem('cube_timer_theme');
+            const savedShowScramble = localStorage.getItem('cube_timer_show_scramble');
+            const savedShowCube = localStorage.getItem('cube_timer_show_cube');
+            const savedShowMetrics = localStorage.getItem('cube_timer_show_metrics');
+            const savedMetricsList = localStorage.getItem('cube_timer_metrics_list');
+            
+            if (savedSessions) {
+                const parsed = JSON.parse(savedSessions);
+                Object.keys(parsed).forEach(k => {
+                    if (sessionsData[k]) sessionsData[k] = normalizeSessionArray(parsed[k]);
+                });
+            }
+
+            if (savedCount) {
+                totalSessionsCount = Math.max(1, Math.min(10, parseInt(savedCount, 10)));
+            }
+
+            if (savedNames) {
+                const parsedNames = JSON.parse(savedNames);
+                Object.keys(parsedNames).forEach(k => {
+                    if (k in sessionNamesMap) sessionNamesMap[k] = parsedNames[k];
+                });
+            }
+
+            syncDropdownMenuOptions();
+
+            if (savedCurrentSession && sessionsData[savedCurrentSession]) {
+                const targetNum = parseInt(savedCurrentSession.replace('session', ''), 10);
+                if (targetNum <= totalSessionsCount) {
+                    currentSession = savedCurrentSession;
+                    sessionSelect.value = currentSession;
+                }
+            }
+            
+            if (savedLayoutOrientation) {
+                document.body.className = savedLayoutOrientation;
+            }
+            if (savedTheme) {
+                activeTheme = savedTheme;
+            }
+            applyThemeSelection(activeTheme);
+            
+            if (savedShowScramble !== null) {
+                showScramble = savedShowScramble === 'true';
+            }
+            setToggleSwitchState(scrambleToggleBtn, showScramble);
+
+            if (savedShowCube !== null) {
+                showCube = savedShowCube === 'true';
+            }
+            setToggleSwitchState(cubeToggleBtn, showCube);
+
+            if (savedShowMetrics !== null) {
+                showMetrics = savedShowMetrics === 'true';
+            }
+            setToggleSwitchState(metricsToggleBtn, showMetrics);
+
+            if (savedMetricsList !== null) {
+                try {
+                    configuredMetricsList = JSON.parse(savedMetricsList);
+                } catch(e) {
+                    configuredMetricsList = [3, 5, 12];
+                }
+            }
+            metricsFormatInput.value = configuredMetricsList.join(', ');
+            
+            buildSessionManagerControls();
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+            generateScramble();
+        }
+
+        function saveData() {
+            localStorage.setItem('cube_timer_sessions', JSON.stringify(sessionsData));
+            localStorage.setItem('cube_timer_session_names', JSON.stringify(sessionNamesMap));
+            localStorage.setItem('cube_timer_total_sessions', totalSessionsCount);
+            localStorage.setItem('cube_timer_active_session', currentSession);
+            localStorage.setItem('cube_timer_show_scramble', showScramble);
+            localStorage.setItem('cube_timer_show_cube', showCube);
+            localStorage.setItem('cube_timer_show_metrics', showMetrics);
+            localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
+        }
+
+        function setToggleSwitchState(btnElement, isActive) {
+            if (isActive) {
+                btnElement.classList.add('is-active');
+                btnElement.setAttribute('aria-checked', 'true');
+            } else {
+                btnElement.classList.remove('is-active');
+                btnElement.setAttribute('aria-checked', 'false');
+            }
+        }
+
+        function startTimer() {
+            state = 'running';
+            scrambleDisplay.classList.add('hidden');
+            cubeDisplay.classList.add('hidden');
+            centerMetricsLine.classList.add('metrics-hidden');
+            varianceDisplay.className = 'hidden';
+            startTime = performance.now();
+            
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
+        }
+
+        function updateTimer() {
+            if (state !== 'running') return;
+            
+            const now = performance.now();
+            const difference = (now - startTime) / 1000;
+            timerDisplay.textContent = formatTime(difference);
+            
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
+        }
+
+        function stopTimer() {
+            state = 'idle';
+            cancelAnimationFrame(elapsedTimerInterval);
+            
+            const finalTime = (performance.now() - startTime) / 1000;
+            timerDisplay.textContent = formatTime(finalTime);
+            
+            saveSolve(finalTime);
+            generateScramble();
+        }
+
+        function saveSolve(time) {
+            if(!sessionsData[currentSession]) {
+                sessionsData[currentSession] = [];
+            }
+            sessionsData[currentSession].push({
+                rawTime: time,
+                plusTwo: false,
+                dnf: false,
+                scramble: lastGeneratedScramble || 'unknown scramble'
+            });
+            saveData();
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+        }
+
+        function getEffectiveTime(solveObj) {
+            if (!solveObj || solveObj.dnf) return null;
+            return solveObj.rawTime + (solveObj.plusTwo ? 2 : 0);
+        }
+
+        function updateVarianceUI() {
+            const activeTimes = sessionsData[currentSession] || [];
+            varianceDisplay.className = 'hidden';
+            varianceDisplay.textContent = '';
+
+            if (activeTimes.length < 2) return;
+
+            const currentEff = getEffectiveTime(activeTimes[activeTimes.length - 1]);
+            const previousEff = getEffectiveTime(activeTimes[activeTimes.length - 2]);
+
+            if (currentEff === null || previousEff === null) return;
+
+            const diff = currentEff - previousEff;
+            varianceDisplay.textContent = `(${formatTime(diff, true)})`;
+
+            if (diff > 0) {
+                varianceDisplay.className = 'plus';
+            } else if (diff < 0) {
+                varianceDisplay.className = 'minus';
+            } else {
+                varianceDisplay.className = '';
+            }
+        }
+
+        function updateHistoryUI() {
+            historyList.innerHTML = '';
+            const activeTimes = sessionsData[currentSession] || [];
+            
+            for (let i = activeTimes.length - 1; i >= 0; i--) {
+                const solve = activeTimes[i];
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                
+                const dataDiv = document.createElement('div');
+                dataDiv.className = 'history-data';
+                dataDiv.innerHTML = `
+                    <span class="history-index">#${i + 1}</span>
+                    <span>${displaySolveString(solve)}</span>
+                `;
+                
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-time-btn';
+                editBtn.title = 'edit solve states';
+                editBtn.setAttribute('data-index', i);
+                editBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                `;
+                
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEditModal(i);
+                });
+
+                li.appendChild(dataDiv);
+                li.appendChild(editBtn);
+                historyList.appendChild(li);
+            }
+
+            const spacer1 = document.createElement('li');
+            spacer1.className = 'history-item blank-spacer';
+            historyList.appendChild(spacer1);
+
+            const spacer2 = document.createElement('li');
+            spacer2.className = 'history-item blank-spacer';
+            historyList.appendChild(spacer2);
+        }
+
+        function openEditModal(index) {
+            editingIndex = index;
+            const solve = sessionsData[currentSession][index];
+            if (!solve) return;
+
+            modalTitle.textContent = `edit solve #${index + 1}`;
+            modalScrambleDisplay.textContent = solve.scramble || 'no scramble data available';
+            modalTimeDisplay.textContent = displaySolveString(solve);
+
+            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
+            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
+
+            editModal.classList.add('open');
+        }
+
+        function closeEditModal() {
+            editModal.classList.remove('open');
+            editingIndex = null;
+        }
+
+        modPlusTwoBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            const solve = sessionsData[currentSession][editingIndex];
+            solve.plusTwo = !solve.plusTwo;
+            
+            if (solve.plusTwo) solve.dnf = false; 
+
+            saveData();
+            modalTimeDisplay.textContent = displaySolveString(solve);
+            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
+            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
+            
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+        });
+
+        modDnfBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            const solve = sessionsData[currentSession][editingIndex];
+            solve.dnf = !solve.dnf;
+            
+            if (solve.dnf) solve.plusTwo = false;
+
+            saveData();
+            modalTimeDisplay.textContent = displaySolveString(solve);
+            modPlusTwoBtn.className = 'option-btn' + (solve.plusTwo ? ' active-modifier' : '');
+            modDnfBtn.className = 'option-btn' + (solve.dnf ? ' active-modifier' : '');
+            
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+        });
+
+        modDeleteBtn.addEventListener('click', () => {
+            if (editingIndex === null) return;
+            if (confirm(`delete solve #${editingIndex + 1} permanently?`)) {
+                sessionsData[currentSession].splice(editingIndex, 1);
+                saveData();
+                closeEditModal();
+                
+                updateHistoryUI();
+                updateStatsUI();
+                updateCenterMetricsDisplay();
+                updateVarianceUI();
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', closeEditModal);
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) closeEditModal();
+        });
+
+        function openThemeModal() {
+            themeButtons.forEach(btn => {
+                if (btn.getAttribute('data-theme-val') === activeTheme) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            themeModal.classList.add('open');
+        }
+
+        function closeThemeModal() {
+            themeModal.classList.remove('open');
+        }
+
+        function applyThemeSelection(themeValue) {
+            activeTheme = themeValue;
+            document.body.setAttribute('data-theme', themeValue);
+            localStorage.setItem('cube_timer_theme', themeValue);
+        }
+
+        desktopThemeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openThemeModal();
+        });
+
+        mobileThemeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openThemeModal();
+        });
+
+        themeModalCloseBtn.addEventListener('click', closeThemeModal);
+        themeModal.addEventListener('click', (e) => {
+            if (e.target === themeModal) closeThemeModal();
+        });
+
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTheme = button.getAttribute('data-theme-val');
+                applyThemeSelection(targetTheme);
+                closeThemeModal();
+            });
+        });
+
+        function openSettingsModal() {
+            buildSessionManagerControls();
+            metricsFormatInput.value = configuredMetricsList.join(', ');
+            settingsModal.classList.add('open');
+        }
+
+        function closeSettingsModal() {
+            settingsModal.classList.remove('open');
+        }
+
+        desktopSettingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSettingsModal();
+        });
+
+        mobileSettingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSettingsModal();
+        });
+
+        settingsModalCloseBtn.addEventListener('click', closeSettingsModal);
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) closeSettingsModal();
+        });
+
+        sessionDecBtn.addEventListener('click', () => {
+            if (totalSessionsCount <= 1) return;
+            totalSessionsCount--;
+            saveData();
+            syncDropdownMenuOptions();
+            buildSessionManagerControls();
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+        });
+
+        sessionIncBtn.addEventListener('click', () => {
+            if (totalSessionsCount >= 10) return;
+            totalSessionsCount++;
+            saveData();
+            syncDropdownMenuOptions();
+            buildSessionManagerControls();
+        });
+
+        scrambleToggleBtn.addEventListener('click', () => {
+            showScramble = !showScramble;
+            setToggleSwitchState(scrambleToggleBtn, showScramble);
+            saveData();
+            applyViewPreferencesVisibility();
+        });
+
+        cubeToggleBtn.addEventListener('click', () => {
+            showCube = !showCube;
+            setToggleSwitchState(cubeToggleBtn, showCube);
+            saveData();
+            applyViewPreferencesVisibility();
+        });
+
+        metricsToggleBtn.addEventListener('click', () => {
+            showMetrics = !showMetrics;
+            setToggleSwitchState(metricsToggleBtn, showMetrics);
+            saveData();
+            applyViewPreferencesVisibility();
+        });
+
+        metricsFormatInput.addEventListener('input', (e) => {
+            const rawValue = e.target.value;
+            const parsedArray = rawValue.split(',')
+                                         .map(val => parseInt(val.trim(), 10))
+                                         .filter(val => !isNaN(val) && val > 0);
+            
+            configuredMetricsList = parsedArray;
+            saveData();
+            updateCenterMetricsDisplay();
+        });
+
+        function calculateBestTime() {
+            const activeTimes = sessionsData[currentSession] || [];
+            const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
+            
+            if (validTimes.length === 0) return '-';
+            const best = Math.min(...validTimes);
+            return formatTime(best);
+        }
+
+        function calculateAverageOf(n) {
+            const activeTimes = sessionsData[currentSession] || [];
+            if (activeTimes.length < n) return '-';
+            
+            const recentSolves = activeTimes.slice(-n);
+            const dnfCount = recentSolves.filter(s => s.dnf).length;
+
+            // Handle Mean Calculation rules for sizes under 5 steps natively
+            if (n < 5) {
+                if (dnfCount > 0) return 'DNF';
+                const totalSum = recentSolves.reduce((acc, curr) => acc + (curr.rawTime + (curr.plusTwo ? 2 : 0)), 0);
+                return formatTime(totalSum / n);
+            }
+
+            // Standard Average of X framework execution rules (trimmed metric calculations)
+            if (dnfCount > 1) return 'DNF';
+
+            const sorted = [];
+            recentSolves.forEach(s => {
+                if (s.dnf) {
+                    sorted.push(Infinity);
+                } else {
+                    sorted.push(s.rawTime + (s.plusTwo ? 2 : 0));
+                }
+            });
+
+            sorted.sort((a, b) => a - b);
+            sorted.pop();
+            sorted.shift();
+            
+            if (sorted.includes(Infinity)) return 'DNF';
+            
+            const sum = sorted.reduce((acc, curr) => acc + curr, 0);
+            return formatTime(sum / sorted.length);
+        }
+
+        function updateCenterMetricsDisplay() {
+            centerMetricsLine.innerHTML = '';
+            if (configuredMetricsList.length === 0) {
+                centerMetricsLine.textContent = '-';
+                return;
+            }
+
+            configuredMetricsList.forEach(size => {
+                const metricLabel = size < 5 ? `mo${size}` : `ao${size}`;
+                const evaluatedValue = calculateAverageOf(size);
+                
+                const itemWrapper = document.createElement('div');
+                itemWrapper.innerHTML = `<span>${metricLabel}:</span> <strong>${evaluatedValue}</strong>`;
+                centerMetricsLine.appendChild(itemWrapper);
+            });
+        }
+
+        function updateStatsUI() {
+            bestTimeDisplay.textContent = calculateBestTime();
+            ao5Display.textContent = calculateAverageOf(5);
+            ao12Display.textContent = calculateAverageOf(12);
+        }
+
+        function triggerStartSequence() {
+            if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
+
+            if (state === 'running') {
+                stopTimer();
+            } else if (state === 'idle') {
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+
+                state = 'holding';
+                timerDisplay.className = 'holding';
+                timerDisplay.textContent = '0.00';
+                varianceDisplay.className = 'hidden';
+                
+                holdTimeout = setTimeout(() => {
+                    state = 'ready';
+                    timerDisplay.className = 'ready';
+                }, 500);
+            }
+        }
+
+        function triggerReleaseSequence() {
+            clearTimeout(holdTimeout);
+
+            if (state === 'ready') {
+                timerDisplay.className = '';
+                startTimer();
+            } else if (state === 'holding') {
+                state = 'idle';
+                timerDisplay.className = '';
+                updateVarianceUI();
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (editModal.classList.contains('open')) closeEditModal();
+                if (themeModal.classList.contains('open')) closeThemeModal();
+                if (settingsModal.classList.contains('open')) closeSettingsModal();
+                return;
+            }
+            if (e.key !== ' ' || e.repeat) return;
+            triggerStartSequence();
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key !== ' ') return;
+            triggerReleaseSequence();
+        });
+
+        layoutToggleBtn.addEventListener('click', () => {
+            if (document.body.classList.contains('sidebar-left')) {
+                document.body.className = 'sidebar-right';
+                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-right');
+            } else {
+                document.body.className = 'sidebar-left';
+                localStorage.setItem('cube_timer_layout_orientation', 'sidebar-left');
+            }
+        });
+
+        touchZone.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            triggerStartSequence();
+        }, { passive: false });
+
+        touchZone.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            triggerReleaseSequence();
+        }, { passive: false });
+
+        sessionSelect.addEventListener('change', (e) => {
+            currentSession = e.target.value;
+            saveData();
+            updateHistoryUI();
+            updateStatsUI();
+            updateCenterMetricsDisplay();
+            updateVarianceUI();
+            timerDisplay.textContent = '0.00';
+            generateScramble();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            const labelText = sessionSelect.options[sessionSelect.selectedIndex].text;
+            if (confirm(`clear all solves for ${labelText}?`)) {
+                sessionsData[currentSession] = [];
+                saveData();
+                updateHistoryUI();
+                updateStatsUI();
+                updateCenterMetricsDisplay();
+                updateVarianceUI();
+                timerDisplay.textContent = '0.00';
+                generateScramble();
+            }
+        });
+
+        exportBtn.addEventListener('click', () => {
+            const activeTimes = sessionsData[currentSession] || [];
+            
+            if (activeTimes.length === 0) {
+                alert('there are no solves in this session to export.');
+                return;
+            }
+
+            const sessionLabel = sessionSelect.options[sessionSelect.selectedIndex].text;
+            
+            let fileContent = `========================================\n`;
+            fileContent += `  cube timer export - ${sessionLabel.toLowerCase()}\n`;
+            fileContent += `========================================\n\n`;
+
+            activeTimes.forEach((solve, idx) => {
+                let solveDisplay = '';
+                if (solve.dnf) {
+                    solveDisplay = 'DNF';
+                } else {
+                    const finalTime = solve.rawTime + (solve.plusTwo ? 2 : 0);
+                    solveDisplay = finalTime.toFixed(2) + (solve.plusTwo ? ' (+2)' : '');
+                }
+                
+                fileContent += `#${idx + 1} | time: ${solveDisplay}\n`;
+                fileContent += `scramble: ${solve.scramble || 'n/a'}\n`;
+                fileContent += `----------------------------------------\n`;
+            });
+
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8;' });
+            const blobUrl = URL.createObjectURL(blob);
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = blobUrl;
+            downloadLink.download = `${sessionLabel.toLowerCase().replace(/\s+/g, '_')}_export.txt`;
+            
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(blobUrl);
+        });
+
+        loadData();
+    </script>
+</body>
+</html>
