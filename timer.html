@@ -871,6 +871,11 @@
             opacity: 0 !important;
         }
 
+        .face.is-2x2 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+
         .face {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1246,11 +1251,24 @@
                 </div>
             </div>
 
+            
+
             <!-- Timer Preferences Area -->
             <div class="settings-section-block">
                 <div class="settings-section-title">timer preferences</div>
                 <p class="settings-section-desc">customize display and interface layout</p>
 
+                <div class="settings-row">
+                <div class="settings-label-group">
+                    <div class="settings-control-title">cube event</div>
+                    <div class="settings-control-desc">switch between standard 3x3 and 2x2</div>
+                </div>
+                <select class="settings-text-input" id="cubeTypeSelect" style="width: auto; padding: 4px 8px;">
+                    <option value="3x3">3x3</option>
+                    <option value="2x2">2x2</option>
+                </select>
+            </div>
+                
                 <!-- Timer Toggle -->
                 <div class="settings-row">
                     <div class="settings-label-group">
@@ -1345,6 +1363,27 @@
             }
             return scramble.join(' ');
         }
+
+        // --- 2x2 Scrambler ---
+        const MOVES_2X2 = ['U', 'R', 'F'];
+        function generate2x2Scramble(length = 10) {
+            let scramble = [];
+            let lastFace = '';
+            for (let i = 0; i < length; i++) {
+                let face;
+                do {
+                    face = MOVES_2X2[Math.floor(Math.random() * MOVES_2X2.length)];
+                } while (face === lastFace);
+
+                const mod = MODIFIERS[Math.floor(Math.random() * MODIFIERS.length)];
+                scramble.push(face + mod);
+                lastFace = face;
+            }
+            return scramble.join(' ');
+        }
+
+        let cubeType = '3x3';
+        const cubeTypeSelect = document.getElementById('cubeTypeSelect');
 
         function areOppositeFaces(f1, f2) {
             return (
@@ -1512,18 +1551,37 @@
                 const faceEl = document.getElementById(`face-${f}`);
                 if (!faceEl) return;
                 faceEl.innerHTML = '';
-                cubeState[f].forEach(colorCode => {
-                    const sticker = document.createElement('div');
-                    sticker.className = `sticker c-${colorCode}`;
-                    faceEl.appendChild(sticker);
-                });
+        
+                if (cubeType === '2x2') {
+                    faceEl.classList.add('is-2x2');
+                    // Extract only the corners (0, 2, 6, 8) from the 3x3 state
+                    const cornerIndices = [0, 2, 6, 8];
+                    cornerIndices.forEach(idx => {
+                        const colorCode = cubeState[f][idx];
+                        const sticker = document.createElement('div');
+                        sticker.className = `sticker c-${colorCode}`;
+                        faceEl.appendChild(sticker);
+                    });
+                } else {
+                    faceEl.classList.remove('is-2x2');
+                    cubeState[f].forEach(colorCode => {
+                        const sticker = document.createElement('div');
+                        sticker.className = `sticker c-${colorCode}`;
+                        faceEl.appendChild(sticker);
+                    });
+                }
             });
         }
 
         function generateScramble() {
-            lastGeneratedScramble = generateNativeScramble(20);
+            if (cubeType === '2x2') {
+                lastGeneratedScramble = generate2x2Scramble(10); // Standard 2x2 length
+            } else {
+                lastGeneratedScramble = generateNativeScramble(20);
+            }
+    
             scrambleDisplay.textContent = lastGeneratedScramble;
-            
+    
             initCubeState();
             const moves = lastGeneratedScramble.split(' ');
             moves.forEach(move => {
@@ -1630,7 +1688,13 @@
             const savedShowMetrics = localStorage.getItem('cube_timer_show_metrics');
             const savedMetricsList = localStorage.getItem('cube_timer_metrics_list');
             const savedShowTimerDuringSolve = localStorage.getItem('cube_timer_show_timer');
-
+            const savedCubeType = localStorage.getItem('cube_timer_cube_type');
+            
+            if (savedCubeType) {
+            cubeType = savedCubeType;
+            if (cubeTypeSelect) cubeTypeSelect.value = cubeType;
+            }
+            
             if (savedShowTimerDuringSolve !== null) {
                 showTimerDuringSolve = savedShowTimerDuringSolve === 'true';
                 }
@@ -1714,6 +1778,7 @@
             localStorage.setItem('cube_timer_show_cube', showCube);
             localStorage.setItem('cube_timer_show_metrics', showMetrics);
             localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
+            localStorage.setItem('cube_timer_cube_type', cubeType);
         }
 
         function setToggleSwitchState(btnElement, isActive) {
@@ -2039,6 +2104,12 @@
             setToggleSwitchState(scrambleToggleBtn, showScramble);
             saveData();
             applyViewPreferencesVisibility();
+        });
+
+        cubeTypeSelect.addEventListener('change', (e) => {
+            cubeType = e.target.value;
+            saveData();
+            generateScramble();
         });
 
         timerVisibilityToggleBtn.addEventListener('click', () => {
