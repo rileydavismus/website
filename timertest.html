@@ -1100,24 +1100,31 @@
 
             #multiplayer-container {
             display: flex;
-            gap: 60px;
+            flex-direction: row;
+            gap: 10vw; /* dynamic spacing based on screen width */
             justify-content: center;
             align-items: center;
             width: 100%;
+            margin-top: 15px;
         }
+
         .multiplayer-side {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .player-label {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: var(--dim-color);
             margin-bottom: -15px;
             text-transform: lowercase;
+            letter-spacing: 2px;
         }
+
+        /* match the single-player timer formatting exactly */
         #timer-p1, #timer-p2 {
-            font-size: 6rem;
+            font-size: 8.25rem;
             font-weight: 300;
             letter-spacing: -3px;
             line-height: 1;
@@ -1127,10 +1134,31 @@
         #timer-p1.holding, #timer-p2.holding { color: var(--holding-color); }
         #timer-p1.ready, #timer-p2.ready { color: var(--ready-color); }
 
+        /* stack vertically on medium/tablet screens to prevent overlapping */
+        @media (max-width: 950px) {
+            #multiplayer-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .player-label {
+                margin-bottom: -10px;
+            }
+        }
+
+        /* match the single-player mobile scaling */
         @media (max-width: 600px) {
-            #multiplayer-container { gap: 24px; }
-            #timer-p1, #timer-p2 { font-size: 3.5rem; }
-            .player-label { font-size: 1.1rem; margin-bottom: -8px; }
+            #multiplayer-container { 
+                flex-direction: column;
+                gap: 24px; 
+                margin-top: 5px;
+            }
+            #timer-p1, #timer-p2 { 
+                font-size: 4.5rem; 
+            }
+            .player-label { 
+                font-size: 1rem; 
+                margin-bottom: -5px; 
+            }
         }
             
         }
