@@ -159,6 +159,7 @@
 
         .sidebar {
             width: 250px;
+            height: 100vh;
             background-color: var(--sidebar-bg);
             display: flex;
             flex-direction: column;
@@ -294,6 +295,7 @@
 
         .history-list {
             flex-grow: 1;
+            min-height: 0;
             overflow-y: auto;
             list-style: none;
             padding: 0;
@@ -1072,60 +1074,6 @@
                 line-height: 1.3;
                 padding: 0 10px;
             }
-
-            .dual-timer-layout {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    margin: 15px 0;
-    gap: 30px;
-}
-
-.player-zone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-}
-
-.split-divider {
-    width: 2px;
-    height: 80px;
-    background-color: var(--border-color);
-    border-radius: 2px;
-}
-
-.player-label {
-    font-size: 0.9rem;
-    color: var(--dim-color);
-    margin-bottom: 8px;
-    text-transform: lowercase;
-    letter-spacing: 1px;
-}
-
-.timer-display {
-    font-size: 5rem;
-    font-weight: 300;
-    letter-spacing: -2px;
-    line-height: 1;
-    transition: color 0.1s ease;
-}
-
-.timer-display.holding { color: var(--holding-color); }
-.timer-display.ready { color: var(--ready-color); }
-
-@media (max-width: 600px) {
-    .dual-timer-layout {
-        gap: 15px;
-    }
-    .timer-display {
-        font-size: 3.5rem;
-    }
-    .split-divider {
-        height: 60px;
-    }
-}
             
             .metrics-display-line {
                 font-size: 0.85rem;
@@ -1149,6 +1097,42 @@
             .sticker {
                 border-radius: 1px;
             }
+
+            #multiplayer-container {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .multiplayer-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .player-label {
+            font-size: 1.5rem;
+            color: var(--dim-color);
+            margin-bottom: -15px;
+            text-transform: lowercase;
+        }
+        #timer-p1, #timer-p2 {
+            font-size: 6rem;
+            font-weight: 300;
+            letter-spacing: -3px;
+            line-height: 1;
+            transition: color 0.1s ease;
+        }
+
+        #timer-p1.holding, #timer-p2.holding { color: var(--holding-color); }
+        #timer-p1.ready, #timer-p2.ready { color: var(--ready-color); }
+
+        @media (max-width: 600px) {
+            #multiplayer-container { gap: 24px; }
+            #timer-p1, #timer-p2 { font-size: 3.5rem; }
+            .player-label { font-size: 1.1rem; margin-bottom: -8px; }
+        }
+            
         }
     </style>
 </head>
@@ -1173,31 +1157,25 @@
 
         <div class="touch-zone" id="touchZone"></div>
         <div class="container">
-    <div id="scramble">generating official scramble...</div>
+            <div id="scramble">generating official scramble...</div>
+            <div class="timer-wrapper">
+            <div id="single-timer-container" style="display: flex; flex-direction: column; align-items: center;">
+                <div id="timer">0.00</div>
+                <div id="variance" class="hidden"></div>
+            </div>
     
-    <div class="timer-wrapper" id="singleTimerWrapper">
-        <div id="timer">0.00</div>
-        <div id="variance" class="hidden"></div>
-    </div>
-
-    <div class="dual-timer-layout" id="dualTimerWrapper" style="display: none;">
-        <div class="player-zone" id="player1Zone">
-            <div class="player-label">player 1</div>
-            <div class="timer-wrapper">
-                <div id="timer1" class="timer-display">0.00</div>
-                <div id="variance1" class="variance-display hidden"></div>
+            <div id="multiplayer-container" style="display: none;">
+                <div class="multiplayer-side">
+                    <div class="player-label">p1</div>
+                    <div id="timer-p1">0.00</div>
+                </div>
+                <div class="multiplayer-side">
+                    <div class="player-label">p2</div>
+                    <div id="timer-p2">0.00</div>
+                </div>
             </div>
-        </div>
-        <div class="player-zone" id="player2Zone">
-            <div class="player-label">player 2</div>
-            <div class="timer-wrapper">
-                <div id="timer2" class="timer-display">0.00</div>
-                <div id="variance2" class="variance-display hidden"></div>
             </div>
-        </div>
-    </div>
-
-    <div class="metrics-display-line" id="centerMetricsLine"></div>
+            <div class="metrics-display-line" id="centerMetricsLine"></div>
             
             <div class="cube-visualization" id="cubeDisplay">
                 <div class="face face-u" id="face-U"></div>
@@ -1398,17 +1376,18 @@
                     </div>
                     <input type="text" class="settings-text-input" id="metricsFormatInput" value="3, 5, 12" placeholder="3, 5, 12">
                 </div>
-            </div>
 
-            <div class="settings-row">
-            <div class="settings-label-group">
-                <div class="settings-control-title">multiplayer mode</div>
-                <div class="settings-control-desc">enable local split-screen dual timers</div>
-            </div>
-                <button type="button" class="toggle-switch" id="multiplayerToggleBtn" role="switch" aria-checked="false">
-                    <span class="sw-on">on</span>
-                    <span class="sw-off text-muted">off</span>
-                </button>
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">multiplayer splitscreen</div>
+                        <div class="settings-control-desc">race locally. first tap stops p1, second stops p2.</div>
+                    </div>
+                    <button type="button" class="toggle-switch" id="multiplayerToggleBtn" role="switch" aria-checked="false">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                    </button>
+                </div>
+                
             </div>
 
             <!-- Data Management Section Area -->
@@ -1478,12 +1457,6 @@
         }
         // -----------------------------------------------------------
 
-        const singleTimerWrapper = document.getElementById('singleTimerWrapper');
-        const dualTimerWrapper = document.getElementById('dualTimerWrapper');
-        const multiplayerToggleBtn = document.getElementById('multiplayerToggleBtn');
-        const timer1Display = document.getElementById('timer1');
-        const timer2Display = document.getElementById('timer2');
-        
         const timerDisplay = document.getElementById('timer');
         const varianceDisplay = document.getElementById('variance');
         const centerMetricsLine = document.getElementById('centerMetricsLine');
@@ -1548,10 +1521,15 @@
         let configuredMetricsList = [3, 5, 12];
 
         let isMultiplayer = false;
-        let p1Finished = false;
-        let p2Finished = false;
+        let p1Stopped = false;
+        let p2Stopped = false;
         let p1FinalTime = 0;
-        let p2FinalTime = 0;
+
+        const singleTimerContainer = document.getElementById('single-timer-container');
+        const multiplayerContainer = document.getElementById('multiplayer-container');
+        const timerP1 = document.getElementById('timer-p1');
+        const timerP2 = document.getElementById('timer-p2');
+        const multiplayerToggleBtn = document.getElementById('multiplayerToggleBtn');
         
         const sessionsData = {};
         const sessionNamesMap = {};
@@ -1718,6 +1696,14 @@
             } else {
                 centerMetricsLine.classList.add('metrics-hidden');
             }
+
+            if (isMultiplayer) {
+                singleTimerContainer.style.display = 'none';
+                multiplayerContainer.style.display = 'flex';
+            } else {
+                singleTimerContainer.style.display = 'flex';
+                multiplayerContainer.style.display = 'none';
+            }
         }
 
         function syncDropdownMenuOptions() {
@@ -1823,16 +1809,6 @@
                     sessionSelect.value = currentSession;
                 }
             }
-
-            const savedMultiplayer = localStorage.getItem('cube_timer_is_multiplayer');
-            if (savedMultiplayer !== null) {
-                isMultiplayer = savedMultiplayer === 'true';
-            }
-            setToggleSwitchState(multiplayerToggleBtn, isMultiplayer);
-            if (isMultiplayer) {
-                singleTimerWrapper.style.display = 'none';
-                dualTimerWrapper.style.display = 'flex';
-            }
             
             if (savedLayoutOrientation) {
                 document.body.className = savedLayoutOrientation;
@@ -1865,7 +1841,13 @@
                 }
             }
             metricsFormatInput.value = configuredMetricsList.join(', ');
-            
+
+            const savedMultiplayer = localStorage.getItem('cube_timer_multiplayer');
+            if (savedMultiplayer !== null) {
+              isMultiplayer = savedMultiplayer === 'true';
+            }
+            setToggleSwitchState(multiplayerToggleBtn, isMultiplayer);
+                    
             buildSessionManagerControls();
             updateHistoryUI();
             updateStatsUI();
@@ -1885,6 +1867,7 @@
             localStorage.setItem('cube_timer_show_metrics', showMetrics);
             localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
             localStorage.setItem('cube_timer_cube_type', cubeType);
+            localStorage.setItem('cube_timer_multiplayer', isMultiplayer);
         }
 
         function setToggleSwitchState(btnElement, isActive) {
@@ -1898,138 +1881,68 @@
         }
 
         function startTimer() {
-    state = 'running';
-    scrambleDisplay.classList.add('hidden');
-    cubeDisplay.classList.add('hidden');
-    centerMetricsLine.classList.add('metrics-hidden');
-    
-    if (isMultiplayer) {
-        p1Finished = false;
-        p2Finished = false;
-        if (!showTimerDuringSolve) {
-            timer1Display.textContent = '...';
-            timer2Display.textContent = '...';
-        }
-    } else {
-        varianceDisplay.className = 'hidden';
-        if (!showTimerDuringSolve) {
-            timerDisplay.textContent = '...';
-        }
-    }
-    
-    startTime = performance.now();
-    
-    // Kick off the loop
-    elapsedTimerInterval = requestAnimationFrame(updateTimer);
-}
-
-function updateTimer() {
-    if (state !== 'running') return;
-
-    if (showTimerDuringSolve) {
-        const now = performance.now();
-        const difference = (now - startTime) / 1000;
-        
-        if (isMultiplayer) {
-            // Only update the display if the player hasn't tapped out yet
-            if (!p1Finished) timer1Display.textContent = formatTime(difference);
-            if (!p2Finished) timer2Display.textContent = formatTime(difference);
-        } else {
-            timerDisplay.textContent = formatTime(difference);
-        }
-    }
-
-    elapsedTimerInterval = requestAnimationFrame(updateTimer);
-}
-
-function stopTimer() {
-    state = 'idle';
-    cancelAnimationFrame(elapsedTimerInterval);
-    
-    if (isMultiplayer) {
-        // Save Player 1's time to your main session history
-        saveSolve(p1FinalTime);
-    } else {
-        const finalTime = (performance.now() - startTime) / 1000;
-        timerDisplay.textContent = formatTime(finalTime);
-        saveSolve(finalTime);
-    }
-    
-    generateScramble();
-}
-
-function triggerStartSequence() {
-    // Prevent spacebar triggers if a menu is open
-    if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
-
-    if (state === 'running') {
-        if (isMultiplayer) {
-            if (!p1Finished) {
-                // First spacebar tap stops Player 1
-                p1Finished = true;
-                p1FinalTime = (performance.now() - startTime) / 1000;
-                timer1Display.textContent = formatTime(p1FinalTime);
-            } else if (!p2Finished) {
-                // Second spacebar tap stops Player 2 and ends the run
-                p2Finished = true;
-                p2FinalTime = (performance.now() - startTime) / 1000;
-                timer2Display.textContent = formatTime(p2FinalTime);
-                stopTimer(); 
-            }
-        } else {
-            // Standard single player stop
-            stopTimer();
-        }
-    } else if (state === 'idle') {
-        if (document.activeElement) document.activeElement.blur();
-
-        state = 'holding';
-        
-        if (isMultiplayer) {
-            timer1Display.className = 'timer-display holding';
-            timer2Display.className = 'timer-display holding';
-            timer1Display.textContent = '0.00';
-            timer2Display.textContent = '0.00';
-        } else {
-            timerDisplay.className = 'holding';
+            state = 'running';
+            scrambleDisplay.classList.add('hidden');
+            cubeDisplay.classList.add('hidden');
+            centerMetricsLine.classList.add('metrics-hidden');
             varianceDisplay.className = 'hidden';
-            timerDisplay.textContent = '0.00';
+            startTime = performance.now();
+            
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
-        
-        holdTimeout = setTimeout(() => {
-            state = 'ready';
-            if (isMultiplayer) {
-                timer1Display.className = 'timer-display ready';
-                timer2Display.className = 'timer-display ready';
-            } else {
-                timerDisplay.className = 'ready';
+
+        function startTimer() {
+            state = 'running';
+            scrambleDisplay.classList.add('hidden');
+            cubeDisplay.classList.add('hidden');
+            centerMetricsLine.classList.add('metrics-hidden');
+            varianceDisplay.className = 'hidden';
+            startTime = performance.now();
+    
+            // if setting is disabled, show an indicator instead of the time
+            if (!showTimerDuringSolve) {
+                timerDisplay.textContent = '...';
             }
-        }, 500);
-    }
-}
-
-function triggerReleaseSequence() {
-    clearTimeout(holdTimeout);
-
-    if (state === 'ready') {
-        if (isMultiplayer) {
-            timer1Display.className = 'timer-display';
-            timer2Display.className = 'timer-display';
-        } else {
-            timerDisplay.className = '';
+    
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
-        startTimer();
-    } else if (state === 'holding') {
-        state = 'idle';
-        if (isMultiplayer) {
-            timer1Display.className = 'timer-display';
-            timer2Display.className = 'timer-display';
-        } else {
-            timerDisplay.className = '';
-            updateVarianceUI();
+
+        function updateTimer() {
+            if (state !== 'running') return;
+
+            if (showTimerDuringSolve) {
+                const now = performance.now();
+                const difference = (now - startTime) / 1000;
+        
+                if (isMultiplayer) {
+                    if (!p1Stopped) timerP1.textContent = formatTime(difference);
+                    if (!p2Stopped) timerP2.textContent = formatTime(difference);
+                } else {
+                    timerDisplay.textContent = formatTime(difference);
+                }
+            }
+
+            elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
-    }
-}
+
+        function stopTimer() {
+            state = 'idle';
+            cancelAnimationFrame(elapsedTimerInterval);
+
+            const finalTime = (performance.now() - startTime) / 1000;
+
+            if (isMultiplayer) {
+                p2Stopped = true;
+                timerP2.textContent = formatTime(finalTime);
+                // Save P1's time to history so local stats keep tracking properly
+                saveSolve(p1FinalTime);
+            } else {
+                timerDisplay.textContent = formatTime(finalTime);
+                saveSolve(finalTime);
+            }
+
+            generateScramble();
+        }
         
         function saveSolve(time) {
             if(!sessionsData[currentSession]) {
@@ -2194,6 +2107,13 @@ function triggerReleaseSequence() {
             }
         });
 
+        multiplayerToggleBtn.addEventListener('click', () => {
+            isMultiplayer = !isMultiplayer;
+            setToggleSwitchState(multiplayerToggleBtn, isMultiplayer);
+            saveData();
+            applyViewPreferencesVisibility();
+        });
+
         modalCloseBtn.addEventListener('click', closeEditModal);
         editModal.addEventListener('click', (e) => {
             if (e.target === editModal) closeEditModal();
@@ -2332,22 +2252,6 @@ function triggerReleaseSequence() {
             updateCenterMetricsDisplay();
         });
 
-        if (multiplayerToggleBtn) {
-    multiplayerToggleBtn.addEventListener('click', () => {
-        isMultiplayer = !isMultiplayer;
-        setToggleSwitchState(multiplayerToggleBtn, isMultiplayer);
-        localStorage.setItem('cube_timer_is_multiplayer', isMultiplayer);
-        
-        if (isMultiplayer) {
-            singleTimerWrapper.style.display = 'none';
-            dualTimerWrapper.style.display = 'flex';
-        } else {
-            singleTimerWrapper.style.display = 'flex';
-            dualTimerWrapper.style.display = 'none';
-        }
-    });
-}
-
         function calculateBestTime() {
             const activeTimes = sessionsData[currentSession] || [];
             const validTimes = activeTimes.map(getEffectiveTime).filter(t => t !== null);
@@ -2420,20 +2324,40 @@ function triggerReleaseSequence() {
             if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
 
             if (state === 'running') {
-                stopTimer();
-            } else if (state === 'idle') {
-                if (document.activeElement) {
-                    document.activeElement.blur();
+                if (isMultiplayer) {
+                    if (!p1Stopped) {
+                        // First spacebar tap: Stop P1, let P2 keep running
+                        p1Stopped = true;
+                        p1FinalTime = (performance.now() - startTime) / 1000;
+                        timerP1.textContent = formatTime(p1FinalTime);
+                    } else if (!p2Stopped) {
+                        // Second spacebar tap: Stop P2 and reset
+                        stopTimer();
+                    }
+                } else {
+                    stopTimer(); // Standard single player stop
                 }
+            } else if (state === 'idle') {
+                if (document.activeElement) document.activeElement.blur();
 
                 state = 'holding';
-                timerDisplay.className = 'holding';
-                //timerDisplay.textContent = '0.00';
                 varianceDisplay.className = 'hidden';
-                
+        
+                if (isMultiplayer) {
+                    timerP1.className = 'holding';
+                    timerP2.className = 'holding';
+                } else {
+                    timerDisplay.className = 'holding';
+                }
+        
                 holdTimeout = setTimeout(() => {
                     state = 'ready';
-                    timerDisplay.className = 'ready';
+                    if (isMultiplayer) {
+                        timerP1.className = 'ready';
+                        timerP2.className = 'ready';
+                    } else {
+                        timerDisplay.className = 'ready';
+                    }
                 }, 500);
             }
         }
@@ -2442,11 +2366,23 @@ function triggerReleaseSequence() {
             clearTimeout(holdTimeout);
 
             if (state === 'ready') {
-                timerDisplay.className = '';
+                if (isMultiplayer) {
+                    timerP1.className = '';
+                    timerP2.className = '';
+                    p1Stopped = false;
+                    p2Stopped = false;
+                } else {
+                    timerDisplay.className = '';
+                }
                 startTimer();
             } else if (state === 'holding') {
                 state = 'idle';
-                timerDisplay.className = '';
+                if (isMultiplayer) {
+                    timerP1.className = '';
+                    timerP2.className = '';
+                } else {
+                    timerDisplay.className = '';
+                }
                 updateVarianceUI();
             }
         }
