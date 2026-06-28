@@ -924,11 +924,78 @@
             }
         }
 
+        /* =========================================
+           MULTIPLAYER BASE STYLES (DESKTOP)
+           Place these BEFORE the 600px media query
+           ========================================= */
+        #multiplayer-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10vw; /* dynamic spacing based on screen width */
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .multiplayer-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player-label {
+            font-size: 1.25rem;
+            color: var(--dim-color);
+            margin-bottom: -15px;
+            text-transform: lowercase;
+            letter-spacing: 2px;
+        }
+
+        /* match the single-player timer formatting exactly */
+        #timer-p1, #timer-p2 {
+            font-size: 8.25rem;
+            font-weight: 300;
+            letter-spacing: -3px;
+            line-height: 1;
+            transition: color 0.1s ease;
+        }
+
+        #timer-p1.holding, #timer-p2.holding { color: var(--holding-color); }
+        #timer-p1.ready, #timer-p2.ready { color: var(--ready-color); }
+
+        /* stack vertically on medium/tablet screens to prevent overlapping */
+        @media (max-width: 950px) {
+            #multiplayer-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .player-label {
+                margin-bottom: -10px;
+            }
+        }
+
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
                 flex-direction: column !important;
                 height: 100vh;
                 overflow: hidden;
+            }
+
+            /* ... (Keep all your existing mobile sidebar/layout overrides here) ... */
+
+            /* Match the single-player mobile scaling for multiplayer */
+            #multiplayer-container { 
+                flex-direction: column;
+                gap: 24px; 
+                margin-top: 5px;
+            }
+            #timer-p1, #timer-p2 { 
+                font-size: 4.5rem; 
+            }
+            .player-label { 
+                font-size: 1rem; 
+                margin-bottom: -5px; 
             }
             
             .main-content {
@@ -1097,6 +1164,7 @@
             .sticker {
                 border-radius: 1px;
             }
+            
         }
     </style>
 </head>
@@ -1123,8 +1191,21 @@
         <div class="container">
             <div id="scramble">generating official scramble...</div>
             <div class="timer-wrapper">
+            <div id="single-timer-container" style="display: flex; flex-direction: column; align-items: center;">
                 <div id="timer">0.00</div>
                 <div id="variance" class="hidden"></div>
+            </div>
+    
+            <div id="multiplayer-container" style="display: none;">
+                <div class="multiplayer-side">
+                    <div class="player-label">p1</div>
+                    <div id="timer-p1">0.00</div>
+                </div>
+                <div class="multiplayer-side">
+                    <div class="player-label">p2</div>
+                    <div id="timer-p2">0.00</div>
+                </div>
+            </div>
             </div>
             <div class="metrics-display-line" id="centerMetricsLine"></div>
             
@@ -1327,6 +1408,18 @@
                     </div>
                     <input type="text" class="settings-text-input" id="metricsFormatInput" value="3, 5, 12" placeholder="3, 5, 12">
                 </div>
+
+                <div class="settings-row">
+                    <div class="settings-label-group">
+                        <div class="settings-control-title">multiplayer splitscreen</div>
+                        <div class="settings-control-desc">race locally. first tap stops p1, second stops p2.</div>
+                    </div>
+                    <button type="button" class="toggle-switch" id="multiplayerToggleBtn" role="switch" aria-checked="false">
+                        <span class="sw-on">on</span>
+                        <span class="sw-off text-muted">off</span>
+                    </button>
+                </div>
+                
             </div>
 
             <!-- Data Management Section Area -->
@@ -1458,6 +1551,17 @@
         let showCube = true;
         let showMetrics = true;
         let configuredMetricsList = [3, 5, 12];
+
+        let isMultiplayer = false;
+        let p1Stopped = false;
+        let p2Stopped = false;
+        let p1FinalTime = 0;
+
+        const singleTimerContainer = document.getElementById('single-timer-container');
+        const multiplayerContainer = document.getElementById('multiplayer-container');
+        const timerP1 = document.getElementById('timer-p1');
+        const timerP2 = document.getElementById('timer-p2');
+        const multiplayerToggleBtn = document.getElementById('multiplayerToggleBtn');
         
         const sessionsData = {};
         const sessionNamesMap = {};
@@ -1624,6 +1728,14 @@
             } else {
                 centerMetricsLine.classList.add('metrics-hidden');
             }
+
+            if (isMultiplayer) {
+                singleTimerContainer.style.display = 'none';
+                multiplayerContainer.style.display = 'flex';
+            } else {
+                singleTimerContainer.style.display = 'flex';
+                multiplayerContainer.style.display = 'none';
+            }
         }
 
         function syncDropdownMenuOptions() {
@@ -1761,7 +1873,13 @@
                 }
             }
             metricsFormatInput.value = configuredMetricsList.join(', ');
-            
+
+            const savedMultiplayer = localStorage.getItem('cube_timer_multiplayer');
+            if (savedMultiplayer !== null) {
+              isMultiplayer = savedMultiplayer === 'true';
+            }
+            setToggleSwitchState(multiplayerToggleBtn, isMultiplayer);
+                    
             buildSessionManagerControls();
             updateHistoryUI();
             updateStatsUI();
@@ -1781,6 +1899,7 @@
             localStorage.setItem('cube_timer_show_metrics', showMetrics);
             localStorage.setItem('cube_timer_metrics_list', JSON.stringify(configuredMetricsList));
             localStorage.setItem('cube_timer_cube_type', cubeType);
+            localStorage.setItem('cube_timer_multiplayer', isMultiplayer);
         }
 
         function setToggleSwitchState(btnElement, isActive) {
@@ -1822,25 +1941,38 @@
 
         function updateTimer() {
             if (state !== 'running') return;
-    
-            // only calculate and update the DOM if the setting is true
+
             if (showTimerDuringSolve) {
                 const now = performance.now();
                 const difference = (now - startTime) / 1000;
-                timerDisplay.textContent = formatTime(difference);
+        
+                if (isMultiplayer) {
+                    if (!p1Stopped) timerP1.textContent = formatTime(difference);
+                    if (!p2Stopped) timerP2.textContent = formatTime(difference);
+                } else {
+                    timerDisplay.textContent = formatTime(difference);
+                }
             }
-    
+
             elapsedTimerInterval = requestAnimationFrame(updateTimer);
         }
 
         function stopTimer() {
             state = 'idle';
             cancelAnimationFrame(elapsedTimerInterval);
-    
+
             const finalTime = (performance.now() - startTime) / 1000;
-            timerDisplay.textContent = formatTime(finalTime);
-    
-            saveSolve(finalTime);
+
+            if (isMultiplayer) {
+                p2Stopped = true;
+                timerP2.textContent = formatTime(finalTime);
+                // Save P1's time to history so local stats keep tracking properly
+                saveSolve(p1FinalTime);
+            } else {
+                timerDisplay.textContent = formatTime(finalTime);
+                saveSolve(finalTime);
+            }
+
             generateScramble();
         }
         
@@ -2005,6 +2137,13 @@
                 updateCenterMetricsDisplay();
                 updateVarianceUI();
             }
+        });
+
+        multiplayerToggleBtn.addEventListener('click', () => {
+            isMultiplayer = !isMultiplayer;
+            setToggleSwitchState(multiplayerToggleBtn, isMultiplayer);
+            saveData();
+            applyViewPreferencesVisibility();
         });
 
         modalCloseBtn.addEventListener('click', closeEditModal);
@@ -2217,20 +2356,40 @@
             if (editModal.classList.contains('open') || themeModal.classList.contains('open') || settingsModal.classList.contains('open')) return;
 
             if (state === 'running') {
-                stopTimer();
-            } else if (state === 'idle') {
-                if (document.activeElement) {
-                    document.activeElement.blur();
+                if (isMultiplayer) {
+                    if (!p1Stopped) {
+                        // First spacebar tap: Stop P1, let P2 keep running
+                        p1Stopped = true;
+                        p1FinalTime = (performance.now() - startTime) / 1000;
+                        timerP1.textContent = formatTime(p1FinalTime);
+                    } else if (!p2Stopped) {
+                        // Second spacebar tap: Stop P2 and reset
+                        stopTimer();
+                    }
+                } else {
+                    stopTimer(); // Standard single player stop
                 }
+            } else if (state === 'idle') {
+                if (document.activeElement) document.activeElement.blur();
 
                 state = 'holding';
-                timerDisplay.className = 'holding';
-                //timerDisplay.textContent = '0.00';
                 varianceDisplay.className = 'hidden';
-                
+        
+                if (isMultiplayer) {
+                    timerP1.className = 'holding';
+                    timerP2.className = 'holding';
+                } else {
+                    timerDisplay.className = 'holding';
+                }
+        
                 holdTimeout = setTimeout(() => {
                     state = 'ready';
-                    timerDisplay.className = 'ready';
+                    if (isMultiplayer) {
+                        timerP1.className = 'ready';
+                        timerP2.className = 'ready';
+                    } else {
+                        timerDisplay.className = 'ready';
+                    }
                 }, 500);
             }
         }
@@ -2239,11 +2398,23 @@
             clearTimeout(holdTimeout);
 
             if (state === 'ready') {
-                timerDisplay.className = '';
+                if (isMultiplayer) {
+                    timerP1.className = '';
+                    timerP2.className = '';
+                    p1Stopped = false;
+                    p2Stopped = false;
+                } else {
+                    timerDisplay.className = '';
+                }
                 startTimer();
             } else if (state === 'holding') {
                 state = 'idle';
-                timerDisplay.className = '';
+                if (isMultiplayer) {
+                    timerP1.className = '';
+                    timerP2.className = '';
+                } else {
+                    timerDisplay.className = '';
+                }
                 updateVarianceUI();
             }
         }
