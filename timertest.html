@@ -924,12 +924,80 @@
             }
         }
 
+        /* =========================================
+           MULTIPLAYER BASE STYLES (DESKTOP)
+           Place these BEFORE the 600px media query
+           ========================================= */
+        #multiplayer-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10vw; /* dynamic spacing based on screen width */
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .multiplayer-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player-label {
+            font-size: 1.25rem;
+            color: var(--dim-color);
+            margin-bottom: -15px;
+            text-transform: lowercase;
+            letter-spacing: 2px;
+        }
+
+        /* match the single-player timer formatting exactly */
+        #timer-p1, #timer-p2 {
+            font-size: 8.25rem;
+            font-weight: 300;
+            letter-spacing: -3px;
+            line-height: 1;
+            transition: color 0.1s ease;
+        }
+
+        #timer-p1.holding, #timer-p2.holding { color: var(--holding-color); }
+        #timer-p1.ready, #timer-p2.ready { color: var(--ready-color); }
+
+        /* stack vertically on medium/tablet screens to prevent overlapping */
+        @media (max-width: 950px) {
+            #multiplayer-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .player-label {
+                margin-bottom: -10px;
+            }
+        }
+
         @media (max-width: 600px) {
             body, body.sidebar-left, body.sidebar-right {
                 flex-direction: column !important;
                 height: 100vh;
                 overflow: hidden;
             }
+
+            /* ... (Keep all your existing mobile sidebar/layout overrides here) ... */
+
+            /* Match the single-player mobile scaling for multiplayer */
+            #multiplayer-container { 
+                flex-direction: column;
+                gap: 24px; 
+                margin-top: 5px;
+            }
+            #timer-p1, #timer-p2 { 
+                font-size: 4.5rem; 
+            }
+            .player-label { 
+                font-size: 1rem; 
+                margin-bottom: -5px; 
+            }
+        }
             
             .main-content {
                 height: 0;
@@ -1097,69 +1165,6 @@
             .sticker {
                 border-radius: 1px;
             }
-
-            #multiplayer-container {
-            display: flex;
-            flex-direction: row;
-            gap: 10vw; /* dynamic spacing based on screen width */
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .multiplayer-side {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .player-label {
-            font-size: 1.25rem;
-            color: var(--dim-color);
-            margin-bottom: -15px;
-            text-transform: lowercase;
-            letter-spacing: 2px;
-        }
-
-        /* match the single-player timer formatting exactly */
-        #timer-p1, #timer-p2 {
-            font-size: 8.25rem;
-            font-weight: 300;
-            letter-spacing: -3px;
-            line-height: 1;
-            transition: color 0.1s ease;
-        }
-
-        #timer-p1.holding, #timer-p2.holding { color: var(--holding-color); }
-        #timer-p1.ready, #timer-p2.ready { color: var(--ready-color); }
-
-        /* stack vertically on medium/tablet screens to prevent overlapping */
-        @media (max-width: 950px) {
-            #multiplayer-container {
-                flex-direction: column;
-                gap: 40px;
-            }
-            .player-label {
-                margin-bottom: -10px;
-            }
-        }
-
-        /* match the single-player mobile scaling */
-        @media (max-width: 600px) {
-            #multiplayer-container { 
-                flex-direction: column;
-                gap: 24px; 
-                margin-top: 5px;
-            }
-            #timer-p1, #timer-p2 { 
-                font-size: 4.5rem; 
-            }
-            .player-label { 
-                font-size: 1rem; 
-                margin-bottom: -5px; 
-            }
-        }
             
         }
     </style>
