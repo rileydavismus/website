@@ -1,30 +1,61 @@
 body{
-  background-color: #f3f3f3;
-  width: 80%;
-  margin: 0 auto;
+	width: 60%;
+	margin: 0 auto;
+	transition: background-color 0.3s;
+	transition: background-color 0.3s, color 0.3s;
 }
 
-h1{
+.topbar{
+	display: block;
+	width: 100%;
+	top: 0;
+	position: sticky;
+	background-color: inherit;
+}
+
+.head-title{
 	font-family: "Source Code Pro", monospace;
 	font-style: normal;
 	font-weight: 400;
-	padding-left: 20px;
-	padding-bottom: 20px;
-	color: #1c1c1c;
+	padding: 20px 40px 20px 40px;
+	font-size: 28pt;
+	display: inline-block;
 }
 
 h2{
-  font-family: "Source Code Pro", monospace;
+  	font-family: "Source Code Pro", monospace;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14pt;
 	padding-left: 20px;
 }
 
+.theme{
+	font-family: "Source Code Pro", monospace;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 28pt;
+	background: none;
+  	border: none;
+	color: inherit;
+	float: right;
+	padding: 20px 40px 20px 40px;
+	display: inline-block;
+}
+
+.light{
+	background-color: #f3f3f3;
+	color: #1c1c1c;
+}
+
+.dark{
+	background-color: #1c1c1c;
+	color: #f3f3f3;
+}
+
 .entry-container{
   border-style: dashed;
   border-width: 1px;
-  color: #1c1c1c;
 }
 
 .smallbreak{
@@ -35,7 +66,7 @@ h2{
 }
 
 .smallbreak::before{
-  content: ":0:0:0:0:0:0";
+  content: "♫♪.ılılıll|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|llılılı.♫♪";
 }
 
 .entry{

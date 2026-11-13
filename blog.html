@@ -7,19 +7,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <link href="blogstyle.css" rel="stylesheet">
 </head>
-<body>
+<body class="light">
 
-<h1>^^test</h1>
-<div class="linebreak"></div>
+<div class="topbar">
+	<div class="head-title">^^test</div>
+	<button class="theme" onclick="toggleTheme()">☀︎☾</button>
+	<script>
+	function toggleTheme() {
+ 		document.body.classList.toggle("dark");
+  		document.body.classList.toggle("light");
+
+	}
+	</script>
+</div>
 
 <div class="entry-container">
-  <h2>entry test</h2>
+  <h2>quotes from a friend // 13-11-2026</h2>
   <div class="smallbreak"></div>
-  <p class="entry">test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content test content </p>
+  <p class="entry"><i></i></p>
 </div>
 
 <br></br>
-
 
 </body>
 </html>
