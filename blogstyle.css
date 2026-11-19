@@ -1,7 +1,11 @@
+html{
+	transition: background-color 0.3s, color 0.3s;
+}
+
 body{
 	width: 70%;
 	margin: 0 auto;
-	transition: background-color 0.3s, color 0.3s;
+	background-color: inherit;
 }
 
 .topbar{
@@ -47,12 +51,12 @@ h2{
 	display: flex;
 }
 
-.light{
+[data-theme="light"]{
 	background-color: #f3f3f3;
 	color: #1c1c1c;
 }
 
-.dark{
+[data-theme="dark"]{
 	background-color: #1c1c1c;
 	color: #f3f3f3;
 }
@@ -172,7 +176,7 @@ footer{
 	}
 
 	.smallbreak{
-		content: none;
+		display: none;
 	}
 
 	.footer-content{

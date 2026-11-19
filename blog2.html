@@ -1,26 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
 <head>
 	<title>test</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+	<script type="text/javascript" src="scripts.js" defer></script>
 	<link href="blogstyle.css" rel="stylesheet">
 </head>
 
-<body class="light">
+<body>
 
 <div class="topbar">
 	<div class="head-title">^^test</div>
-	<button class="theme" onclick="toggleTheme()">☀︎</button>
-	<script>
-	function toggleTheme() {
- 		document.body.classList.toggle("dark");
-  		document.body.classList.toggle("light");
-
-	}
-	</script>
+	<button type="button" class="theme" data-theme-toggle>☀︎</button>
 </div>
 
 <div class="entry-container">
